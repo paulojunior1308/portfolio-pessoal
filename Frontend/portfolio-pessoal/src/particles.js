@@ -1,7 +1,7 @@
 const particlesJS = {
   background: {
     color: {
-      value: "#060c70",
+      value: "#020272",
     },
   },
   particles: {
@@ -102,7 +102,7 @@ const particlesJS = {
         speed: 3,
       },
       repulse: {
-        distance: 200,
+        distance: 100,
         duration: 0.4,
       },
       push: {

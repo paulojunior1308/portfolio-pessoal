@@ -3,6 +3,7 @@ import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import particles from './particles';
 import './App.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const App = () => {
   const particlesInit = async (main) => {
@@ -17,34 +18,41 @@ const App = () => {
         options={particles}
       />
       <body>
-    <main id="home" class="home">
-      
-    <header id="header" class="header">
-        <div class="container-header">
-            <div class="logo">
-                <a href="index.html">Paulo Junior Desenvolvedor<span class="destaque">│Dev.</span></a>
+        <main id="home" class="home">
+          
+          <header id="header" class="header">
+              <div class="container-header">
+                  <input type="checkbox" id="toggle" />
+                      <label class="checkbox" for="toggle">
+                          <div class="trace"></div>
+                          <div class="trace"></div>
+                          <div class="trace"></div>
+                      </label>
+              </div>
+          </header>
+          <section class="text-home">
+            <h1>Paulo Junior</h1>
+            <h2>Desenvolvedor</h2>
+            <div className='icons'>
+              <a href='#'>
+                <div className='layer linkedin'>
+                  <span className='fab fa-linkedin'></span>
+                </div>
+                <div className='text'>Linkedin</div>
+              </a>
+              <a href='#'>
+                <div className='layer github'>
+                  <span className='fab fa-github'></span>
+                </div>
+                <div className='text'>Github</div>
+              </a>
             </div>
-            <div class="menu-icon">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-            <input type="checkbox" id="toggle" />
-                <label class="checkbox" for="toggle">
-                    <div class="trace"></div>
-                    <div class="trace"></div>
-                    <div class="trace"></div>
-                </label>
-        </div>
-    </header>
-        <div class="container-home">
-            <div class="text-home">
-                <h1>Paulo Junior</h1>
-                <span>Desenvolvedor <span class="destaque texto-animado"></span></span>
-            </div>
-            <div class="redes-sociais">
-                
-            </div>
-        </div>
-    </main>
+          </section> 
+          <footer class="footer">
+              <p>© 2024 - Todos os direitos reservados.</p>
+          </footer>     
+              
+        </main>
       </body>
     </div>
   );
