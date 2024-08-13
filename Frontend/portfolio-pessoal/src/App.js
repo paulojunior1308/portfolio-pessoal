@@ -34,13 +34,13 @@ const App = () => {
             <h1>Paulo Junior</h1>
             <h2>Desenvolvedor</h2>
             <div className='icons'>
-              <a href='https://github.com/paulojunior1308' target='_blank'>
+              <a href='https://github.com/paulojunior1308' target='_blank' rel='noreferrer'>
                 <div className='layer linkedin'>
                   <span className='fab fa-linkedin'></span>
                 </div>
                 <div className='text'>Linkedin</div>
               </a>
-              <a href='https://www.linkedin.com/in/paulojr-itsupport/' target='_blank'>
+              <a href='https://www.linkedin.com/in/paulojr-itsupport/' target='_blank' rel='noreferrer'>
                 <div className='layer github'>
                   <span className='fab fa-github'></span>
                 </div>
