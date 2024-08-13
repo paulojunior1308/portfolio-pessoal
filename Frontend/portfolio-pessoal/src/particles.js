@@ -13,7 +13,7 @@ const particlesJS = {
       },
     },
     color: {
-      value: "#fafafa",
+      value: "#ffffff",
     },
     shape: {
       type: "circle",
@@ -33,7 +33,7 @@ const particlesJS = {
     opacity: {
       value: 0.5,
       random: false,
-      animation: {
+      anim: {
         enable: false,
         speed: 1,
         opacity_min: 0.1, 
@@ -43,14 +43,14 @@ const particlesJS = {
     size: {
       value: 3,
       random: true,
-      animation: {
+      anim: {
         enable: false,
         speed: 40,
         minimumValue: 0.1,
         sync: false,
       },
     },
-    links: {
+    lineLinked: {
       enable: true,
       distance: 150,
       color: "#ffffff",
