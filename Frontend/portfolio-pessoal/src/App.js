@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Particles from 'react-tsparticles';
-import { loadFull } from 'tsparticles';
-import particles from './particles';
+import particlesOptions from './particles';
+import { loadSlim } from "tsparticles-slim";
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const App = () => {
-  const particlesInit = async (main) => {
-    await loadFull(main);
-  };
+
+  const particlesInit = useCallback(async engine => {
+    console.log(engine);
+    await loadSlim(engine);
+  }, []);
+
+  const particlesLoad = useCallback(async container => {
+    await console.log(container);
+  }, []);
 
   return (
     <div className="App">
       <Particles
         id="tsparticles"
-        init={particlesInit}
-        options={particles}
+        init={particlesInit} 
+        loaded={particlesLoad}
+        options={particlesOptions}
       />
       <main id="home" className="home">
         <header id="header" className="header">
