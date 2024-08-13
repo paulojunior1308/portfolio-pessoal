@@ -1,0 +1,116 @@
+/* Sobre.css */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f8f9fa;
+}
+
+.sobre-home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.sobre-header {
+  background-color: #ffffff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sobre-logo a {
+  text-decoration: none;
+  font-size: 24px;
+  color: #000;
+}
+
+.sobre-destaque {
+  color: #007bff;
+}
+
+.sobre-checkbox-container {
+  position: relative;
+}
+
+.sobre-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.sobre-checkbox {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 30px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 15px;
+  position: relative;
+}
+
+.sobre-trace {
+  width: 20px;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 2px;
+  margin: 2px 0;
+}
+
+.sobre-menu {
+  display: none;
+  background-color: #ffffff;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 200px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sobre-menu.open {
+  display: block;
+}
+
+.sobre-menu-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sobre-menu-items ul {
+  padding: 0;
+}
+
+.sobre-menu-items li {
+  margin: 10px 0;
+}
+
+.sobre-menu-items a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px 20px;
+  display: block;
+}
+
+.sobre-menu-items a:hover {
+  background-color: #e9ecef;
+}
+
+.sobre-footer {
+  background-color: #ffffff;
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #ddd;
+}
+
+.sobre-footer p {
+  margin: 0;
+}
+
+.sobre-destaque {
+  color: #007bff;
+}
