@@ -83,7 +83,7 @@ h2 {
   display: inline-block;
   width: 2px;
   height: 1em;
-  background-color: #007bff; /* Altere para a cor desejada */
+  background-color: #007bff; 
   animation: blink 1s step-start infinite;
   position: absolute;
   right: 0;
@@ -106,8 +106,7 @@ h2 {
 .header {
   width: 100%;
   padding: 1rem 1.8rem;
-  height: 90px;
-  background-color: transparent;
+  height: 50px;
   position: fixed;
   top: 0;
   left: 0;
@@ -115,8 +114,17 @@ h2 {
   align-items: center;
   justify-content: space-between;
   z-index: 1000;
+  transition: background-color 0.5s ease-in-out;
 }
 
+/* Página Home */
+.home .header {
+  background-color: transparent; /* Header transparente */
+}
+
+.sobre .header.header-scrolled {
+  background-color: rgba(0, 0, 0, 0.9); /* Cor ao rolar na página Sobre */
+}
 .header-fixed {
   position: fixed;
   top: 0;
@@ -254,6 +262,9 @@ a {
 
 .menu-items ul {
   list-style: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .menu-items ul li a {
@@ -270,7 +281,7 @@ a {
 #toggle:checked + .checkbox .trace:nth-child(1) {
   transform: rotate(45deg);
   background-color: #2e1c2b;
-  top: 47px;
+  top: 20px;
 }
 
 #toggle:checked + .checkbox .trace:nth-child(2) {
@@ -283,7 +294,7 @@ a {
 #toggle:checked + .checkbox .trace:nth-child(3) {
   transform: rotate(-45deg);
   background-color: #2e1c2b;
-  top: 48px;
+  top: 20px;
 }
 
 #toggle:checked + .checkbox {
@@ -312,7 +323,7 @@ a {
 }
 
 /*ICONES*/
-.icons {
+.icons-home {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -320,7 +331,7 @@ a {
   padding: 50px;
 }
 
-.icons a {
+.icons-home a {
   display: block;
   position: relative;
   width: 30px;
@@ -328,7 +339,7 @@ a {
   text-decoration: none;
 }
 
-.icons a .layer {
+.icons-home a .layer {
   position: relative;
   width: 100%;
   height: 100%;
@@ -338,7 +349,7 @@ a {
   transition: transform 0.3s;
 }
 
-.icons a .layer::before {
+.icons-home a .layer::before {
   content: "";
   position: absolute;
   top: 0;
@@ -355,7 +366,7 @@ a {
   z-index: 1;
 }
 
-.icons a .layer::after {
+.icons-home a .layer::after {
   content: "";
   position: absolute;
   top: 0;
@@ -370,13 +381,13 @@ a {
   z-index: 1;
 }
 
-.icons a .layer span {
+.icons-home a .layer span {
   font-size: 20px;
   color: #ffffff;
   z-index: 2;
 }
 
-.icons a .layer .fab {
+.icons-home a .layer .fab {
   font-size: 28px;
   text-align: center;
   line-height: 60px;
@@ -384,34 +395,34 @@ a {
   z-index: 2;
 }
 
-.icons a:hover .layer span {
+.icons-home a:hover .layer span {
   border-color: #0a66c2;
 }
 
-.icons a:hover .layer span:nth-child(1) {
+.icons-home a:hover .layer span:nth-child(1) {
   opacity: 0.2;
 }
 
-.icons a:hover .layer span:nth-child(2) {
+.icons-home a:hover .layer span:nth-child(2) {
   transform: translate(5px, -5px);
   opacity: 0.4;
 }
 
-.icons a:hover .layer span:nth-child(3) {
+.icons-home a:hover .layer span:nth-child(3) {
   transform: translate(10px, -10px);
   opacity: 0.6;
 }
 
-.icons a:hover .layer span:nth-child(4) {
+.icons-home a:hover .layer span:nth-child(4) {
   transform: translate(15px, -15px);
   opacity: 0.8;
 }
 
-.icons a:hover .layer {
+.icons-home a:hover .layer {
   transform: rotate(-35deg) skew(20deg);
 }
 
-.icons a .text {
+.icons-home a .text {
   color: #fff;
   margin-top: 10px;
   font-size: 12px;
@@ -419,46 +430,46 @@ a {
   display: none;
 }
 
-.icons a:hover .text {
+.icons-home a:hover .text {
   display: block;
 }
 
-.icons a .layer.github {
+.icons-home a .layer.github {
   background-color: #ffffff;
 }
 
-.icons a .layer.github span {
+.icons-home a .layer.github span {
   color: #333333;
 }
 
-.icons a:hover .layer.github {
+.icons-home a:hover .layer.github {
   background-color: #333333;
 }
 
-.icons a:hover .layer.github span {
+.icons-home a:hover .layer.github span {
   color: #ffffff;
 }
 
-.icons a .layer.github::after {
+.icons-home a .layer.github::after {
   border: 1px solid #333333;
 }
 
-.icons a .layer.linkedin {
+.icons-home a .layer.linkedin {
   background-color: #ffffff;
 }
 
-.icons a .layer.linkedin span {
+.icons-home a .layer.linkedin span {
   color: #0a66c2;
 }
 
-.icons a:hover .layer.linkedin {
+.icons-home a:hover .layer.linkedin {
   background-color: #0a66c2;
 }
 
-.icons a:hover .layer.linkedin span {
+.icons-home a:hover .layer.linkedin span {
   color: #ffffff;
 }
 
-.icons a .layer.linkedin::after {
+.icons-home a .layer.linkedin::after {
   border: 1px solid #0a66c2;
 }

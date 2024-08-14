@@ -44,7 +44,7 @@ const Home = () => {
           </h2>
         </section>
         <footer className="footer">
-          <div className="icons">
+          <div className="icons-home">
             <a
               href="https://www.linkedin.com/in/paulojr-itsupport/"
               target="_blank"

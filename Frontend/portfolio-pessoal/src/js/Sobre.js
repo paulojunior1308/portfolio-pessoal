@@ -6,25 +6,59 @@ import AboutImage from "../image/about-img.png";
 const Sobre = () => {
   return (
     <main id="sobre-home" className="sobre-home">
-      <ToggleMenu />
       <section className="section-sobre">
-        <span className="destaque">Conheça um pouco</span>
-        <h1>SOBRE MIM</h1>
-
-        <div class="content-about">
-          <div class="content-about-left" data-aos="fade-right">
-            <h1>Olá, me chamo Paulo Junior</h1>
-            <p>Sou desenvolvedor web freelancer e empreendedor digital. Com mais de 4 anos de experiência, tenho
-               um histórico comprovado de transformar ideias em soluções digitais eficazes. Além disso, sou
-               criador de conteúdo no TikTok, onde ensino e inspiro pessoas a explorarem o freelancing como uma
-               carreira viável ou uma fonte de renda extra.</p>
-            <p>Atualmente, estou cursando Engenharia de Software para aprofundar ainda mais meus conhecimentos.
-               Se você está buscando um parceiro para levar seu negócio online ao próximo nível, vamos
-               conversar!</p>
+        <ToggleMenu />
+        <div className="container-about">
+          <div className="headline-about">
+            <span className="destaque">Conheça um pouco</span>
+            <h1>SOBRE MIM</h1>
           </div>
-          <div class="content-sobre-right" data-aos="fade-left">
-            <div class="img-sobre" id="animatedImage">
-              <img src={AboutImage} alt="Imagem"/>
+          <div class="content-about">
+            <div class="content-about-left" data-aos="fade-right">
+              <h1>Olá, me chamo Paulo Junior</h1>
+              <p>Sou desenvolvedor web freelancer e empreendedor digital. Com mais de 4 anos de experiência, tenho
+                um histórico comprovado de transformar ideias em soluções digitais eficazes. Além disso, sou
+                criador de conteúdo no TikTok, onde ensino e inspiro pessoas a explorarem o freelancing como uma
+                carreira viável ou uma fonte de renda extra.</p>
+              <p>Atualmente, estou cursando Engenharia de Software para aprofundar ainda mais meus conhecimentos.
+                Se você está buscando um parceiro para levar seu negócio online ao próximo nível, vamos
+                conversar!</p>
+              <div className="cta-about">
+                <div className="btn-about" data-aos="fade-up">
+
+                  <a href="/assets/Docs/curriculo-dev-ricardo.pdf" download="curriculo-dev-ricardo.pdf">
+                  <button className="btn">Download CV</button>
+                  </a>
+                </div>
+
+                <div className="icons-about" data-aos="fade-up">
+                  <a
+                    href="https://www.linkedin.com/in/paulojr-itsupport/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <div className="layer linkedin">
+                      <span className="fab fa-linkedin"></span>
+                    </div>
+                    <div className="text">Linkedin</div>
+                  </a>
+                  <a
+                    href="https://github.com/paulojunior1308"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <div className="layer github">
+                      <span className="fab fa-github"></span>
+                    </div>
+                    <div className="text">Github</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="content-about-right" data-aos="fade-left">
+              <div className="img-about" id="animatedImage">
+                <img src={AboutImage} alt="Imagem"/>
+              </div>
             </div>
           </div>
         </div>         
