@@ -1,20 +1,23 @@
 import React from "react";
 import "../css/Sobre.css";
+import "../css/responsividade.css"
+import "../css/App.css"
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import ToggleMenu from "./ToggleMenu";
 import AboutImage from "../image/about-img.png";
+import Curriculo from "../image/arquivos/CV-PauloJunior.pdf"
 const Sobre = () => {
   return (
     <main id="sobre-home" className="sobre-home">
-      <section className="section-sobre">
+      <section className="section-about">
         <ToggleMenu />
         <div className="container-about">
-          <div className="headline-about">
+          <div className="headline">
             <span className="destaque">Conheça um pouco</span>
             <h1>SOBRE MIM</h1>
           </div>
-          <div class="content-about">
-            <div class="content-about-left" data-aos="fade-right">
+          <div className="content-about">
+            <div className="content-about-left" data-aos="fade-right">
               <h1>Olá, me chamo Paulo Junior</h1>
               <p>Sou desenvolvedor web freelancer e empreendedor digital. Com mais de 4 anos de experiência, tenho
                 um histórico comprovado de transformar ideias em soluções digitais eficazes. Além disso, sou
@@ -26,7 +29,7 @@ const Sobre = () => {
               <div className="cta-about">
                 <div className="btn-about" data-aos="fade-up">
 
-                  <a href="/assets/Docs/curriculo-dev-ricardo.pdf" download="curriculo-dev-ricardo.pdf">
+                  <a  href={Curriculo} download="CV-PauloJunior.pdf">
                   <button className="btn">Download CV</button>
                   </a>
                 </div>

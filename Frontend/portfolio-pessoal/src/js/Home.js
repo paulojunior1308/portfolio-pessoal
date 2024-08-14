@@ -3,6 +3,7 @@ import Particles from "react-tsparticles";
 import particlesOptions from "./particles";
 import { loadSlim } from "tsparticles-slim";
 import "../css/App.css";
+import "../css/responsividade.css"
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import TypingAnimation from "./textAnimation";
 import ToggleMenu from "./ToggleMenu";
