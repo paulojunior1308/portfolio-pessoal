@@ -1,17 +1,32 @@
-import React from "react";
-import "../css/responsividade.css"
-import "../css/App.css"
+import React, { useEffect } from "react";
+import AOS from 'aos'; // Importando AOS
+import 'aos/dist/aos.css'; // Importando os estilos do AOS
+import "../css/responsividade.css";
+import "../css/App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import ToggleMenu from "./ToggleMenu";
 import AboutImage from "../image/about-img.png";
-import Curriculo from "../image/arquivos/CV-PauloJunior.pdf"
+import Css from "../image/css.jpg";
+import Java from "../image/java.jpg";
+import ReactJs from "../image/react.jpg";
+import Spring from "../image/springboot.jpg";
+import Javascript from "../image/javascript.jpg";
+import Curriculo from "../image/arquivos/CV-PauloJunior.pdf";
+
 const Sobre = () => {
+  // Inicializando o AOS dentro do useEffect
+  useEffect(() => {
+    AOS.init({
+      duration: 1200, // Duração das animações
+    });
+  }, []);
+
   return (
     <main id="sobre-home" className="sobre-home">
       <section className="section-about">
         <ToggleMenu />
         <div className="container-about">
-          <div className="headline">
+          <div className="headline" data-aos="fade-down">
             <span className="destaque">Conheça um pouco</span>
             <h1>SOBRE MIM</h1>
           </div>
@@ -27,12 +42,10 @@ const Sobre = () => {
                 conversar!</p>
               <div className="cta-about">
                 <div className="btn-about" data-aos="fade-up">
-
-                  <a  href={Curriculo} download="CV-PauloJunior.pdf">
-                  <button className="btn">Download CV</button>
+                  <a href={Curriculo} download="CV-PauloJunior.pdf">
+                    <button className="btn">Download CV</button>
                   </a>
                 </div>
-
                 <div className="icons-about" data-aos="fade-up">
                   <a
                     href="https://www.linkedin.com/in/paulojr-itsupport/"
@@ -59,14 +72,68 @@ const Sobre = () => {
             </div>
             <div className="content-about-right" data-aos="fade-left">
               <div className="img-about" id="animatedImage">
-                <img src={AboutImage} alt="Imagem"/>
+                <img src={AboutImage} alt="Imagem" />
               </div>
             </div>
           </div>
-        </div>         
+        </div>
+      </section>
+      <section id="skills" className="skills">
+        <div className="container-skills">
+          <div className="skills-headline" data-aos="fade-down">
+            <span className="destaque">Conheça um pouco minhas</span>
+            <h1>Habilidades</h1>
+            <p>Tenho experiência prática com as principais tecnologias de desenvolvimento web, incluindo HTML5,
+            CSS3, e JavaScript, além de frameworks e plataformas como Bootstrap, React, NodeJS, PHP, Java,
+            Figma, WordPress, Wix e Shopify. Essas ferramentas me permitem criar sites que são não só
+            visualmente atraentes, mas também otimizados para desempenho e funcionalidade. Me dedico a
+            desenvolver soluções web que atendem perfeitamente às necessidades dos meus clientes, seja em
+            projetos simples ou em soluções complexas e personalizadas.</p>
+            <div className="list-about" data-aos="fade-up">
+              <span className="destaque">Soft skills</span>
+              <div className="container-list">
+                <ul>
+                  <li><i className="fa-solid fa-angles-right"></i> Comunicação</li>
+                  <li><i className="fa-solid fa-angles-right"></i> Colaboração</li>
+                  <li><i className="fa-solid fa-angles-right"></i> Resolução</li>
+                  <li><i className="fa-solid fa-angles-right"></i> Adaptabilidade</li>
+                  <li><i className="fa-solid fa-angles-right"></i> Pontualidade</li>
+                </ul>
+                <ul>
+                  <li><i className="fa-solid fa-angles-right"></i> Detalhismo</li>
+                  <li><i className="fa-solid fa-angles-right"></i> Crítica</li>
+                  <li><i className="fa-solid fa-angles-right"></i> Criatividade</li>
+                  <li><i className="fa-solid fa-angles-right"></i> Autodidatismo</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="skills-info">
+            <div className="card-tech" data-aos="zoom-in">
+              <img src={Css} alt="CSS" />
+              <p>CSS</p>
+            </div>
+            <div className="card-tech" data-aos="zoom-in">
+              <img src={Javascript} alt="JavaScript" />
+              <p>JavaScript</p>
+            </div>
+            <div className="card-tech" data-aos="zoom-in">
+              <img src={ReactJs} alt="React" />
+              <p>React</p>
+            </div>
+            <div className="card-tech" data-aos="zoom-in">
+              <img src={Java} alt="Java" />
+              <p>Java</p>
+            </div>
+            <div className="card-tech" data-aos="zoom-in">
+              <img src={Spring} alt="Springboot" />
+              <p>Springboot</p>
+            </div>
+          </div>
+        </div>
       </section>
       <footer className="sobre-footer">
-        <p>Todos os direitos reservados<br />Desenvolvido <span class="sobre-destaque">Paulo Junior│Dev.</span></p>
+        <p>Todos os direitos reservados<br />Desenvolvido <span className="sobre-destaque">Paulo Junior│Dev.</span></p>
       </footer>
     </main>
   );
