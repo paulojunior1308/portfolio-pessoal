@@ -5,48 +5,56 @@
   padding: 0;
 }
 
-/* Base */
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
+  padding: 0;
+  margin: 0;
 }
 
 /* iPhone 11 e dispositivos similares */
 @media only screen and (max-width: 828px) and (orientation: portrait) {
-  /* Ajustes gerais para o iPhone 11 */
   main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 10px;
   }
 
   .logo {
     font-size: 1.4rem;
+    text-align: center;
   }
 
   .text-home h1 {
-    font-size: 3.5rem;
+    font-size: 3rem;
+    text-align: center;
   }
 
   .text-home span {
-    font-size: 2.2rem;
+    font-size: 2rem;
+    text-align: center;
   }
 
   .text-home h2 {
-    font-size: 2.2rem;
+    font-size: 2rem;
+    text-align: center;
   }
 
   .headline-about span {
     font-size: 1.4rem;
+    text-align: center;
   }
 
   .headline-about h1 {
     font-size: 2.5rem;
+    text-align: center;
   }
 
   .section-sobre {
-    width: 95%;
-    height: auto; /* Ajuste dinâmico baseado no conteúdo */
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
 
   .img-about {
@@ -57,54 +65,54 @@ body {
 
   .img-about img {
     width: 100%;
+    height: auto;
   }
 
   .content-about-left h1 {
     font-size: 1.8rem;
+    text-align: center;
   }
 
   .cta-about {
     width: 100%;
-    height: auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
     padding-top: 1.2rem;
   }
 
   .btn-about {
     width: 80%;
-    height: auto;
     display: flex;
     align-items: center;
-    justify-content: start;
-    flex-direction: row;
+    justify-content: center;
     gap: 1rem;
+    margin-bottom: 1rem;
   }
 
   .icons-about {
-    width: 70%;
-    height: auto;
+    width: 80%;
     display: flex;
-    justify-content: end;
-    flex-direction: row;
+    justify-content: center;
     gap: 0.8rem;
     cursor: pointer;
-    padding: 0;
   }
 
   .container-about {
+    display: flex;
     flex-direction: column;
+    align-items: center;
     padding: 10px;
+    width: 100%;
     height: auto;
   }
 
   .content-about {
     width: 100%;
-    height: auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
     gap: 2rem;
   }
 
@@ -112,10 +120,6 @@ body {
   .content-about-right {
     width: 100%;
     height: auto;
-  }
-
-  .content-about-left {
-    margin-bottom: 1rem;
   }
 }
 
@@ -125,6 +129,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 10px;
   }
 
   .logo {
@@ -152,7 +157,8 @@ body {
   }
 
   .section-sobre {
-    width: 92%;
+    width: 95%;
+    padding: 0;
   }
 
   .img-about {
@@ -163,6 +169,7 @@ body {
 
   .img-about img {
     width: 100%;
+    height: auto;
   }
 
   .content-about-left h1 {
@@ -171,43 +178,64 @@ body {
 
   .cta-about {
     width: 100%;
-    height: auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
     padding-top: 1.6rem;
   }
 
   .btn-about {
     width: 80%;
-    height: auto;
     display: flex;
     align-items: center;
-    justify-content: start;
-    flex-direction: row;
+    justify-content: center;
     gap: 1rem;
   }
 
   .icons-about {
-    width: 70%;
-    height: auto;
+    width: 80%;
     display: flex;
-    justify-content: end;
-    flex-direction: row;
+    justify-content: center;
     gap: 0.8rem;
     cursor: pointer;
-    padding: 0;
+  }
+
+  .container-about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .content-about {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .content-about-left,
+  .content-about-right {
+    width: 100%;
   }
 }
 
 /* Desktop */
 @media (min-width: 1025px) {
   .container-about {
+    display: flex;
     flex-direction: column;
     padding: 20px;
+    width: 100%;
+    height: calc(100vh - 90px);
   }
 
-  .content-about-left, .content-about-right {
-    width: 100vh;
+  .content-about-left,
+  .content-about-right {
+    width: 50%;
+    height: 100%;
   }
 
   .logo {
@@ -236,14 +264,12 @@ body {
   }
 
   .container-about {
-    height: calc(100vh - 90px);
     display: flex;
     align-items: center;
   }
 
   .content-about {
     width: 100%;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -251,54 +277,37 @@ body {
     gap: 3rem;
   }
 
-  .content-about-left {
-    width: 50%;
-    height: 100%;
-  }
-
+  .content-about-left,
   .content-about-right {
-    width: 50%;
-    height: 100%;
+    flex: 1;
   }
 
   .img-about img {
     width: 100%;
-  }
-
-  .content-about-left h1 {
-    font-size: 2rem;
+    height: auto;
   }
 
   .cta-about {
     width: 100%;
-    height: auto;
     display: flex;
     flex-direction: row;
+    align-items: center;
     padding-top: 1.6rem;
   }
 
   .btn-about {
     width: 80%;
-    height: auto;
     display: flex;
     align-items: center;
     justify-content: start;
-    flex-direction: row;
     gap: 1rem;
   }
 
   .icons-about {
     width: 70%;
-    height: auto;
     display: flex;
     justify-content: end;
-    flex-direction: row;
     gap: 0.8rem;
     cursor: pointer;
-    padding: 0;
-  }
-
-  .content-about-left, .content-about-right {
-    flex: 1;
   }
 }
