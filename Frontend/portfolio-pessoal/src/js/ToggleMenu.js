@@ -23,7 +23,7 @@ const ToggleMenu = () => {
   return (
     <header id="header" className={headerClass}>
       <Helmet>
-        <meta className='theme-color' name="theme-color" content="#006edf" />
+        <meta className='theme-color' name="theme-color" content="#020272" />
       </Helmet>
       <div className="logo">
         <Link to="/" onClick={() => handleLinkClick('/')}>
