@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const ToggleMenu = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -21,6 +22,9 @@ const ToggleMenu = () => {
 
   return (
     <header id="header" className={headerClass}>
+      <Helmet>
+        <meta className='theme-color' name="theme-color" content="#006edf" />
+      </Helmet>
       <div className="logo">
         <Link to="/" onClick={() => handleLinkClick('/')}>
           Paulo Junior <span className="destaque">│Dev.</span>
