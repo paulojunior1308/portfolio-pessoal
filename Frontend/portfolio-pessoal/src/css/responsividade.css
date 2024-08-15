@@ -1,16 +1,192 @@
-/* Geral */
-* {
-  box-sizing: border-box;
-  margin: 0;
+/* Tablet */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.logo {
+  font-size: 1.8rem;
+}
+
+.text-home h1 {
+  font-size: 4rem;
+}
+
+.text-home span {
+  font-size: 2.7rem;
+}
+
+.text-home h2 {
+  font-size: 2.7rem;
+}
+
+.headline-about span {
+  font-size: 1.6rem;
+}
+
+.headline-about h1 {
+  font-size: 3rem;
+}
+
+.section-sobre {
+  width: 92%;
+}
+
+.img-about {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-about img {
+  width: 100%;
+}
+
+.content-about-left h1 {
+  font-size: 2rem;
+}
+
+.cta-about {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  padding-top: 1.6rem;
+}
+
+.btn-about {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.icons-about {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  flex-direction: row;
+  gap: 0.8rem;
+  cursor: pointer;
+  height: 100%;
   padding: 0;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  padding: 0;
-  margin: 0;
+/* Desktop */
+@media (min-width: 1025px) {
+    .container-about {
+      flex-direction: column;
+      padding: 20px;
+    }
+  
+    .content-about-left, .content-about-right {
+      width: 100vh;
+    }
+  }
+
+.logo {
+  font-size: 1.6rem;
 }
+
+/*Home*/
+.text-home h1 {
+  font-size: 5rem;
+}
+
+.text-home span {
+  font-size: 2.7rem;
+}
+
+/*Headline*/
+.headline-about span {
+  font-size: 1.6rem;
+}
+
+.headline-about h1 {
+  font-size: 3.1rem;
+}
+
+.section-sobre{
+  width: 95%;
+  height: calc(100vh - 90px);
+}
+
+.container-about {
+  height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+}
+
+.content-about {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 3rem;
+}
+
+.content-about-left {
+  width: 50%;
+  height: 100%;
+}
+
+.content-about-right {
+  width: 50%;
+  height: 100%;
+}
+
+.img-about img {
+  width: 100%;
+}
+
+.content-about-left h1 {
+  font-size: 2rem;
+}
+
+.cta-about {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  padding-top: 1.6rem;
+}
+
+.btn-about {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.icons-about {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  flex-direction: row;
+  gap: 0.8rem;
+  cursor: pointer;
+  height: 100%;
+  padding: 0;
+}
+
+.content-about-left, .content-about-right{
+  flex: 1;
+}
+
 
 /* iPhone 11 e dispositivos similares */
 @media only screen and (max-width: 828px) and (orientation: portrait) {
@@ -120,194 +296,5 @@ body {
   .content-about-right {
     width: 100%;
     height: auto;
-  }
-}
-
-/* Tablet */
-@media (min-width: 768px) and (max-width: 1024px) {
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 10px;
-  }
-
-  .logo {
-    font-size: 1.8rem;
-  }
-
-  .text-home h1 {
-    font-size: 4rem;
-  }
-
-  .text-home span {
-    font-size: 2.7rem;
-  }
-
-  .text-home h2 {
-    font-size: 2.7rem;
-  }
-
-  .headline-about span {
-    font-size: 1.6rem;
-  }
-
-  .headline-about h1 {
-    font-size: 3rem;
-  }
-
-  .section-sobre {
-    width: 95%;
-    padding: 0;
-  }
-
-  .img-about {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .img-about img {
-    width: 100%;
-    height: auto;
-  }
-
-  .content-about-left h1 {
-    font-size: 2rem;
-  }
-
-  .cta-about {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 1.6rem;
-  }
-
-  .btn-about {
-    width: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  .icons-about {
-    width: 80%;
-    display: flex;
-    justify-content: center;
-    gap: 0.8rem;
-    cursor: pointer;
-  }
-
-  .container-about {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .content-about {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-  }
-
-  .content-about-left,
-  .content-about-right {
-    width: 100%;
-  }
-}
-
-/* Desktop */
-@media (min-width: 1025px) {
-  .container-about {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    width: 100%;
-    height: calc(100vh - 90px);
-  }
-
-  .content-about-left,
-  .content-about-right {
-    width: 50%;
-    height: 100%;
-  }
-
-  .logo {
-    font-size: 1.6rem;
-  }
-
-  .text-home h1 {
-    font-size: 5rem;
-  }
-
-  .text-home span {
-    font-size: 2.7rem;
-  }
-
-  .headline-about span {
-    font-size: 1.6rem;
-  }
-
-  .headline-about h1 {
-    font-size: 3.1rem;
-  }
-
-  .section-sobre {
-    width: 95%;
-    height: calc(100vh - 90px);
-  }
-
-  .container-about {
-    display: flex;
-    align-items: center;
-  }
-
-  .content-about {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 3rem;
-  }
-
-  .content-about-left,
-  .content-about-right {
-    flex: 1;
-  }
-
-  .img-about img {
-    width: 100%;
-    height: auto;
-  }
-
-  .cta-about {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-top: 1.6rem;
-  }
-
-  .btn-about {
-    width: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    gap: 1rem;
-  }
-
-  .icons-about {
-    width: 70%;
-    display: flex;
-    justify-content: end;
-    gap: 0.8rem;
-    cursor: pointer;
   }
 }

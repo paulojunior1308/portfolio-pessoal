@@ -1,5 +1,4 @@
 import React from "react";
-import "../css/Sobre.css";
 import "../css/responsividade.css"
 import "../css/App.css"
 import "@fortawesome/fontawesome-free/css/all.min.css";
