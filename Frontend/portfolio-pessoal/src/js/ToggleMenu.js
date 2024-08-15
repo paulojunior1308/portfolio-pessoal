@@ -12,18 +12,17 @@ const ToggleMenu = () => {
 
   const handleLinkClick = (path) => {
     if (location.pathname === path) {
-      window.location.reload(); // Recarrega a página se já estiver na rota
+      window.location.reload(); 
     }
-    setIsChecked(false); // Fecha o menu após o clique
+    setIsChecked(false); 
   };
-
-  // Adiciona classes de acordo com a página atual
+  
   const headerClass = location.pathname === '/' ? 'header home-header' : 'header sobre-header';
 
   return (
     <header id="header" className={headerClass}>
       <Helmet>
-        <meta className='theme-color' name="theme-color" content="#020272" />
+        <meta name="theme-color" content="#020272"/>
       </Helmet>
       <div className="logo">
         <Link to="/" onClick={() => handleLinkClick('/')}>
