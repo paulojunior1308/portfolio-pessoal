@@ -36,7 +36,7 @@ const Sobre = () => {
               <p>Sou formado em Ciências da Computação com uma pós-graduação em Segurança da Informação. Atualmente, estou em um processo de transição para a área de desenvolvimento de software, focando principalmente em Java e Spring Boot. Tenho experiência acadêmica sólida e estou ampliando meus conhecimentos práticos, estudando também React e CSS para criar aplicações web modernas e interativas.</p>
               <p>Estou desenvolvendo este portfólio para demonstrar minhas habilidades e projetos, enquanto busco oportunidades para ingressar no mercado de trabalho como desenvolvedor. Estou motivado a aplicar minha paixão por tecnologia e meu compromisso com a aprendizagem contínua para criar soluções eficientes e seguras. Meu objetivo é crescer na área de desenvolvimento, contribuindo com projetos desafiadores e inovadores.</p>
               <div className="cta-about">
-                <div className="btn-about" data-aos="fade-up">
+                <div className="btn-about" data-aos="fade-down">
                   <a href={Curriculo} download="CV-PauloJunior.pdf">
                     <button className="btn">Download CV</button>
                   </a>

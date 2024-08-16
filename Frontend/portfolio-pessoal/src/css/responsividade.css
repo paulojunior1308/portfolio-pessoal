@@ -25,6 +25,8 @@
     align-items: center;
     justify-content: center;
     gap: 1.5rem; /* Reduz o espaço entre os itens */
+    margin-top: -3rem;
+    
   }
 
   .cta-about {
@@ -32,7 +34,6 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    padding-top: 1.2rem; /* Ajuste no padding superior */
   }
 
   .content-about-left,
@@ -86,6 +87,7 @@
     justify-content: center;
     flex-direction: row;
     gap: 2.5rem; /* Reduz o espaço entre os itens */
+    margin-top: 15rem;
   }
 
   .skills-headline {
@@ -97,11 +99,11 @@
   .skills-info {
     width: 48%; /* Ajuste para se adaptar a resoluções menores */
     height: calc(100vh - 80px);
-    margin-top: -45rem; /* Menos espaço no topo */
+    margin-top: -55rem; /* Menos espaço no topo */
   }
 
   .sobre-footer {
-    margin-top: -18rem; /* Menos espaço no topo */
+    margin-top: 0; /* Menos espaço no topo */
   }
 }
 
