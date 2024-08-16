@@ -324,7 +324,7 @@
 
 
 /* Media query para telas com resolução de 1366x768 pixels */
-@media only screen and (min-width: 1366px) and (max-width: 1366px) and (min-height: 768px) and (max-height: 768px) {
+@media only screen and (max-width: 1366px) and (max-height: 768px) {
 
   /* ABOUT */
   .sobre-home {
