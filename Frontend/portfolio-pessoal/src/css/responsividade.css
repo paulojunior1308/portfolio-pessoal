@@ -225,7 +225,6 @@
   }
 
   .container-about {
-    min-height: 100vh; /* Garante que o container ocupe a altura total da tela */
     display: flex;
     align-items: center;
     flex-direction: column;
