@@ -1,224 +1,216 @@
-/* Estilos gerais */
-.sobre-home {
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
+@media only screen and (min-width: 1366px) and (max-width: 1920px) {
 
-.container-about {
-  height: calc(100vh - 90px);
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 0 2rem;
-}
+  /* ABOUT */
+  .sobre-home {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
 
-.headline {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-
-.content-about {
-  flex-direction: row;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.cta-about {
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  padding-top: 1.6rem;
-  justify-content: space-between;
-}
-
-.content-about-left,
-.content-about-right {
-  width: 50%;
-  height: 100%;
-  margin-top: -2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.btn-about {
-  width: 80%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: 1rem;
-}
-
-.icons-about {
-  width: 80%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  gap: 0.8rem;
-  cursor: pointer;
-  padding: 0;
-}
-
-.img-about {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.img-about img {
-  width: 100%;
-  max-width: none;
-  height: auto;
-}
-
-/* Media Queries para responsividade */
-
-/* Para tablets e notebooks menores */
-@media (max-width: 1024px) {
-  .content-about {
+  .container-about {
+    height: calc(100vh - 90px);
+    display: flex;
+    align-items: center;
     flex-direction: column;
-    gap: 1.5rem;
+  }
+
+  .headline {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-about {
+    flex-direction: row;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .cta-about {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    padding-top: 1.6rem;
   }
 
   .content-about-left,
   .content-about-right {
-    width: 100%;
+    width: 50%;
+    height: 100%;
+    margin-top: -2rem;
   }
 
-  .skills-headline,
-  .skills-info {
-    width: 100%;
-    margin-top: -10rem;
-  }
-}
-
-/* Para celulares */
-@media (max-width: 768px) {
-  .container-about {
-    height: auto;
-    padding: 1rem;
-  }
-
-  .content-about {
+  .btn-about {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: row;
     gap: 1rem;
   }
 
-  .content-about-left,
-  .content-about-right {
-    width: 100%;
-    margin-top: 0;
+  .icons-about {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    flex-direction: row;
+    gap: 0.8rem;
+    cursor: pointer;
+    height: 100%;
+    padding: 0;
   }
 
-  .cta-about {
-    flex-direction: column;
+  .img-about {
+    flex: 1;
+    display: flex;
+    justify-content: center;
     align-items: center;
   }
 
-  .btn-about,
-  .icons-about {
+  .img-about img {
     width: 100%;
+    max-width: none;
+    height: auto;
+  }
+
+  /* SKILLS */
+  .container-skills {
+    width: 100%;
+    height: calc(100vh - 90px);
+    display: flex;
+    align-items: center;
     justify-content: center;
-  }
-
-  .img-about img {
-    width: 80%;
-  }
-
-  .skills-headline,
-  .skills-info {
-    width: 100%;
-    margin-top: 0;
-  }
-}
-
-/* Para celulares menores */
-@media (max-width: 480px) {
-  .container-about {
-    padding: 0.5rem;
-  }
-
-  .content-about {
-    gap: 0.5rem;
-  }
-
-  .cta-about {
-    padding-top: 1rem;
-  }
-
-  .img-about img {
-    width: 100%;
-  }
-}
-
-/* Para desktops grandes e telas de alta resolução */
-@media (min-width: 1440px) {
-  .container-about {
-    max-width: 1400px;
-    padding: 0 3rem;
-  }
-
-  .content-about {
+    flex-direction: row;
     gap: 3rem;
   }
 
-  .content-about-left,
-  .content-about-right {
-    width: 45%;
+  .skills-headline {
+    width: 50%;
+    height: calc(100vh - 90px);
+    margin-top: -20rem;
   }
 
-  .btn-about,
-  .icons-about {
-    width: 90%;
-  }
-
-  .img-about img {
-    max-width: 80%;
-  }
-
-  .skills-headline,
   .skills-info {
-    margin-top: -15rem;
+    width: 50%;
+    height: calc(100vh - 90px);
+    margin-top: -50rem;
   }
+
+  .sobre-footer {
+    margin-top: -20rem;
+  }
+
 }
 
-/* Para telas muito grandes, acima de 1920px */
-@media (min-width: 1920px) {
+
+/*IPHONE*/
+@media only screen and (max-width: 896px) and (orientation: portrait) {
+
+  /* ABOUT */
+  .sobre-home {
+    overflow-x: hidden;
+    /* Removido o overflow-y: hidden para permitir rolagem vertical */
+  }
+
   .container-about {
-    max-width: 1600px;
-    padding: 0 4rem;
+    min-height: 100vh; /* Garante que o container ocupe a altura total da tela */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .headline {
+    display: flex;
+    flex-direction: column;
+    text-align: center; /* Centraliza o texto */
   }
 
   .content-about {
-    gap: 4rem;
+    flex-direction: column; /* Altera para coluna em telas menores */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
   }
 
   .content-about-left,
   .content-about-right {
-    width: 40%;
+    width: 100%; /* Ocupa a largura total da tela */
+    margin-top: 0; /* Remove margens negativas */
   }
 
-  .btn-about,
+  .cta-about {
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* Altera para coluna */
+    padding-top: 1.6rem;
+    align-items: center; /* Centraliza o conteúdo */
+  }
+
+  .btn-about {
+    width: 100%; /* Ocupa a largura total da tela */
+    justify-content: center; /* Centraliza o botão */
+    display: flex;
+    flex-direction: column; /* Mantém o botão e os ícones em colunas diferentes */
+    align-items: center; /* Centraliza o conteúdo */
+    gap: 1rem; /* Espaçamento entre o botão e os ícones */
+    padding: 0;
+  }
+  
   .icons-about {
-    width: 95%;
+    width: auto; /* Ajusta a largura automaticamente para se ajustar ao conteúdo */
+    justify-content: center; /* Centraliza os ícones */
+    display: flex; /* Coloca os ícones em uma linha */
+    flex-direction: row; /* Define a direção para linha, para que os ícones fiquem lado a lado */
+    gap: 0.8rem; /* Espaçamento entre os ícones */
+    padding: 0;
+    margin-top: 1rem; /* Adiciona um pouco de margem para separar os ícones do botão */
+  }
+
+  .img-about {
+    width: 100%; /* Ocupa a largura total da tela */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .img-about img {
-    max-width: 70%;
+    width: 90%; /* Ajuste a largura da imagem para ficar proporcional */
+    max-width: none;
+    height: auto;
   }
 
-  .skills-headline,
+  /* SKILLS */
+  .container-skills {
+    width: 100%;
+    padding: 20px; /* Adiciona padding para espaçamento */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; /* Altera para coluna */
+    gap: 2rem;
+  }
+
+  .skills-headline {
+    width: 100%; /* Ocupa a largura total da tela */
+    text-align: center; /* Centraliza o texto */
+    margin-top: 0; /* Remove margens negativas */
+  }
+
   .skills-info {
-    margin-top: -20rem;
+    width: 100%; /* Ocupa a largura total da tela */
+    margin-top: 0; /* Remove margens negativas */
+  }
+
+  .sobre-footer {
+    margin-top: 0; /* Remove margens negativas */
+    text-align: center; /* Centraliza o texto */
+    padding: 20px 0; /* Adiciona padding para espaçamento */
   }
 }
+
