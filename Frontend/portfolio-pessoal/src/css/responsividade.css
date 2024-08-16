@@ -1,4 +1,4 @@
-@media only screen and (min-width: 1366px) and (max-width: 1920px) {
+@media (min-width: 1366px) and (max-width: 1600px) {
 
   /* ABOUT */
   .sobre-home {
@@ -7,7 +7,7 @@
   }
 
   .container-about {
-    height: calc(100vh - 90px);
+    height: calc(100vh - 80px); /* Ajuste para telas menores */
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -24,7 +24,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.5rem; /* Reduz o espaço entre os itens */
   }
 
   .cta-about {
@@ -32,35 +32,34 @@
     height: auto;
     display: flex;
     flex-direction: row;
-    padding-top: 1.6rem;
+    padding-top: 1.2rem; /* Ajuste no padding superior */
   }
 
   .content-about-left,
   .content-about-right {
-    width: 50%;
+    width: 48%; /* Ajuste para se adaptar a resoluções menores */
     height: 100%;
-    margin-top: -2rem;
+    margin-top: -1.5rem; /* Menos espaço no topo */
   }
 
   .btn-about {
-    width: 80%;
+    width: 75%; /* Ajuste para se adaptar a resoluções menores */
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: start;
     flex-direction: row;
-    gap: 1rem;
+    gap: 0.8rem; /* Menos espaço entre os itens */
   }
 
   .icons-about {
-    width: 80%;
+    width: 75%; /* Ajuste para se adaptar a resoluções menores */
     height: 100%;
     display: flex;
     justify-content: end;
     flex-direction: row;
-    gap: 0.8rem;
+    gap: 0.7rem; /* Menos espaço entre os ícones */
     cursor: pointer;
-    height: 100%;
     padding: 0;
   }
 
@@ -72,38 +71,145 @@
   }
 
   .img-about img {
-    width: 100%;
+    width: 95%; /* Ajuste para se adaptar a resoluções menores */
     max-width: none;
     height: auto;
   }
 
   /* SKILLS */
+
   .container-skills {
     width: 100%;
-    height: calc(100vh - 90px);
+    height: calc(100vh - 80px); /* Ajuste para telas menores */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    gap: 3rem;
+    gap: 2.5rem; /* Reduz o espaço entre os itens */
   }
 
   .skills-headline {
-    width: 50%;
-    height: calc(100vh - 90px);
-    margin-top: -20rem;
+    width: 48%; /* Ajuste para se adaptar a resoluções menores */
+    height: calc(100vh - 80px);
+    margin-top: -18rem; /* Menos espaço no topo */
   }
 
   .skills-info {
-    width: 50%;
-    height: calc(100vh - 90px);
-    margin-top: -50rem;
+    width: 48%; /* Ajuste para se adaptar a resoluções menores */
+    height: calc(100vh - 80px);
+    margin-top: -45rem; /* Menos espaço no topo */
   }
 
   .sobre-footer {
-    margin-top: -20rem;
+    margin-top: -18rem; /* Menos espaço no topo */
+  }
+}
+
+@media (min-width: 1601px) and (max-width: 1920px) {
+
+  /* ABOUT */
+  .sobre-home {
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 
+  .container-about {
+    height: calc(100vh - 90px); /* Mantém o ajuste original */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .headline {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-about {
+    flex-direction: row;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem; /* Mantém o espaço original */
+  }
+
+  .cta-about {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    padding-top: 1.6rem; /* Mantém o ajuste original */
+  }
+
+  .content-about-left,
+  .content-about-right {
+    width: 50%; /* Mantém o ajuste original */
+    height: 100%;
+    margin-top: -2rem; /* Mantém o ajuste original */
+  }
+
+  .btn-about {
+    width: 80%; /* Mantém o ajuste original */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: row;
+    gap: 1rem; /* Mantém o espaço original */
+  }
+
+  .icons-about {
+    width: 80%; /* Mantém o ajuste original */
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    flex-direction: row;
+    gap: 0.8rem; /* Mantém o espaço original */
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .img-about {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .img-about img {
+    width: 100%; /* Mantém o ajuste original */
+    max-width: none;
+    height: auto;
+  }
+
+  /* SKILLS */
+
+  .container-skills {
+    width: 100%;
+    height: calc(100vh - 90px); /* Mantém o ajuste original */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 3rem; /* Mantém o espaço original */
+  }
+
+  .skills-headline {
+    width: 50%; /* Mantém o ajuste original */
+    height: calc(100vh - 90px);
+    margin-top: -20rem; /* Mantém o ajuste original */
+  }
+
+  .skills-info {
+    width: 50%; /* Mantém o ajuste original */
+    height: calc(100vh - 90px);
+    margin-top: -50rem; /* Mantém o ajuste original */
+  }
+
+  .sobre-footer {
+    margin-top: -20rem; /* Mantém o ajuste original */
+  }
 }
 
 
