@@ -79,12 +79,12 @@ a:hover {
 }
 
 .text-home h2 {
-  font-size: 24px;
+  font-size: 2.5rem;
   color: white;
 }
 
 .text-home span {
-  font-size: 1.6rem;
+  font-size: 2.5rem;
   font-weight: 300;
   z-index: 9;
 }
@@ -314,7 +314,7 @@ a:hover {
 .sobre-footer p {
   margin: 0;
   font-size: 1rem;
-  font-family: "Roboto", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .sobre-footer .sobre-destaque {
@@ -345,26 +345,6 @@ a:hover {
   align-items: center;
 }
 
-.headline {
-  width: 100%;
-  padding: 1.5rem 0rem 1.5rem 0rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.headline h1 {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-}
-
-.headline .destaque {
-  font-size: 1.5rem;
-  margin-bottom: -3rem;
-  margin-top: -4rem;
-}
-
 .content-about-left {
   width: 100%;
   height: 100%;
@@ -388,6 +368,7 @@ a:hover {
 
 .content-about-left p {
   font-size: 1.3rem;
+  font-family: "Montserrat", sans-serif;
   color: white;
   margin-bottom: 0;
 }
@@ -417,7 +398,7 @@ a:hover {
   z-index: 1000;
 }
 
-.sobre-logo a {
+.logo a {
   font-family: "Montserrat", sans-serif;
   color: white;
   font-size: 1.5rem;
@@ -435,7 +416,7 @@ a:hover {
   margin-left: 20px;
 }
 
-.section-sobre {
+.section-about {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -443,32 +424,32 @@ a:hover {
   padding: 2rem 1rem;
 }
 
-.section-sobre .destaque {
+.section-about .destaque {
   color: #63e6fd;
   font-weight: bold;
 }
 
-.section-sobre h2 {
+.section-about h2 {
   font-size: 36px;
   font-weight: 700;
   color: #63e6fd;
   margin-bottom: 20px;
 }
 
-.section-sobre p {
+.section-about p {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
   text-align: left;
 }
 
-.section-sobre .social-icons {
+.section-about .social-icons {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-bottom: 2rem;
 }
 
-.section-sobre .social-icons a {
+.section-about .social-icons a {
   color: #63e6fd;
   font-size: 1.5rem;
   display: flex;
@@ -476,11 +457,11 @@ a:hover {
   align-items: center;
 }
 
-.section-sobre .social-icons a:hover {
+.section-about .social-icons a:hover {
   color: white;
 }
 
-.section-sobre .about-button {
+.section-about .about-button {
   font-size: 1rem;
   padding: 10px 20px;
   background-color: #63e6fd;
@@ -493,51 +474,12 @@ a:hover {
   transition: background-color 0.3s ease;
 }
 
-.section-sobre .about-button:hover {
-  background-color: white;
-}
-
-.section-sobre img {
+.section-about img {
   width: 100%;
   max-width: 400px;
   height: auto;
   border-radius: 10px;
   margin-top: 20px;
-}
-
-/* Responsividade */
-@media screen and (max-width: 768px) {
-  .sobre-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .sobre-header nav ul {
-    flex-direction: column;
-  }
-
-  .section-sobre {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .section-sobre h2 {
-    font-size: 24px;
-  }
-
-  .section-sobre p {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    text-align: left;
-  }
-
-  .section-sobre .social-icons {
-    flex-direction: column;
-  }
-
-  .section-sobre .about-button {
-    margin-top: 10px;
-  }
 }
 
 /*ICONES*/
@@ -646,6 +588,7 @@ a:hover {
   font-size: 12px;
   text-align: center;
   display: none;
+  font-family: "Montserrat", sans-serif;
 }
 
 .icons-home a:hover .text {
@@ -859,6 +802,7 @@ a:hover {
   font-size: 1.1rem;
   transition: background-color 0.3s;
   cursor: pointer;
+  font-family: "Montserrat", sans-serif;
 }
 
 .btn:hover {
@@ -900,6 +844,7 @@ a:hover {
   font-weight: 300;
   font-weight: bold;
   margin-bottom: -1.5rem;
+  font-family: "Montserrat", sans-serif;
 }
 
 .skills-headline h1 {
@@ -913,6 +858,31 @@ a:hover {
   font-size: 1.3rem;
   color: white;
   margin-bottom: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+.headline {
+  width: 100%;
+  padding: 1.5rem 0rem 1.5rem 0rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.headline h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+}
+
+.headline .destaque {
+  font-size: 1.5rem;
+  margin-bottom: -3rem;
+  margin-top: -4rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
 }
 
 .list-about {
@@ -934,11 +904,12 @@ a:hover {
 
 .container-list li {
   font-size: 1rem;
-  color: #63e6fd;
+  color: white;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-family: "Montserrat", sans-serif;
 }
 
 .container-list i {
@@ -972,6 +943,11 @@ a:hover {
   justify-content: space-around;
   align-items: center;
   transition: transform 0.3s ease;
+}
+
+.card-tech{
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
 }
 
 .card-tech img {

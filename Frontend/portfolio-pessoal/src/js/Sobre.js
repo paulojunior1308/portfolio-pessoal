@@ -33,13 +33,8 @@ const Sobre = () => {
           <div className="content-about">
             <div className="content-about-left" data-aos="fade-right">
               <h1>Olá, me chamo Paulo Junior</h1>
-              <p>Sou desenvolvedor web freelancer e empreendedor digital. Com mais de 4 anos de experiência, tenho
-                um histórico comprovado de transformar ideias em soluções digitais eficazes. Além disso, sou
-                criador de conteúdo no TikTok, onde ensino e inspiro pessoas a explorarem o freelancing como uma
-                carreira viável ou uma fonte de renda extra.</p>
-              <p>Atualmente, estou cursando Engenharia de Software para aprofundar ainda mais meus conhecimentos.
-                Se você está buscando um parceiro para levar seu negócio online ao próximo nível, vamos
-                conversar!</p>
+              <p>Sou formado em Ciências da Computação com uma pós-graduação em Segurança da Informação. Atualmente, estou em um processo de transição para a área de desenvolvimento de software, focando principalmente em Java e Spring Boot. Tenho experiência acadêmica sólida e estou ampliando meus conhecimentos práticos, estudando também React e CSS para criar aplicações web modernas e interativas.</p>
+              <p>Estou desenvolvendo este portfólio para demonstrar minhas habilidades e projetos, enquanto busco oportunidades para ingressar no mercado de trabalho como desenvolvedor. Estou motivado a aplicar minha paixão por tecnologia e meu compromisso com a aprendizagem contínua para criar soluções eficientes e seguras. Meu objetivo é crescer na área de desenvolvimento, contribuindo com projetos desafiadores e inovadores.</p>
               <div className="cta-about">
                 <div className="btn-about" data-aos="fade-up">
                   <a href={Curriculo} download="CV-PauloJunior.pdf">
@@ -70,7 +65,7 @@ const Sobre = () => {
                 </div>
               </div>
             </div>
-            <div className="content-about-right" data-aos="fade-left">
+            <div className="content-about-right" data-aos="fade-right">
               <div className="img-about" id="animatedImage">
                 <img src={AboutImage} alt="Imagem" />
               </div>
@@ -83,12 +78,7 @@ const Sobre = () => {
           <div className="skills-headline" data-aos="fade-down">
             <span className="destaque">Conheça um pouco minhas</span>
             <h1>Habilidades</h1>
-            <p>Tenho experiência prática com as principais tecnologias de desenvolvimento web, incluindo HTML5,
-            CSS3, e JavaScript, além de frameworks e plataformas como Bootstrap, React, NodeJS, PHP, Java,
-            Figma, WordPress, Wix e Shopify. Essas ferramentas me permitem criar sites que são não só
-            visualmente atraentes, mas também otimizados para desempenho e funcionalidade. Me dedico a
-            desenvolver soluções web que atendem perfeitamente às necessidades dos meus clientes, seja em
-            projetos simples ou em soluções complexas e personalizadas.</p>
+            <p>Minha formação acadêmica é voltada para a Segurança da Informação, onde adquiri conhecimentos sólidos em criptografia, legislação, normas de segurança e identificação de vulnerabilidades. Agora, estou direcionando meus esforços para a área de desenvolvimento de software, especialmente em Java e Spring Boot, com o objetivo de expandir minhas habilidades e me tornar um desenvolvedor versátil. Embora meu conhecimento em desenvolvimento ainda esteja em crescimento, estou empenhado em aprender e aplicar práticas de programação modernas. Minha experiência prévia em suporte técnico, junto com a forte base em segurança, me fornece uma perspectiva única para criar soluções de software que são tanto funcionais quanto seguras.</p>
             <div className="list-about" data-aos="fade-up">
               <span className="destaque">Soft skills</span>
               <div className="container-list">
