@@ -217,10 +217,7 @@
 /*IPHONE*/
 @media only screen and (max-width: 896px) and (orientation: portrait) {
   /* ABOUT */
-  .sobre-home {
-    overflow-x: hidden;
-    overflow-y: auto; /* Permite rolagem vertical */
-  }
+ 
 
   .container-about {
     display: flex;

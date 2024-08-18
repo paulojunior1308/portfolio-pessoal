@@ -437,12 +437,6 @@ a:hover {
   margin-bottom: 20px;
 }
 
-.section-about p {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  text-align: left;
-}
-
 .section-about .social-icons {
   display: flex;
   justify-content: center;
