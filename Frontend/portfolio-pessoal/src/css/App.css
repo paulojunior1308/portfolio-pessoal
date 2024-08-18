@@ -371,6 +371,7 @@ a:hover {
   font-family: "Montserrat", sans-serif;
   color: white;
   margin-bottom: 0;
+  text-align: justify;
 }
 
 .content-about-right {
@@ -859,6 +860,7 @@ a:hover {
   color: white;
   margin-bottom: 0;
   font-family: "Montserrat", sans-serif;
+  text-align: justify;
 }
 
 .headline {

@@ -1,4 +1,4 @@
-@media (min-width: 1366px) and (max-width: 1600px) {
+@media only screen and (min-width: 1366px) and (max-width: 1600px) {
 
   /* ABOUT */
   .sobre-home {
@@ -107,7 +107,7 @@
   }
 }
 
-@media (min-width: 1601px) and (max-width: 1920px) {
+@media only screen and (min-width: 1601px) and (max-width: 1920px) {
 
   /* ABOUT */
   .sobre-home {
@@ -214,14 +214,12 @@
   }
 }
 
-
 /*IPHONE*/
 @media only screen and (max-width: 896px) and (orientation: portrait) {
-
   /* ABOUT */
   .sobre-home {
     overflow-x: hidden;
-    /* Removido o overflow-y: hidden para permitir rolagem vertical */
+    overflow-y: auto; /* Permite rolagem vertical */
   }
 
   .container-about {
@@ -237,7 +235,7 @@
   }
 
   .content-about {
-    flex-direction: column; /* Altera para coluna em telas menores */
+    flex-direction: column;
     width: 100%;
     display: flex;
     align-items: center;
@@ -247,47 +245,47 @@
 
   .content-about-left,
   .content-about-right {
-    width: 100%; /* Ocupa a largura total da tela */
-    margin-top: 0; /* Remove margens negativas */
+    width: 100%;
+    margin-top: 0;
   }
 
   .cta-about {
     width: 100%;
     display: flex;
-    flex-direction: column; /* Altera para coluna */
+    flex-direction: column;
     padding-top: 1.6rem;
-    align-items: center; /* Centraliza o conteúdo */
+    align-items: center;
   }
 
   .btn-about {
-    width: 100%; /* Ocupa a largura total da tela */
-    justify-content: center; /* Centraliza o botão */
+    width: 100%;
+    justify-content: center;
     display: flex;
-    flex-direction: column; /* Mantém o botão e os ícones em colunas diferentes */
-    align-items: center; /* Centraliza o conteúdo */
-    gap: 1rem; /* Espaçamento entre o botão e os ícones */
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
     padding: 0;
   }
-  
+
   .icons-about {
-    width: auto; /* Ajusta a largura automaticamente para se ajustar ao conteúdo */
-    justify-content: center; /* Centraliza os ícones */
-    display: flex; /* Coloca os ícones em uma linha */
-    flex-direction: row; /* Define a direção para linha, para que os ícones fiquem lado a lado */
-    gap: 0.8rem; /* Espaçamento entre os ícones */
+    width: auto;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
     padding: 0;
-    margin-top: 1rem; /* Adiciona um pouco de margem para separar os ícones do botão */
+    margin-top: 1rem;
   }
 
   .img-about {
-    width: 100%; /* Ocupa a largura total da tela */
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
   .img-about img {
-    width: 90%; /* Ajuste a largura da imagem para ficar proporcional */
+    width: 90%;
     max-width: none;
     height: auto;
   }
@@ -295,29 +293,24 @@
   /* SKILLS */
   .container-skills {
     width: 100%;
-    padding: 20px; /* Adiciona padding para espaçamento */
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column; /* Altera para coluna */
+    flex-direction: column;
     gap: 2rem;
   }
 
-  .skills-headline {
-    width: 100%; /* Ocupa a largura total da tela */
-    text-align: center; /* Centraliza o texto */
-    margin-top: 0; /* Remove margens negativas */
-  }
-
+  .skills-headline,
   .skills-info {
-    width: 100%; /* Ocupa a largura total da tela */
-    margin-top: 0; /* Remove margens negativas */
+    width: 100%;
+    text-align: center;
+    margin-top: 0;
   }
 
   .sobre-footer {
-    margin-top: 0; /* Remove margens negativas */
-    text-align: center; /* Centraliza o texto */
-    padding: 20px 0; /* Adiciona padding para espaçamento */
+    margin-top: 0;
+    text-align: center;
+    padding: 20px 0;
   }
 }
-
