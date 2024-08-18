@@ -217,8 +217,6 @@
 /*IPHONE*/
 @media only screen and (max-width: 896px) and (orientation: portrait) {
   /* ABOUT */
- 
-
   .container-about {
     display: flex;
     align-items: center;
@@ -244,6 +242,13 @@
   .content-about-right {
     width: 100%;
     margin-top: 0;
+  }
+  .content-about-left p {
+    font-size: 1.3rem;
+    font-family: "Montserrat", sans-serif;
+    color: white;
+    margin-bottom: 0;
+    text-align: center;
   }
 
   .cta-about {
@@ -303,6 +308,14 @@
     width: 100%;
     text-align: center;
     margin-top: 0;
+  }
+
+  .skills-headline p {
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 0;
+    font-family: "Montserrat", sans-serif;
+    text-align: center;
   }
 
   .sobre-footer {
