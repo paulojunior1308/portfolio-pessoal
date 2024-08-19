@@ -360,6 +360,19 @@
       justify-content: center;
       flex-direction: column;
       gap: 2.5rem; /* Reduz o espaço entre os itens */
-      margin-top: 20rem;
+      margin-top: 50rem;
+    }
+
+    .cards-projects {
+      display: grid;
+      grid-template-columns: 1fr; /* Um card por linha */
+      gap: 5rem; /* Espaço entre os cards ajustado para telas menores */
+    }
+
+
+    .projetos-footer {
+      margin-top: 40rem;
+      text-align: center;
+      padding: 20px 0;
     }
 }
