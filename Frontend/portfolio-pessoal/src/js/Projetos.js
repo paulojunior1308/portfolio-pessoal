@@ -116,7 +116,7 @@ const Projetos = () => {
             </section>
 
             <footer className="projetos-footer">
-        <p>Todos os direitos reservados<br />Desenvolvido <span className="sobre-destaque">Paulo Junior│Dev.</span></p>
+        <p>Todos os direitos reservados<br />Desenvolvido <span className="projetos-destaque">Paulo Junior│Dev.</span></p>
       </footer>
         </main>
     )

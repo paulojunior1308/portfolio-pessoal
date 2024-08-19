@@ -292,13 +292,15 @@ a:hover {
 }
 
 #toggle:checked ~ .footer,
-#toggle:checked ~ .sobre-footer {
+#toggle:checked ~ .sobre-footer, 
+#toggle:checked ~ .projetos-footer {
   display: none; /* Oculta o footer */
 }
 
 /* Footer */
 .footer,
-.sobre-footer {
+.sobre-footer,
+.projetos-footer{
   width: 100%;
   height: 90px;
   z-index: 10;
@@ -312,13 +314,18 @@ a:hover {
   transform: translateY(100px);
 }
 
-.sobre-footer p {
+.sobre-footer, .projetos-footer p {
   margin: 0;
   font-size: 1rem;
   font-family: "Montserrat", sans-serif;
 }
 
 .sobre-footer .sobre-destaque {
+  color: #63e6fd;
+  font-weight: 700;
+}
+
+.projetos-footer .projetos-destaque {
   color: #63e6fd;
   font-weight: 700;
 }
