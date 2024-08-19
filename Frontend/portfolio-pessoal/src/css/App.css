@@ -238,6 +238,7 @@ a:hover {
   opacity: 0;
   visibility: hidden;
   transition: 400ms ease-in-out 0s;
+  text-align: center;
 }
 
 .menu-items ul {
@@ -387,6 +388,19 @@ a:hover {
 }
 
 .sobre-header {
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: #020272;
+  position: fixed;
+  top: -10px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+}
+
+.projetos-header{
   width: 100%;
   padding: 1rem 2rem;
   background-color: #020272;
@@ -979,4 +993,175 @@ a:hover {
 
 .card-tech:hover img[data-tech="Springboot"] {
   filter: sepia(1) hue-rotate(190deg) saturate(10);
+}
+
+/* PROJECTS */
+.projects {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.container-projects {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headline-project {
+  width: 100%;
+  padding: 1.5rem 0rem 1.5rem 0rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.headline-project h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+}
+
+.headline-project .destaque {
+  font-size: 1.5rem;
+  margin-bottom: -3rem;
+  margin-top: -4rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+}
+
+.content-projects {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Container dos cards */
+.cards-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+}
+
+/* Card individual */
+.card-project {
+  background-color: #151515;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  height: 100%;
+}
+
+.card-project:hover {
+  transform: translateY(-5px);
+}
+
+/* Imagem do projeto */
+.img-project {
+  background-color: white;
+  border-radius: 25px;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.img-project img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Conteúdo do card */
+.content-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+/* Texto do projeto */
+.text-project {
+  width: 100%;
+  text-align: left;
+}
+
+.text-project h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 1rem 0 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+.text-project span {
+  font-size: 1rem;
+  color: #63e6fd;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+}
+
+.text-project p {
+  font-size: 1rem;
+  color: white;
+  margin-bottom: 1rem;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Seção de tags e botão */
+.cta-project {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: auto;
+}
+
+.tag-project {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag-project img {
+  width: 30px;
+  height: 30px;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.btn-project a {
+  display: block;
+  text-align: center;
+  padding: 0.7rem;
+  background-color: #63e6fd;
+  color: white;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn-project a:hover {
+  background-color: #4db3e3;
 }

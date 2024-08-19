@@ -12,12 +12,16 @@ const ToggleMenu = () => {
 
   const handleLinkClick = (path) => {
     if (location.pathname === path) {
+      // Força a atualização, mas normalmente não é necessário com React Router
       window.location.reload(); 
     }
     setIsChecked(false); 
   };
   
-  const headerClass = location.pathname === '/' ? 'header home-header' : 'header sobre-header';
+  // Correção da construção da classe
+  const headerClass = location.pathname === '/' ? 'header home-header' 
+  : location.pathname === '/sobre' ? 'header sobre-header' 
+      : location.pathname === '/projetos' ? 'header projetos-header' : 'header projetos-header';
 
   return (
     <header id="header" className={headerClass}>

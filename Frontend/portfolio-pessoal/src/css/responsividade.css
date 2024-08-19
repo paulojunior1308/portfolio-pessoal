@@ -87,7 +87,7 @@
     justify-content: center;
     flex-direction: row;
     gap: 2.5rem; /* Reduz o espaço entre os itens */
-    margin-top: 30rem;
+    margin-top: 40rem;
   }
 
   .skills-headline {
@@ -104,6 +104,19 @@
 
   .sobre-footer {
     margin-top: 0; /* Menos espaço no topo */
+  }
+
+  /*PROJECTS*/
+
+  .container-projects {
+    width: 100%;
+    height: calc(100vh - 80px); /* Ajuste para telas menores */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2.5rem; /* Reduz o espaço entre os itens */
+    margin-top: 15rem;
   }
 }
 
@@ -212,6 +225,19 @@
   .sobre-footer {
     margin-top: -20rem; /* Mantém o ajuste original */
   }
+
+    /*PROJECTS*/
+
+    .container-projects {
+      width: 100%;
+      height: calc(100vh - 80px); /* Ajuste para telas menores */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2.5rem; /* Reduz o espaço entre os itens */
+      margin-top: 20rem;
+    }
 }
 
 /*IPHONE*/
@@ -323,4 +349,17 @@
     text-align: center;
     padding: 20px 0;
   }
+
+    /*PROJECTS*/
+
+    .container-projects {
+      width: 100%;
+      height: calc(100vh - 80px); /* Ajuste para telas menores */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2.5rem; /* Reduz o espaço entre os itens */
+      margin-top: 20rem;
+    }
 }
