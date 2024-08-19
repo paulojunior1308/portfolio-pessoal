@@ -53,7 +53,7 @@ const Projetos = () => {
                                     <img src={Spring} alt = "spring" />
                                 </div>
                                 <div className="btn-project">
-                                    <a href="https://www.bdnlogistics.com.br/" target="_blank">Acesse o site</a>
+                                    <a href="https://www.bdnlogistics.com.br/" target="_blank" rel="noreferrer">Acesse o site</a>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,8 @@ const Projetos = () => {
                                     <img src={Spring} alt = "spring" />
                                 </div>
                                 <div className="btn-project">
-                                    <a href="https://www.bdnlogistics.com.br/" target="_blank">Acesse o site</a>
+                                    <a href="https://www.bdnlogistics.com.br/" target="_blank"
+                    rel="noreferrer">Acesse o site</a>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +102,8 @@ const Projetos = () => {
                                     <img src={Spring} alt = "spring" />
                                 </div>
                                 <div className="btn-project">
-                                    <a href="https://www.bdnlogistics.com.br/" target="_blank">Acesse o site</a>
+                                    <a href="https://www.bdnlogistics.com.br/" target="_blank"
+                    rel="noreferrer">Acesse o site</a>
                                 </div>
                             </div>
                         </div>
