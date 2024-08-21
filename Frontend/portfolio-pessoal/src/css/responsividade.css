@@ -56,7 +56,7 @@
     width: 75%; /* Ajuste para se adaptar a resoluções menores */
     height: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     flex-direction: row;
     gap: 0.7rem; /* Menos espaço entre os ícones */
     cursor: pointer;
