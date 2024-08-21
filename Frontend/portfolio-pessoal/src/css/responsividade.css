@@ -1,5 +1,4 @@
 @media only screen and (min-width: 1366px) and (max-width: 1600px) {
-
   /* ABOUT */
   .sobre-home {
     overflow-x: hidden;
@@ -26,7 +25,6 @@
     justify-content: center;
     gap: 1.5rem; /* Reduz o espaço entre os itens */
     margin-top: -3rem;
-    
   }
 
   .cta-about {
@@ -121,7 +119,6 @@
 }
 
 @media only screen and (min-width: 1601px) and (max-width: 1920px) {
-
   /* ABOUT */
   .sobre-home {
     overflow-x: hidden;
@@ -226,23 +223,27 @@
     margin-top: -20rem; /* Mantém o ajuste original */
   }
 
-    /*PROJECTS*/
+  /*PROJECTS*/
 
-    .container-projects {
-      width: 100%;
-      height: calc(100vh - 80px); /* Ajuste para telas menores */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 2.5rem; /* Reduz o espaço entre os itens */
-      margin-top: 20rem;
-    }
+  .container-projects {
+    width: 100%;
+    height: calc(100vh - 80px); /* Ajuste para telas menores */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2.5rem; /* Reduz o espaço entre os itens */
+    margin-top: 20rem;
+  }
 }
 
 /*IPHONE*/
 @media only screen and (max-width: 896px) and (orientation: portrait) {
-  
+  .App {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
   /* TOGGLE */
   .logo {
     font-size: 1rem;
@@ -250,29 +251,28 @@
     color: white;
   }
 
-.checkbox {
-  height: 40px;
-  width: 40px;
-  position: absolute;
-  top: 20px;
-  right: 5rem;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 9999;
-  transition: 400ms ease-in-out 0;
-}
+  .checkbox {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 20px;
+    right: 5rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+    transition: 400ms ease-in-out 0;
+  }
 
-.menu-items ul li  {
-  margin: 10px 0;
-  margin-left: -2rem;
-  color: #2e1c2b;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  font-size: 20px;
-}
-
+  .menu-items ul li {
+    margin: 10px 0;
+    margin-left: -2rem;
+    color: #2e1c2b;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 20px;
+  }
 
   /* HOME */
 
@@ -285,18 +285,18 @@
     color: white;
     font-size: 3rem;
   }
-  
+
   .text-home h2 {
     font-size: 2rem;
     color: white;
   }
-  
+
   .text-home span {
     font-size: 2rem;
     font-weight: 300;
     z-index: 9;
   }
-  
+
   /* ABOUT */
   .container-about {
     display: flex;
@@ -405,29 +405,28 @@
     padding: 20px 0;
   }
 
-    /*PROJECTS*/
+  /*PROJECTS*/
 
-    .container-projects {
-      width: 100%;
-      height: calc(100vh - 80px); /* Ajuste para telas menores */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 2.5rem; /* Reduz o espaço entre os itens */
-      margin-top: 50rem;
-    }
+  .container-projects {
+    width: 100%;
+    height: calc(100vh - 80px); /* Ajuste para telas menores */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2.5rem; /* Reduz o espaço entre os itens */
+    margin-top: 50rem;
+  }
 
-    .cards-projects {
-      display: grid;
-      grid-template-columns: 1fr; /* Um card por linha */
-      gap: 5rem; /* Espaço entre os cards ajustado para telas menores */
-    }
+  .cards-projects {
+    display: grid;
+    grid-template-columns: 1fr; /* Um card por linha */
+    gap: 5rem; /* Espaço entre os cards ajustado para telas menores */
+  }
 
-
-    .projetos-footer {
-      margin-top: 40rem;
-      text-align: center;
-      padding: 20px 0;
-    }
+  .projetos-footer {
+    margin-top: 40rem;
+    text-align: center;
+    padding: 20px 0;
+  }
 }
