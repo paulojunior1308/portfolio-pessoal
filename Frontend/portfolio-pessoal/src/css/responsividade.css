@@ -242,6 +242,61 @@
 
 /*IPHONE*/
 @media only screen and (max-width: 896px) and (orientation: portrait) {
+  
+  /* TOGGLE */
+  .logo {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+  }
+
+.checkbox {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  top: 20px;
+  right: 5rem;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  transition: 400ms ease-in-out 0;
+}
+
+.menu-items ul li  {
+  margin: 10px 0;
+  margin-left: -2rem;
+  color: #2e1c2b;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 20px;
+}
+
+
+  /* HOME */
+
+  .text-home h1 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 10px 0;
+    z-index: 9;
+    color: white;
+    font-size: 3rem;
+  }
+  
+  .text-home h2 {
+    font-size: 2rem;
+    color: white;
+  }
+  
+  .text-home span {
+    font-size: 2rem;
+    font-weight: 300;
+    z-index: 9;
+  }
+  
   /* ABOUT */
   .container-about {
     display: flex;
