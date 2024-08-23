@@ -506,8 +506,9 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 1rem;
   padding: 50px;
+  margin-top: -1rem;
 }
 
 .icons-home a {
@@ -528,36 +529,31 @@ a:hover {
   transition: transform 0.3s;
 }
 
-.icons-home a .layer::before {
-  content: "";
+.icons-home a .layer span {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
+  border: 2px solid;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid transparent;
   transition: all 0.3s;
-  border-radius: 5px;
   box-sizing: border-box;
-  transform: translate(0px, 0px);
-  z-index: 1;
+  z-index: 2;
 }
 
-.icons-home a .layer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-  border: 1px solid #0077b5;
-  opacity: 0;
-  transform: translate(0px, 0px);
-  transition: all 0.3s;
-  z-index: 1;
+.icons-home a .layer span.fab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  line-height: 80px;
+}
+
+.icons-home a.linkedin .layer span {
+  border-color: #0077b5;
+}
+
+.icons-home a.github .layer span {
+  border-color: #333;
 }
 
 .icons-home a .layer span {
@@ -574,84 +570,50 @@ a:hover {
   z-index: 2;
 }
 
-.icons-home a:hover .layer span {
-  border-color: #0a66c2;
+.icons-home a:hover .layer.linkedin span {
+  border-color: #0077b5;
 }
 
-.icons-home a:hover .layer span:nth-child(1) {
-  opacity: 0.2;
-}
-
-.icons-home a:hover .layer span:nth-child(2) {
-  transform: translate(5px, -5px);
-  opacity: 0.4;
-}
-
-.icons-home a:hover .layer span:nth-child(3) {
-  transform: translate(10px, -10px);
-  opacity: 0.6;
-}
-
-.icons-home a:hover .layer span:nth-child(4) {
-  transform: translate(15px, -15px);
-  opacity: 0.8;
+.icons-home a:hover .layer.github span {
+  border-color: #333;
 }
 
 .icons-home a:hover .layer {
-  transform: rotate(-35deg) skew(20deg);
-}
-
-.icons-home a .text {
-  color: #fff;
-  margin-top: 10px;
-  font-size: 12px;
-  text-align: center;
-  display: none;
-  font-family: "Montserrat", sans-serif;
-}
-
-.icons-home a:hover .text {
-  display: block;
+  transform: rotate(-30deg) skew(20deg);
 }
 
 .icons-home a .layer.github {
   background-color: #ffffff;
+  border-radius: 5px;
 }
 
 .icons-home a .layer.github span {
-  color: #333333;
+  color: #333;
 }
 
 .icons-home a:hover .layer.github {
-  background-color: #333333;
+  background-color: #333;
 }
 
 .icons-home a:hover .layer.github span {
   color: #ffffff;
 }
 
-.icons-home a .layer.github::after {
-  border: 1px solid #333333;
-}
-
 .icons-home a .layer.linkedin {
   background-color: #ffffff;
+  border-radius: 5px;
 }
 
 .icons-home a .layer.linkedin span {
-  color: #0a66c2;
+  color: #0077b5;
 }
 
 .icons-home a:hover .layer.linkedin {
-  background-color: #0a66c2;
+  background-color: #0077b5;
 }
 
 .icons-home a:hover .layer.linkedin span {
   color: #ffffff;
-}
-
-.icons-home a .layer.linkedin::after {
-  border: 1px solid #0a66c2;
 }
 
 /*ICONES*/
@@ -679,36 +641,35 @@ a:hover {
   transition: transform 0.3s;
 }
 
-.icons-about a .layer::before {
-  content: "";
+.icons-about a .layer span {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
+  border: 2px solid;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid transparent;
   transition: all 0.3s;
-  border-radius: 5px;
   box-sizing: border-box;
-  transform: translate(0px, 0px);
-  z-index: 1;
+  z-index: 2;
 }
 
-.icons-about a .layer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-  border: 1px solid #0077b5;
-  opacity: 0;
-  transform: translate(0px, 0px);
-  transition: all 0.3s;
-  z-index: 1;
+.icons-about a .layer span.fab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  line-height: 80px;
+}
+
+.icons-about a.linkedin .layer span {
+  border-color: #0077b5;
+}
+
+.icons-about a.github .layer span {
+  border-color: #333;
+}
+
+.icons-about a.whatsapp .layer span {
+  border-color: #25d366;
 }
 
 .icons-about a .layer span {
@@ -725,83 +686,71 @@ a:hover {
   z-index: 2;
 }
 
-.icons-about a:hover .layer span {
-  border-color: #0a66c2;
+.icons-about a:hover .layer.linkedin span {
+  border-color: #0077b5;
 }
 
-.icons-about a:hover .layer span:nth-child(1) {
-  opacity: 0.2;
+.icons-about a:hover .layer.github span {
+  border-color: #333;
 }
 
-.icons-about a:hover .layer span:nth-child(2) {
-  transform: translate(5px, -5px);
-  opacity: 0.4;
-}
-
-.icons-about a:hover .layer span:nth-child(3) {
-  transform: translate(10px, -10px);
-  opacity: 0.6;
-}
-
-.icons-about a:hover .layer span:nth-child(4) {
-  transform: translate(15px, -15px);
-  opacity: 0.8;
+.icons-about a:hover .layer.whatsapp span {
+  border-color: #25d366;
 }
 
 .icons-about a:hover .layer {
-  transform: rotate(-35deg) skew(20deg);
-}
-
-.icons-about a .text {
-  color: #fff;
-  margin-top: 10px;
-  font-size: 12px;
-  text-align: center;
-  display: none;
-}
-
-.icons-about a:hover .text {
-  display: block;
+  transform: rotate(-30deg) skew(20deg);
 }
 
 .icons-about a .layer.github {
   background-color: #ffffff;
+  border-radius: 5px;
 }
 
 .icons-about a .layer.github span {
-  color: #333333;
+  color: #333;
 }
 
 .icons-about a:hover .layer.github {
-  background-color: #333333;
+  background-color: #333;
 }
 
 .icons-about a:hover .layer.github span {
   color: #ffffff;
 }
 
-.icons-about a .layer.github::after {
-  border: 1px solid #333333;
-}
-
 .icons-about a .layer.linkedin {
   background-color: #ffffff;
+  border-radius: 5px;
 }
 
 .icons-about a .layer.linkedin span {
-  color: #0a66c2;
+  color: #0077b5;
 }
 
 .icons-about a:hover .layer.linkedin {
-  background-color: #0a66c2;
+  background-color: #0077b5;
 }
 
 .icons-about a:hover .layer.linkedin span {
   color: #ffffff;
 }
 
-.icons-about a .layer.linkedin::after {
-  border: 1px solid #0a66c2;
+.icons-about a .layer.whatsapp {
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.icons-about a .layer.whatsapp span {
+  color: #25d366;
+}
+
+.icons-about a:hover .layer.whatsapp {
+  background-color: #25d366;
+}
+
+.icons-about a:hover .layer.whatsapp span {
+  color: #ffffff;
 }
 
 .btn-about {

@@ -23,6 +23,12 @@ const Sobre = () => {
     });
   }, []);
 
+  // Mensagem whatsapp
+  const phoneNumber = "5511949885625"; // Substitua pelo seu número de telefone
+  const message = "Olá, gostaria de saber mais sobre seus serviços!"; // Mensagem padrão
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
   return (
     <main id="sobre-home" className="sobre-home">
       <section className="section-about">
@@ -68,7 +74,6 @@ const Sobre = () => {
                     <div className="layer linkedin">
                       <span className="fab fa-linkedin"></span>
                     </div>
-                    <div className="text">Linkedin</div>
                   </a>
                   <a
                     href="https://github.com/paulojunior1308"
@@ -78,7 +83,11 @@ const Sobre = () => {
                     <div className="layer github">
                       <span className="fab fa-github"></span>
                     </div>
-                    <div className="text">Github</div>
+                  </a>
+                  <a href={whatsappUrl} target="_blank" rel="noreferrer">
+                    <div className="layer whatsapp">
+                      <span className="fab fa-whatsapp"></span>
+                    </div>
                   </a>
                 </div>
               </div>
