@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.2</version>
+		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>portfolio</groupId>
-	<artifactId>curriculo-online</artifactId>
+	<groupId>projeto</groupId>
+	<artifactId>estoque</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>curriculo-online</name>
-	<description>Desenvolvimento de um portefólio pessoal</description>
+	<name>estoque</name>
+	<description>Projeto simples de controle de estoque</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -44,9 +44,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-docker-compose</artifactId>
 			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -58,6 +59,13 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-database</artifactId>
+			<version>21.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
