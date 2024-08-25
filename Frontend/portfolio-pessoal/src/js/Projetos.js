@@ -8,8 +8,13 @@ import ToggleMenu from "./ToggleMenu";
 import Projeto1 from "../image/projeto-bdn.png";
 import Projeto2 from "../image/projeto-hugo-bartol.png";
 import Projeto3 from "../image/projeto-helo-repens.png";
+import Css from "../image/css.jpg";
 import Java from "../image/java.jpg";
+import ReactJs from "../image/react.jpg";
 import Spring from "../image/springboot.jpg";
+import Javascript from "../image/javascript.jpg";
+import Sql from "../image/sql.jpeg";
+import Api from "../image/api.jpeg";
 
 const Projetos = () => {
   // Inicializando o AOS dentro do useEffect
@@ -46,22 +51,26 @@ const Projetos = () => {
 
                 <div className="content-card">
                   <div className="text-project">
-                    <h2>BDN Logistics</h2>
+                    <h2>Controle de Estoque</h2>
                     <span>Institucional</span>
                     <p>
-                      Portal multilíngue iluminando o universo da logística com
-                      insights, ferramentas de contato e cotação, promovendo
-                      interação e soluções globais.
+                      Controle de estoque de produtos e pratos realizados no
+                      buffet.
                     </p>
                   </div>
                   <div className="cta-project">
                     <div className="tag-project">
                       <img src={Java} alt="java" />
                       <img src={Spring} alt="spring" />
+                      <img src={Sql} alt="sql" />
+                      <img src={Api} alt="api" />
+                      <img src={Javascript} alt="javascript" />
+                      <img src={Css} alt="css" />
+                      <img src={ReactJs} alt="react" />
                     </div>
                     <div className="btn-project">
                       <a
-                        href="http://localhost:8080/CurriculoOnlineApplication"
+                        href="https://controle-estoquesimples.netlify.app/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
