@@ -239,7 +239,7 @@
     justify-content: center;
     flex-direction: column;
     gap: 2.5rem; /* Reduz o espaço entre os itens */
-    margin-top: 20rem;
+    margin-top: 5rem;
   }
 }
 
