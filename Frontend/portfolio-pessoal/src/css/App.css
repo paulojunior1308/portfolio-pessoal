@@ -375,6 +375,7 @@ a:hover {
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
   margin-bottom: 0;
+  text-align: left;
 }
 
 .content-about-left p {
@@ -920,6 +921,7 @@ a:hover {
 .card-tech img {
   width: 50%;
   transition: transform 0.3s ease; /* Transição suave para a imagem */
+  border-radius: 10px;
 }
 
 .card-tech:hover {
@@ -1099,6 +1101,7 @@ a:hover {
   height: 30px;
   color: white;
   transition: color 0.3s ease;
+  border-radius: 5px;
 }
 
 .btn-project a {
