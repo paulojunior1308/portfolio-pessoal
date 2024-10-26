@@ -5,12 +5,12 @@
   font-family: "Poppins", sans-serif;
 }
 
-body {
+.login {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url(./image/controle-estoque.png) no-repeat center center;
+  background: url(../../image/controle-estoque.png) no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
 }

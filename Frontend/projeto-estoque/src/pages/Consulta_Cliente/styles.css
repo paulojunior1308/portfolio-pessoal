@@ -1,0 +1,194 @@
+consulta-cliente {
+  width: 80%;
+  max-width: calc(100% - 220px);
+  padding: 0 30px;
+  margin-left: 220px;
+  margin-top: 32px;
+  overflow-x: hidden;
+}
+
+.header-consulta-cliente {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  max-width: calc(100% - 220px);
+  padding: 0 30px;
+  margin-left: 290px;
+  margin-top: 32px;
+}
+
+.header-consulta-cliente span {
+  font-size: 40px;
+  margin-left: 24px;
+}
+
+.header-consulta-cliente span strong {
+  color: #251fc5;
+}
+
+.carregar {
+  width: 80%;
+  margin-left: 22rem;
+  height: 60px;
+  background: #251fc5;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 700;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 60px;
+  transition: filter 0.2s;
+}
+
+.carregar:hover {
+  filter: brightness(80%);
+}
+
+.consulta-cliente h1 {
+  margin-top: 80px;
+  margin-bottom: 24px;
+}
+
+.consulta-cliente ul {
+  width: 80%;
+  margin: 20px 350px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 24px;
+  list-style: none;
+}
+
+.consulta-cliente ul li {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.consulta-cliente ul li button {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  border: 0;
+  background: transparent;
+  width: auto;
+  margin-left: auto;
+}
+
+.consulta-cliente ul li button + button {
+  top: 3rem;
+}
+
+.consulta-cliente ul li button:hover {
+  opacity: 0.8;
+}
+
+.consulta-cliente ul li strong {
+  display: block;
+  margin-bottom: 16px;
+  color: #41414d;
+}
+
+.consulta-cliente ul li p + strong {
+  margin-top: 32px;
+}
+
+.consulta-cliente ul li p {
+  color: #737380;
+  line-height: 21px;
+  font-size: 16px;
+}
+
+.consulta-cliente-container .consulta-cliente .search {
+  display: flex;
+  align-items: center;
+  width: 52%;
+  margin: 32px 350px;
+  justify-content: flex-end;
+}
+
+.consulta-cliente-container .consulta-cliente .search input {
+  flex: 1;
+  height: 40px;
+  padding: 0 15px;
+  border: 1px solid #dcdce6;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.consulta-cliente-container .consulta-cliente .search button {
+  height: 40px;
+  width: 40px;
+  background: #251fc5;
+  border: 1px solid #dcdce6;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: -33rem;
+}
+
+@media (max-width: 1366px) {
+  .consulta-cliente {
+    width: 100%;
+    max-width: calc(100% - 200px);
+    padding: 0 20px;
+    margin-left: 60px;
+    margin-top: 24px;
+  }
+
+  .header-consulta-cliente {
+    width: 100%;
+    max-width: calc(100% - 200px);
+    margin-left: 240px;
+    padding: 0 20px;
+  }
+
+  .header-consulta-cliente span {
+    font-size: 32px;
+    margin-left: 20px;
+  }
+
+  .carregar {
+    width: 80%;
+    margin-left: 18rem;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+  }
+
+  .consulta-cliente ul {
+    width: 80%;
+    margin: 20px 280px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .consulta-cliente h1 {
+    margin-top: 64px;
+    margin-bottom: 20px;
+  }
+  
+  .search {
+    width: 33%;
+    margin: 24px auto;
+    margin-left: 280px;
+  }
+
+  .search input {
+    height: 35px;
+    font-size: 15px;
+  }
+
+  .search button {
+    height: 35px;
+    width: 35px;
+  }
+}

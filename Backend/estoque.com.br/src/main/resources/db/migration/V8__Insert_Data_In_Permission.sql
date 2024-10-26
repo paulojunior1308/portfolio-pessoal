@@ -1,0 +1,4 @@
+INSERT INTO `permission` (`description`) VALUES
+	('ROLE_ADMIN'),
+	('ROLE_VENDEDOR'),
+	('ROLE_CONTROLADOR_ESTOQUE');

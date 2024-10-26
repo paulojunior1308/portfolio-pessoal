@@ -1,0 +1,122 @@
+.novo-produto-container {
+  width: 100%;
+  max-width: calc(100% - 200px);
+  height: 100vh;
+  margin: 0 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 220px;
+}
+
+.header-novo-produto {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  max-width: calc(100% - 220px);
+  padding: 0 30px;
+  margin-left: 290px;
+  margin-top: 32px;
+}
+
+.header-novo-produto span {
+  font-size: 40px;
+  margin-left: -19rem;
+  margin-top: -10rem;
+}
+
+.header-novo-produto span strong {
+  color: #251fc5;
+}
+
+.novo-produto-container .content {
+  width: 100%;
+  padding: 96px;
+  background: #fff;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.novo-produto-container .content .input span {
+  font-size: 40px;
+  color: #251fc5;
+  font-weight: bold;
+}
+
+.novo-produto-container .content form {
+  width: 100%;
+  max-width: 1500px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.novo-produto-container .content form .input-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.novo-produto-container .content form .input-group p {
+  margin: 0;
+  width: auto;
+  font-size: 30px;
+}
+
+.novo-produto-container .content form .input-group input {
+  margin-top: 0;
+  width: 65%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #dcdce6;
+  font-size: 30px;
+}
+
+@media (max-width: 1366px) {
+  .novo-produto-container {
+    width: 80%;
+    max-width: calc(100% - 100px);
+    margin: 0 auto;
+    padding-left: 240px;
+    height: 100vh;
+  }
+
+  .novo-produto-container .content {
+    height: 80vh;
+    padding: 40px;
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+  .header-novo-produto {
+    width: 80%;
+    max-width: calc(100% - 100px);
+    padding: 0 20px;
+    margin-left: 200px;
+  }
+
+  .header-novo-produto span {
+    font-size: 32px;
+    margin-left: -12rem;
+    margin-top: -2rem;
+  }
+
+  .novo-produto-container .content form {
+    max-width: 1000px;
+  }
+
+  .novo-produto-container .content form .input-group p {
+    font-size: 26px;
+  }
+
+  .novo-produto-container .content form .input-group input {
+    width: 70%;
+    padding: 6px;
+    font-size: 24px;
+  }
+}

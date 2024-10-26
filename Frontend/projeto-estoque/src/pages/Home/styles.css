@@ -1,0 +1,21 @@
+/* Estilos para o container da página principal */
+.home-container {
+    margin-left: 300px; /* Espaço reservado para a navbar */
+    width: calc(100vw - 300px); /* Largura restante da tela */
+    height: 100vh; /* Altura total da tela */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Estilos para a imagem de fundo */
+.background-image {
+    width: 100%; /* Ocupa toda a largura do container */
+    height: 100%; /* Ocupa toda a altura do container */
+    object-fit: cover; /* Ajusta a imagem para cobrir todo o espaço */
+    opacity: 0.3; /* Define a transparência */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Mantém a imagem atrás do conteúdo */
+    display: block; /* Garante que a imagem é exibida como bloco */
+}
