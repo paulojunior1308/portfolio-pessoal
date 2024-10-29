@@ -1,6 +1,7 @@
 package estoque.com.br.data.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -17,7 +18,7 @@ public class ItemOrcamentoVO extends RepresentationModel<ItemOrcamentoVO> implem
 	private Long key;
 	private Long orcamentoId;
 	private Long produtoId;
-	private Integer quantidade;
+	private BigDecimal quantidade;
 	private Double precoUnitario;
 	
 	public ItemOrcamentoVO() {}
@@ -46,11 +47,11 @@ public class ItemOrcamentoVO extends RepresentationModel<ItemOrcamentoVO> implem
 		this.produtoId = produtoId;
 	}
 
-	public Integer getQuantidade() {
+	public BigDecimal getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
 	}
 

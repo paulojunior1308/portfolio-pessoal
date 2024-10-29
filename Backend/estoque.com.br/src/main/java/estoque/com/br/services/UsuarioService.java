@@ -103,7 +103,6 @@ public class UsuarioService implements UserDetailsService {
 
         var usuarioPage = repository.findByUserName(userName, pageable);
 
-        // Verifica se a página está vazia
         if (usuarioPage.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
         }

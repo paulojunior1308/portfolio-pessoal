@@ -104,18 +104,21 @@ public class OrcamentoService {
         }
         logger.info("Criando um orcamento");
 
+
         var entity = modelMapper.map(orcamento, Orcamento.class);
+
 
         for (ItemOrcamento item : entity.getItens()) {
             item.setOrcamento(entity);
         }
 
         var vo = modelMapper.map(repository.save(entity), OrcamentoVO.class);
-        logger.log(Level.INFO, "Mapping Orcamento to OrcamentoVO: {0}", vo);
+
 
         vo.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrcamentoController.class).findById(vo.getKey())).withSelfRel());
         return vo;
     }
+
 
     @Transactional
     public OrcamentoVO update(OrcamentoVO orcamento) {

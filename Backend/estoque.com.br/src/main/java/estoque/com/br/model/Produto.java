@@ -1,6 +1,7 @@
 package estoque.com.br.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -29,8 +30,8 @@ public class Produto implements Serializable{
 	@Column(name = "tipo_produto", nullable = false, length = 5)
 	private TipoProduto tipoProduto;
 
-	@Column(name = "quantidade_produto", nullable = false, length = 5)
-	private int quantidadeProduto;
+	@Column(name = "quantidade_produto", nullable = false, precision = 10, scale = 3)
+	private BigDecimal quantidadeProduto;
 
 	@Column(name = "valor_produto", nullable = false, length = 10)
 	private Double valor;
@@ -61,11 +62,11 @@ public class Produto implements Serializable{
 		this.tipoProduto = tipoProduto;
 	}
 
-	public int getQuantidadeProduto() {
+	public BigDecimal getQuantidadeProduto() {
 		return quantidadeProduto;
 	}
 
-	public void setQuantidadeProduto(int quantidadeProduto) {
+	public void setQuantidadeProduto(BigDecimal quantidadeProduto) {
 		this.quantidadeProduto = quantidadeProduto;
 	}
 

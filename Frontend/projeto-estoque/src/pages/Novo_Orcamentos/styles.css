@@ -199,15 +199,38 @@
   align-items: center;
 }
 
-.input-group-orcamento {
+.novo-orcamento-container .content form h4{
+  grid-column: span 5;
+  justify-self: center;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.novo-orcamento-container .content form .input-group {
+  display: flex;
+  align-items: center; 
+}
+
+.novo-orcamento-container .content form .input-group p {
   flex: 1;
   min-width: 0;
   padding: 0 5px;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
 }
 
-.input-group-orcamento {
-  max-width: 150px;
+.novo-orcamento-container .content form .input-group input {
+  width: 65%;
+  border-radius: 4px;
+  border: 1px solid #dcdce6;
+  font-size: 30px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
+
 
 .itens-list .item button {
   grid-column: span 5;

@@ -90,7 +90,7 @@ public class OrcamentoController {
 
 		var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
 
-		Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "title"));
+		Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "id"));
 		return ResponseEntity.ok(service.findOrcamentoById(id, pageable));
 	}
 

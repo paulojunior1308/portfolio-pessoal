@@ -1,6 +1,7 @@
 package estoque.com.br.data.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -21,7 +22,7 @@ public class ProdutoVO extends RepresentationModel<ProdutoVO> implements Seriali
 	private Long key;
 	private String nomeProduto;
 	private TipoProduto tipoProduto;
-	private int quantidadeProduto;
+	private BigDecimal quantidadeProduto;
 	private Double valor;
 
 	public ProdutoVO() {}
@@ -50,11 +51,11 @@ public class ProdutoVO extends RepresentationModel<ProdutoVO> implements Seriali
 		this.tipoProduto = tipoProduto;
 	}
 
-	public int getQuantidadeProduto() {
+	public BigDecimal getQuantidadeProduto() {
 		return quantidadeProduto;
 	}
 
-	public void setQuantidadeProduto(int quantidadeProduto) {
+	public void setQuantidadeProduto(BigDecimal quantidadeProduto) {
 		this.quantidadeProduto = quantidadeProduto;
 	}
 

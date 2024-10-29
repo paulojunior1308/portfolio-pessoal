@@ -92,6 +92,7 @@ consulta-cliente {
   display: block;
   margin-bottom: 16px;
   color: #41414d;
+  font-size: 20px;
 }
 
 .consulta-cliente ul li p + strong {
@@ -101,7 +102,7 @@ consulta-cliente {
 .consulta-cliente ul li p {
   color: #737380;
   line-height: 21px;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .consulta-cliente-container .consulta-cliente .search {

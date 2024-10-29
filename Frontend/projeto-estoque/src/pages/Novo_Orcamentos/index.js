@@ -10,7 +10,6 @@ import "./styles.css";
 export default function NovoOrcamento() {
   const [id, setId] = useState(null);
   const [clienteId, setClienteId] = useState("");
-  const [dataCriacao, setDataCriacao] = useState("");
   const [dataValidade, setDataValidade] = useState("");
   const [status, setStatus] = useState("Pendente");
   const [vendedorId, setVendedorId] = useState("");
@@ -18,8 +17,8 @@ export default function NovoOrcamento() {
   const [total, setTotal] = useState(0);
   const [produtos, setProdutos] = useState([]);
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
-  const [quantidade, setQuantidade] = useState(1);
-  const [precoUnitario, setPrecoUnitario] = useState(0);
+  const [quantidade, setQuantidade] = useState('');
+  const [precoUnitario, setPrecoUnitario] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [pesquisaProduto, setPesquisaProduto] = useState("");
 
@@ -79,7 +78,6 @@ export default function NovoOrcamento() {
       setItens(uniqueItens);
       setId(orcamento.id);
       setClienteId(orcamento.clienteId);
-      setDataCriacao(orcamento.dataCriacao.split("T", 10)[0]);
       setDataValidade(orcamento.dataValidade.split("T", 10)[0]);
       setStatus(orcamento.status);
       setVendedorId(orcamento.vendedorId);
@@ -107,6 +105,9 @@ export default function NovoOrcamento() {
     }
   };
 
+  function formatarDecimal(value){
+    return parseFloat(value.replace(',', '.'));
+  }
   const addProduto = async () => {
     if (!produtoSelecionado || quantidade <= 0 || precoUnitario <= 0) {
       alert("Selecione um produto, insira a quantidade e o preço.");
@@ -119,8 +120,8 @@ export default function NovoOrcamento() {
       return;
     }
 
-    const newQuantidade = parseInt(quantidade);
-    const newPrecoUnitario = parseFloat(precoUnitario);
+    const newQuantidade = parseFloat(quantidade.replace(',', '.'));
+    const newPrecoUnitario = formatarDecimal(precoUnitario);
 
     const existingItemIndex = itens.findIndex(
       (item) => item.produtoId === produtoSelecionado.id
@@ -228,9 +229,7 @@ export default function NovoOrcamento() {
   const saveOrUpdate = async (e) => {
     e.preventDefault();
 
-    const formataDataCriacao = new Date(dataCriacao)
-      .toISOString()
-      .split("T")[0];
+
     const formataDataValidade = new Date(dataValidade)
       .toISOString()
       .split("T")[0];
@@ -238,7 +237,6 @@ export default function NovoOrcamento() {
     const data = {
       id,
       clienteId,
-      dataCriacao: formataDataCriacao,
       dataValidade: formataDataValidade,
       status,
       vendedorId,
@@ -336,14 +334,6 @@ export default function NovoOrcamento() {
               />
             </div>
             <div className="input">
-              <p>Data de Criação</p>
-              <input
-                type="date"
-                value={dataCriacao}
-                onChange={(e) => setDataCriacao(e.target.value)}
-              />
-            </div>
-            <div className="input">
               <p>Data de Validade</p>
               <input
                 type="date"
@@ -394,7 +384,7 @@ export default function NovoOrcamento() {
                       <strong>Tipo Produto:</strong>
                       <p>{produto.tipoProduto}</p>
                       <strong>Quantidade:</strong>
-                      <p>{produto.quantidadeProduto}</p>
+                      <p>{produto.quantidadeProduto.toFixed(3)}</p>
                       <strong>Valor unitário:</strong>
                       <p>R$ {produto.valor.toFixed(2)}</p>
                       <button
@@ -411,18 +401,24 @@ export default function NovoOrcamento() {
                     <h4>
                       Produto Selecionado: {produtoSelecionado.nomeProduto}
                     </h4>
+                    <div className="input-group">
+                    <p>Quantidade: </p>
                     <input
                       type="number"
                       placeholder="Quantidade"
                       value={quantidade}
                       onChange={(e) => setQuantidade(e.target.value)}
                     />
+                    </div>
+                    <div className="input-group">
+                    <p>Valor Unitário:</p>
                     <input
                       type="decimal"
                       placeholder="Valor Unitário"
                       value={precoUnitario}
                       onChange={(e) => setPrecoUnitario(e.target.value)}
                     />
+                    </div>
                     <button
                       className="button"
                       type="button"
@@ -450,7 +446,7 @@ export default function NovoOrcamento() {
                     </div>
                     <div className="input-group-orcamento">
                       <strong>Quantidade: </strong>
-                      <p>{item.quantidade}</p>
+                      <p>{item.quantidade.toFixed(3)}</p>
                     </div>
                     <div className="input-group-orcamento">
                       <strong>Valor Unitário: </strong>
@@ -458,7 +454,7 @@ export default function NovoOrcamento() {
                     </div>
                     <div className="input-group-orcamento">
                       <strong>Subtotal: </strong>
-                      <p>R${item.quantidade * item.precoUnitario}</p>
+                      <p>R${(item.quantidade * item.precoUnitario).toFixed(2)}</p>
                     </div>
                     <button
                       type="button"

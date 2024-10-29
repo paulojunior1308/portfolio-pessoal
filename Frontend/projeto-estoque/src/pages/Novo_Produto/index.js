@@ -53,6 +53,13 @@ export default function NovoProduto() {
     else loadProduto();
   }, [produtoId, loadProduto]);
 
+   function formatarDecimal(input){
+    const formatar = input.replace(',', '.');
+    if (!isNaN(formatar)){
+      setValor(formatar);
+    }
+  }
+
   async function saveOrUpdate(e) {
     e.preventDefault();
 
@@ -126,7 +133,7 @@ export default function NovoProduto() {
               <input
                 placeholder="Valor unitário"
                 value={valor}
-                onChange={(e) => setValor(e.target.value)}
+                onChange={(e) => formatarDecimal(e.target.value)}
               />
             </div>
             <button className="button" type="submit">

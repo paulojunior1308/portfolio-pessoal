@@ -14,7 +14,7 @@ h1,
 h2,
 h3,
 h4 {
-  font: 400 18px Roboto, sans-serif;
+  font: 400 30px Roboto, sans-serif;
 }
 
 button {
@@ -52,7 +52,6 @@ form input {
   filter: brightness(80%);
 }
 
-/* Estilo da barra de navegação */
 .navbar {
   background-color: #333;
   display: flex;
@@ -71,7 +70,7 @@ form input {
 .navbar ul {
   list-style: none;
   padding: 0;
-  margin-top: -1rem;
+  margin-top: 0;
   width: 100%;
 }
 
