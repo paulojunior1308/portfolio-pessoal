@@ -1,5 +1,5 @@
 server:
- port: 8888
+ port: 80
 cors:
  originPatterns: http://localhost:3000,http://localhost:8080,https://erudio.com.br
 security:
