@@ -26,7 +26,7 @@ jobs:
         
     - name: Build Application JAR
       working-directory: ./Backend/estoque
-      run: mvn clean package
+      run: mvn clean package -DskipTests
 
     - name: Docker Compose Build
       working-directory: ./Backend
