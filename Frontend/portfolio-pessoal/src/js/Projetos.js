@@ -7,7 +7,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import ToggleMenu from "./ToggleMenu";
 import Projeto1 from "../image/projeto-bdn.png";
 import Projeto2 from "../image/projeto-jrtech.png";
-import Projeto3 from "../image/projeto-hugo-bartol.png";
+//import Projeto3 from "../image/projeto-hugo-bartol.png";
 import Css from "../image/css.jpg";
 import Java from "../image/java.jpg";
 import ReactJs from "../image/react.jpg";
