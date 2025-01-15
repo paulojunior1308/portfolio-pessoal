@@ -117,7 +117,7 @@ const Projetos = () => {
                 </div>
               </div>
 
-              <div
+              {/* <div
                 className="card-project"
                 data-aos="zoom-in"
                 data-aos-delay="150"
@@ -125,7 +125,7 @@ const Projetos = () => {
                 <div className="img-project">
                   <img src={Projeto3} alt="bnd logistics" />
                 </div>
-{/*                 
+                
                 <div className="content-card">
                   <div className="text-project">
                     <h2>BDN Logistics</h2>
@@ -151,8 +151,8 @@ const Projetos = () => {
                       </a>
                     </div>
                   </div>
-                </div> */}
-              </div>
+                </div>
+              </div> */}
             </div>
           </div>
         </div>
