@@ -6,7 +6,7 @@ import "../css/App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import ToggleMenu from "./ToggleMenu";
 import Projeto1 from "../image/projeto-bdn.png";
-import Projeto2 from "../image/projeto-hugo-bartol.png";
+import Projeto2 from "../image/projeto-jrtech.png";
 import Projeto3 from "../image/projeto-helo-repens.png";
 import Css from "../image/css.jpg";
 import Java from "../image/java.jpg";
@@ -15,6 +15,7 @@ import Spring from "../image/springboot.jpg";
 import Javascript from "../image/javascript.jpg";
 import Sql from "../image/sql.jpeg";
 import Api from "../image/api.jpeg";
+import Html from "../image/html.jpg";
 
 const Projetos = () => {
   // Inicializando o AOS dentro do useEffect
@@ -51,11 +52,10 @@ const Projetos = () => {
 
                 <div className="content-card">
                   <div className="text-project">
-                    <h2>Controle de Estoque</h2>
+                    <h2>JB Queijos e Latícinios</h2>
                     <span>Institucional</span>
                     <p>
-                      Controle de estoque de produtos e pratos realizados no
-                      buffet.
+                      Sistema para controle de estoque e logística da empresa.
                     </p>
                   </div>
                   <div className="cta-project">
@@ -87,27 +87,26 @@ const Projetos = () => {
                 data-aos-delay="150"
               >
                 <div className="img-project">
-                  <img src={Projeto2} alt="bnd logistics" />
+                  <img src={Projeto2} alt="jr thecnology solutions" />
                 </div>
 
                 <div className="content-card">
                   <div className="text-project">
-                    <h2>BDN Logistics</h2>
+                    <h2>JR Technology Solutions</h2>
                     <span>Institucional</span>
                     <p>
-                      Portal multilíngue iluminando o universo da logística com
-                      insights, ferramentas de contato e cotação, promovendo
-                      interação e soluções globais.
+                    Uma empresa dedicada a oferecer serviços de Tecnologia da Informação, com foco em infraestrutura de rede, configuração de servidores, 
+                    equipamentos de rede, computadores, impressoras, além de desenvolvimento de sites e sistemas web.
                     </p>
                   </div>
                   <div className="cta-project">
                     <div className="tag-project">
-                      <img src={Java} alt="java" />
-                      <img src={Spring} alt="spring" />
+                      <img src={Html} alt="HTML5" />
+                      <img src={Css} alt="CSS3" />
                     </div>
                     <div className="btn-project">
                       <a
-                        href="https://www.bdnlogistics.com.br/"
+                        href="https://jrthecnologysolutions.netlify.app/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
