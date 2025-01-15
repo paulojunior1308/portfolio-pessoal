@@ -15,7 +15,7 @@ import Spring from "../image/springboot.jpg";
 import Javascript from "../image/javascript.jpg";
 import Sql from "../image/sql.jpeg";
 import Api from "../image/api.jpeg";
-import Html from "../image/html.jpg";
+import Html from "../image/html5.png";
 
 const Projetos = () => {
   // Inicializando o AOS dentro do useEffect
