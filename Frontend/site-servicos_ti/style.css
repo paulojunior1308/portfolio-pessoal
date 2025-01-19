@@ -85,34 +85,28 @@ body {
 }
 
 .container-about {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  padding: 20px;
 }
 
 .container-about h2 {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 20px;
   text-align: center;
 }
 
 .content-about {
   display: flex;
-  align-items: center;
-  text-align: center;
-  gap: 2rem;
+  gap: 20px;
 }
 
-.img-about {
-  width: 12rem;
-  height: 12rem;
-  border-radius: 9999px;
-}
-
+.content-about-left,
 .content-about-right {
-  flex-grow: 1;
+  flex: 1;
+  padding: 10px;
 }
 
+.content-about-left p,
 .content-about-right p {
   font-size: 1.25rem;
   line-height: 1.75rem;
@@ -239,7 +233,6 @@ body {
   background-color: #3b82f6;
 }
 
-/* Footer */
 footer {
   background-color: #2563eb;
   color: white;
@@ -260,6 +253,125 @@ footer p {
 .icones a:hover {
   color: #3b82f6;
 }
+
+#contact-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#floating-button {
+  background-color: #2563eb;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+#floating-button img {
+  width: 25px;
+  height: 25px;
+  content: url('./comment.png');
+  transition: transform 0.3s;
+}
+
+#floating-button span {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 10px);
+  transform: translateY(-50%);
+  background-color: #ffffff;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#floating-button span::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent white transparent transparent;
+}
+
+#floating-button:hover {
+  transform: scale(1.1);
+  background-color: #3b82f6;
+}
+
+#floating-button:hover span {
+  opacity: 1;
+  visibility: visible;
+}
+
+#contact-options {
+  position: absolute;
+  bottom: 25px;
+  flex-direction: column-reverse;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+#toggle-options:checked ~ #contact-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-20px);
+}
+
+#toggle-options:checked + #floating-button img {
+  width: 50px;
+  height: 50px;
+  content: url('./delete.png');
+}
+
+#toggle-options:checked + #floating-button span {
+  opacity: 0;
+  visibility: visible;
+}
+
+#contact-options a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 15px;
+  background-color: #2563eb;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#contact-options a img {
+  width: 50px;
+  height: 50px;
+}
+
+#contact-options a:hover {
+  transform: scale(1.1);
+}
+
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
