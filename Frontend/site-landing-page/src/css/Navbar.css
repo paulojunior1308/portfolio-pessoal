@@ -1,0 +1,91 @@
+.navbar {
+    background: #6A0572;
+    color: #fff;
+    padding: 16px 24px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 50;
+}
+
+.logo {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.menu {
+    display:none;
+}
+
+.menu-link{
+    text-decoration: none;
+    color: #fff;
+}
+
+.menu-link:hover{
+    color: #FFC857;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.cart {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+}
+
+.link-carrinho {
+    position: relative;
+    display: inline-block;
+}
+
+.carrinho-quantidade {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: #FF6b35;
+    color: #fff;
+    font-size: 0.75rem;
+    border-radius: 9999px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+}
+
+@media (min-width: 768px) {
+    .menu {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        margin: auto;
+        margin-top: -1px;
+    }
+}

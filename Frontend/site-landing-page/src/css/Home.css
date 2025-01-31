@@ -1,0 +1,274 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff;
+}
+
+.home {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-header {
+    position: relative;
+    height: 80vh;
+    background: linear-gradient(to right, #6A0572, #FF6B35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    color: #fff;
+}
+
+.home-title-text {
+    position: relative;
+    width: 100%;
+    text-align: left;
+    align-items:flex-start;
+}
+
+.home-title-text h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.home-title-text p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.home-link {
+    display: inline-flex;
+    align-items: center;
+    background-color: #FF6B35;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.home-link:hover {
+    background-color: #E65A2B;
+}
+
+.home-arrow {
+    margin-left: 10px;
+}
+
+.home-products {
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 80px;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.home-products h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.home-products-roupas, .home-products-tenis {
+    display: inline-block;
+    width: 45%;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-right: 20px;
+    left: -30px;
+}
+
+.home-products-roupas img, .home-products-tenis img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.link-roupas:hover img, .link-tenis:hover img {
+    transform: scale(1.1);
+}
+
+.home-products-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.home-products-tenis h3, .home-products-roupas h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+
+.new-products {
+    background-color: #F6F6F6;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.new-products-title {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.new-products-title-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.new-products-title-line {
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 40px;
+}
+
+.new-products-link {
+    color: #6A0572;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+}
+
+.new-products-link:hover {
+    color: #FF6B35;
+}
+
+.arrow-right-new {
+    margin-left: 5px;
+}
+
+.newsletter {
+    background-color: #6A0572;
+    color: #fff;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.newsletter-title h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.newsletter-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.newsletter-form input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    width: 250px;
+}
+
+.newsletter-form button {
+    background-color: #FF6B35;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.newsletter-form button:hover {
+    background-color: #E65A2B;
+}
+
+@media (max-width: 480px) {
+    .home-title-text h1 {
+        font-size: 1.8rem;
+    }
+    .home-title-text p {
+        font-size: 0.9rem;
+    }
+    .home-link {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+    .home-products-roupas, .home-products-tenis {
+        display: inline-block;
+        width: 100%;
+        margin: 10px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        margin-right: 20px;
+        left: -10px;
+    }
+    
+    .home-products-roupas img, .home-products-tenis img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }    
+    .home-products-roupas, .home-products-tenis {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .home-products-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+    
+    .new-products-title-line {
+        display: flex;
+        flex-wrap: nowrap; /* Evita que os itens quebrem para a linha de baixo */
+        overflow-x: auto; /* Ativa a rolagem horizontal */
+        scroll-snap-type: x mandatory; /* Suaviza a rolagem */
+        gap: 1.5rem;
+        margin-top: 40px;
+        padding-bottom: 10px; /* Garante espaço extra para a rolagem */
+    }
+
+    .new-products-title-line > * {
+        flex: 0 0 80%; /* Faz com que cada card ocupe 80% da largura da tela */
+        scroll-snap-align: start; /* Faz os itens "grudarem" ao rolar */
+    }
+
+    .new-products-title-line::-webkit-scrollbar {
+        height: 5px; /* Altura da barra de rolagem */
+    }
+
+    .new-products-title-line::-webkit-scrollbar-thumb {
+        background-color: #6A0572; /* Cor da barra */
+        border-radius: 10px;
+    }
+    .newsletter-form input {
+        width: 100%;
+    }
+    .newsletter-form button {
+        width: 100%;
+    }
+}
