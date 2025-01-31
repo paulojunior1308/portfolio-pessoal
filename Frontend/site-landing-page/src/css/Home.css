@@ -85,7 +85,7 @@ html, body {
     margin: 10px;
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 20px;
     margin-right: 20px;
     left: -30px;
 }
@@ -105,10 +105,10 @@ html, body {
     position: absolute;
     top: 50%;
     left: 50%;
-    color: #fff;
-    font-size: 1.5rem;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
     font-weight: bold;
-    text-align: center;
 }
 
 .home-products-tenis h3, .home-products-roupas h3 {
@@ -239,30 +239,29 @@ html, body {
         color: white;
         font-size: 2rem;
         font-weight: bold;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     }
     
     .new-products-title-line {
         display: flex;
-        flex-wrap: nowrap; /* Evita que os itens quebrem para a linha de baixo */
-        overflow-x: auto; /* Ativa a rolagem horizontal */
-        scroll-snap-type: x mandatory; /* Suaviza a rolagem */
+        flex-wrap: nowrap;
+        overflow-x: auto; 
+        scroll-snap-type: x mandatory;
         gap: 1.5rem;
         margin-top: 40px;
-        padding-bottom: 10px; /* Garante espaço extra para a rolagem */
+        padding-bottom: 10px; 
     }
 
     .new-products-title-line > * {
-        flex: 0 0 80%; /* Faz com que cada card ocupe 80% da largura da tela */
-        scroll-snap-align: start; /* Faz os itens "grudarem" ao rolar */
+        flex: 0 0 80%; 
+        scroll-snap-align: start;
     }
 
     .new-products-title-line::-webkit-scrollbar {
-        height: 5px; /* Altura da barra de rolagem */
+        height: 5px; 
     }
 
     .new-products-title-line::-webkit-scrollbar-thumb {
-        background-color: #6A0572; /* Cor da barra */
+        background-color: #6A0572; 
         border-radius: 10px;
     }
     .newsletter-form input {
