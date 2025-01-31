@@ -7,7 +7,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import ToggleMenu from "./ToggleMenu";
 import Projeto1 from "../image/projeto-bdn.png";
 import Projeto2 from "../image/projeto-jrtech.png";
-//import Projeto3 from "../image/projeto-hugo-bartol.png";
+import Projeto3 from "../image/projeto-modastyle.png";
 import Css from "../image/css.jpg";
 import Java from "../image/java.jpg";
 import ReactJs from "../image/react.jpg";
@@ -117,7 +117,7 @@ const Projetos = () => {
                 </div>
               </div>
 
-              {/* <div
+              <div
                 className="card-project"
                 data-aos="zoom-in"
                 data-aos-delay="150"
@@ -128,22 +128,21 @@ const Projetos = () => {
                 
                 <div className="content-card">
                   <div className="text-project">
-                    <h2>BDN Logistics</h2>
+                    <h2>Moda Style</h2>
                     <span>Institucional</span>
                     <p>
-                      Portal multilíngue iluminando o universo da logística com
-                      insights, ferramentas de contato e cotação, promovendo
-                      interação e soluções globais.
+                      E-commerce de uma fictícia chamada Moda Style, desenvolvido em React, JavaScript, HTML e CSS.
                     </p>
                   </div>
                   <div className="cta-project">
                     <div className="tag-project">
-                      <img src={Java} alt="java" />
-                      <img src={Spring} alt="spring" />
+                      <img src={Javascript} alt="javascript" />
+                      <img src={Css} alt="css" />
+                      <img src={ReactJs} alt="react" />
                     </div>
                     <div className="btn-project">
                       <a
-                        href="https://www.bdnlogistics.com.br/"
+                        href="https://modastyle.netlify.app/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -152,7 +151,7 @@ const Projetos = () => {
                     </div>
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
