@@ -38,6 +38,39 @@ const produtosExemplo = [
         ],
         categoria: 'roupas'
     },
+        {
+        id: '3',
+        nome: 'Tenis',
+        preco: 199.90,
+        images: [
+            'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1200',
+            'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1200',
+            'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1200'
+        ],
+        categoria: 'roupas'
+    },
+        {
+        id: '3',
+        nome: 'Tenis',
+        preco: 199.90,
+        images: [
+            'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1200',
+            'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1200',
+            'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1200'
+        ],
+        categoria: 'roupas'
+    },
+        {
+        id: '3',
+        nome: 'Tenis',
+        preco: 199.90,
+        images: [
+            'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=1200',
+            'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=1200',
+            'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=1200'
+        ],
+        categoria: 'roupas'
+    },
 ];
 
 export function Home() {

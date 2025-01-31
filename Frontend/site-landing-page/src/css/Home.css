@@ -246,9 +246,9 @@ html, body {
         flex-wrap: nowrap;
         overflow-x: auto; 
         scroll-snap-type: x mandatory;
-        gap: 1.5rem;
         margin-top: 40px;
         padding-bottom: 10px; 
+        padding-right: 105px;
     }
 
     .new-products-title-line > * {
