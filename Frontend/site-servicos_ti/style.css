@@ -162,32 +162,127 @@ body {
   margin-bottom: 20px;
 }
 
-.content-portfolio {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+.carousel-container {
+  position: relative;
+  max-width: 350px;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.card-portfolio {
+.slides {
+  display: flex;
+  width: 300%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: 300px;
-  text-align: center;
-}
-
-.card-portfolio img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
-.card-portfolio h3 {
-  font-size: 1.5rem;
-  margin: 10px 0;
+.slide h1 {
+  font-size: 2rem;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-align: center;
+  margin-top: 150px;
+}
+
+#typewriter {
+  font-size: 2rem;
+  font-family: monospace;
+  white-space: pre-wrap;
+  overflow: hidden;
+  display: inline-block;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* Animação para piscar o cursor */
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.slide img {  
+  width: 100%;
+height: 200px;
+object-fit: contain;
+border-radius: 10px;
+}
+
+.slide h3 {
+font-size: 1.5rem;
+margin: 10px 0;
+}
+
+.btn-project {
+display: block;
+text-align: center;
+padding: 0.7rem;
+background-color: #2563eb;
+color: white;
+border-radius: 5px;
+text-transform: uppercase;
+font-size: 1rem;
+transition: background-color 0.3s;
+text-decoration: none;
+}
+
+.btn-project:hover {
+background-color: #3b82f6;
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.navigation label {
+  width: 15px;
+  height: 15px;
+  background: gray;
+  margin: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.navigation label:hover {
+  background: black;
+}
+
+input[name="radio"] {
+  display: none;
+}
+
+#slide1:checked ~ .slides {
+  transform: translateX(0%);
+}
+
+#slide2:checked ~ .slides {
+  transform: translateX(-33.33%);
+}
+
+#slide3:checked ~ .slides {
+  transform: translateX(-66.66%);
 }
 
 .contato {
