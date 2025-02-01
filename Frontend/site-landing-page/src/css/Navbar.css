@@ -1,3 +1,4 @@
+/* Navbar */
 .navbar {
     background: #6A0572;
     color: #fff;
@@ -8,6 +9,7 @@
     z-index: 50;
 }
 
+/* Estrutura principal */
 .logo {
     max-width: 80rem;
     margin-left: auto;
@@ -17,32 +19,41 @@
     justify-content: space-between;
 }
 
+/* Logo */
 .logo-link {
     text-decoration: none;
     color: #fff;
     font-size: 1.6rem;
     font-weight: 700;
+    order: 2;
 }
 
+/* Menu principal (desktop) */
 .menu {
-    display:none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    order: 3;
 }
 
-.menu-link{
+.menu-link {
     text-decoration: none;
     color: #fff;
 }
 
-.menu-link:hover{
+.menu-link:hover {
     color: #FFC857;
 }
 
+/* Ícones do carrinho e usuário */
 .icons {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    order: 4;
 }
 
+/* Ícone do carrinho */
 .cart {
     width: 1.5rem;
     height: 1.5rem;
@@ -54,6 +65,7 @@
     display: inline-block;
 }
 
+/* Contador de itens no carrinho */
 .carrinho-quantidade {
     position: absolute;
     top: -5px;
@@ -69,17 +81,57 @@
     justify-content: center;
 }
 
+/* Ícone do usuário */
 .user {
     width: 1.5rem;
     height: 1.5rem;
     color: #fff;
 }
 
+/* Toggle menu container */
+.toggle-menu-container {
+    display: none;
+    order: 1;
+}
+
+/* Responsividade */
 @media (min-width: 768px) {
+    .logo {
+        display: flex;
+        flex-direction: row;
+    }
+
     .menu {
         display: flex;
+        order: initial;
+    }
+
+    .toggle-menu-container {
+        display: none;
+    }
+
+    .logo-link {
+        order: initial;
+    }
+
+    .icons {
+        order: initial;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
+        display: flex;
+        flex-direction: row;
         align-items: center;
-        gap: 2rem;
+    }
+
+    .menu {
+        display: none;
+    }
+
+    .toggle-menu-container {
+        display: block;
     }
 }
 
