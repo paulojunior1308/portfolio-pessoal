@@ -85,7 +85,7 @@
     color: #FF6B35;
 }
 
-.favorite-icon {
+.favorite-icon-heart {
     width: 18px;
     height: 18px;
 }
@@ -140,5 +140,10 @@
     }
     .add-to-cart {
         padding: 0.4rem 0.8rem;
+    }
+
+    .favorite-icon-heart {
+        width: 35px;
+        height: 35px;
     }
 }

@@ -61,7 +61,7 @@ export function ProductCard({ product }) {
           onClick={toggleFavorite} 
           className={`favorite-button ${isFavorite ? 'active' : ''}`}
         >
-          <Heart className="favorite-icon"
+          <Heart className="favorite-icon-heart"
           fill={isFavorite ? "#FF6B35" : "none"}
           stroke={isFavorite ? "#FF6B35" : "currentColor"} />
         </button>
