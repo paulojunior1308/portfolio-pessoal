@@ -228,3 +228,14 @@
     height: 20px;
     color: #6A0572;
   }
+
+  @media screen and (max-width: 768px) {
+    .sidebar {
+        width: 105%;
+        overflow-y: auto;
+    }
+
+    .price-inputs {
+        width: 85%;
+    }
+}

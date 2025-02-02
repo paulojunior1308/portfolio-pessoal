@@ -181,7 +181,7 @@ export function Roupas() {
               <h2>Filtros</h2>
             </div>
 
-            <div className="filtro-section">
+            <div className="filtro-sec">
               <button onClick={() => toggleFiltro('preco')} className="filtro-button">
                 Faixa de Preço
                 {filtrosExpandidos.preco ? <ChevronUp className="icon" /> : <ChevronDown className="icon" />}

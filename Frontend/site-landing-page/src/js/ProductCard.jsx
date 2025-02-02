@@ -1,72 +1,84 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { useFavorites } from './favorites';
+import { useCart } from './Cart';
 import '../css/ProductCard.css';
 
 export function ProductCard({ product }) {
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
+  const { addToCart } = useCart();
+  const isFavorite = favorites.some(fav => fav.id === product.id);
 
-    const nextImage = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setCurrentImageIndex((prev) => 
-            prev === product.images.length - 1 ? 0 : prev + 1
-        );
-    };
-
-    const prevImage = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setCurrentImageIndex((prev) => 
-            prev === 0 ? product.images.length - 1 : prev - 1
-        );
-    };
-
-    return (
-        <Link to={`/produto/${product.id}`} className="product-card">
-            <div className="product-card-image">
-                <div className="product-card-image-container">
-                    <img
-                        src={product.images[currentImageIndex]}
-                        alt={product.name}
-                    />
-                    {product.images.length > 1 && (
-                        <>
-                            <button
-                                onClick={prevImage}
-                                className="carousel-button left"
-                                aria-label="Previous image"
-                            >
-                                <ChevronLeft size={24} />
-                            </button>
-                            <button
-                                onClick={nextImage}
-                                className="carousel-button right"
-                                aria-label="Next image"
-                            >
-                                <ChevronRight size={24} />
-                            </button>
-                        </>
-                    )}
-                </div>
-                <div className="product-card-info">
-                    <h3 className="product-card-name">{product.nome}</h3>
-                    <div className="product-card-price">
-                        <span className="product-card-price-value">
-                            R$ {product.preco.toFixed(2)}
-                        </span>
-                        <button 
-                            className="product-card-button"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                // Add to cart logic here
-                            }}
-                        >
-                            Adicionar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </Link>
+  const nextImage = (e) => {
+    e.preventDefault();
+    setCurrentImageIndex((prev) => 
+      prev === product.images.length - 1 ? 0 : prev + 1
     );
+  };
+
+  const prevImage = (e) => {
+    e.preventDefault();
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? product.images.length - 1 : prev - 1
+    );
+  };
+
+  const toggleFavorite = (e) => {
+    e.preventDefault();
+    if (isFavorite) {
+      removeFavorite(product.id);
+    } else {
+      addFavorite(product);
+    }
+  };
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    addToCart(product);
+  };
+
+  return (
+    <Link to={`/produto/${product.id}`} className="product-card">
+      <div className="product-image-container">
+        <img
+          src={product.images[currentImageIndex]}
+          alt={product.nome}
+          className="product-image"
+        />
+        {product.images.length > 1 && (
+          <>
+            <button onClick={prevImage} className="nav-button prev">
+              <ChevronLeft className="nav-icon" />
+            </button>
+            <button onClick={nextImage} className="nav-button next">
+              <ChevronRight className="nav-icon" />
+            </button>
+          </>
+        )}
+        <button 
+          onClick={toggleFavorite} 
+          className={`favorite-button ${isFavorite ? 'active' : ''}`}
+        >
+          <Heart className="favorite-icon"
+          fill={isFavorite ? "#FF6B35" : "none"}
+          stroke={isFavorite ? "#FF6B35" : "currentColor"} />
+        </button>
+      </div>
+      <div className="product-info">
+        <h3 className="product-title">{product.nome}</h3>
+        <div className="product-footer">
+          <span className="product-price">
+            R$ {product.preco.toFixed(2)}
+          </span>
+          <button 
+            onClick={handleAddToCart}
+            className="add-to-cart">
+            Adicionar
+          </button>
+        </div>
+      </div>
+    </Link>
+  );
 }

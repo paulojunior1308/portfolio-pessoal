@@ -1,38 +1,79 @@
-import { ShoppingCart, User } from 'lucide-react';
+import { ShoppingCart, User, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { Search } from 'lucide-react';
+import { useFavorites } from '../js/favorites';
+import { useCart } from '../js/Cart';
+import { CartDropdown } from '../js/CartDropdown';
 import ToggleMenu from './ToggleMenu';
 import '../css/Navbar.css';
 
 export function Navbar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const { favorites } = useFavorites();
+    const { getCartCount } = useCart();
+    const cartDropdownRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (cartDropdownRef.current && !cartDropdownRef.current.contains(event.target)) {
+                setIsCartOpen(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
         <nav className='navbar'>
             <div className='logo'>
-                {/* ToggleMenu para dispositivos móveis */}
                 <div className="toggle-menu-container">
-                    <ToggleMenu />
+                    <ToggleMenu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
                 </div>
 
                 <Link to='/' className='logo-link'>ModaStyle</Link>
 
-                {/* Menu Normal (Aparece apenas em telas maiores) */}
-                <div className='menu'>
-                    <Link to="/produtos/roupas" className='menu-link'>Roupas</Link>
-                    <Link to="/produtos/tenis" className='menu-link'>Tênis</Link>
-                    <Link to="/lancamentos" className='menu-link'>Lançamentos</Link>
-                    <Link to="/promocoes" className='menu-link'>Promoções</Link>
+
+                <div className='procurar'>
+                    <input type="text" placeholder="O que você está procurando?" />
+                    <Search className="search-icon" />
+                </div>
+                
+                <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
+                    <Link to="/produtos/roupas" className='mobile-menu-link'>Roupas</Link>
+                    <Link to="/produtos/tenis" className='mobile-menu-link'>Tênis</Link>
+                    <Link to="/lancamentos" className='mobile-menu-link'>Lançamentos</Link>
+                    <Link to="/promocoes" className='mobile-menu-link'>Promoções</Link>
+                    <Link to="/conta" className='mobile-menu-link'>Minha Conta</Link>
                 </div>
 
-                {/* Ícones do Carrinho e Usuário */}
                 <div className='icons'>
-                    <Link to="/carrinho" className="link-carrinho">
-                        <ShoppingCart className="cart"/>
-                        <span className='carrinho-quantidade'>0</span>
+                    <Link to="/favoritos" className="icon-link">
+                        <Heart className="icon" color='#fff'/>
+                        {favorites.length > 0 && (
+                            <span className='badge'>{favorites.length}</span>
+                        )}
                     </Link>
-                    <Link to="/conta">
-                        <User className="user"/>
+                    <div className="cart-container" ref={cartDropdownRef}>
+                        <button 
+                            className="icon-link cart-button"
+                            onClick={() => setIsCartOpen(!isCartOpen)}
+                        >
+                            <ShoppingCart className="icon" color='#fff' />
+                            <span className='badge'>{getCartCount()}</span>
+                        </button>
+                        <CartDropdown isOpen={isCartOpen} />
+                    </div>
+                    <Link to="/conta" className="icon-link desktop-only">
+                        <User className="icon" color='#fff' />
                     </Link>
                 </div>
             </div>
         </nav>
+        
     );
 }

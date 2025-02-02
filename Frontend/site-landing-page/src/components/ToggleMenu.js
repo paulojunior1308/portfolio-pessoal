@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { User } from 'lucide-react';
 import '../css/ToggleMenu.css';
 
 const ToggleMenu = () => {
@@ -29,6 +30,12 @@ const ToggleMenu = () => {
         </label>
         <nav className={`menu-items ${isChecked ? 'open' : ''}`}>
           <ul>
+            <li>
+              <Link to="/conta" onClick={handleLinkClick} className="menu-login">
+                <User className="menu-icon" />
+                <span>Login / Cadastro</span>
+              </Link>
+            </li>
             <li>
               <Link to="/produtos/roupas" onClick={handleLinkClick}>Roupas</Link>
             </li>
