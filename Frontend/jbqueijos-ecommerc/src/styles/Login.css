@@ -1,0 +1,99 @@
+.login-container {
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-content {
+    max-width: 28rem;
+    width: 100%;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+.login-title {
+    font-size: 1.875rem;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-weight: bold;
+    color: #1D1D1D;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .error-message {
+    background-color: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #DC2626;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .login-form {
+    margin-top: 1rem;
+  }
+
+  .login-label {
+    display: block;
+    color: #7A5230;
+    margin-bottom: 0.25rem;
+    margin-top: 1rem;
+  }
+
+  .login-email .login-password {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.25rem;
+    outline: none;
+  }
+
+  .login-email .login-password:focus {
+    border-color: #D4A857;
+    box-shadow: 0 0 0 1px #D4A857;
+  }
+
+  .login-button {
+    width: 100%;
+    background-color: #D4A857;
+    color: #1D1D1D;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-size: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .login-button:hover {
+    opacity: 0.9;
+  }
+
+  .login-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .login-register {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .login-register-text {
+    color: #7A5230;
+  }
+
+  .login-register-link {
+    color: #D4A857;
+    text-decoration: none;
+  }
+
+  .login-register-link:hover {
+    text-decoration: underline;
+  }

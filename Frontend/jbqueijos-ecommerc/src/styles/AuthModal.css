@@ -1,0 +1,94 @@
+.auth-container {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.auth-modal {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 28rem;
+    width: 100%;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.auth-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.auth-modal-title {
+    font-size: 1.25rem;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-weight: 600;
+    color: #1D1D1D;
+}
+
+.auth-modal-close-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #1D1D1D;
+    transition: color 0.2s ease;
+}
+
+.auth-modal-close-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.auth-modal-message {
+    color: #7A5230;
+    margin-bottom: 1.5rem;
+}
+
+.auth-modal-button-container {
+    display: flex;
+    justify-content: column;
+    gap: 0.75rem;
+}
+
+.auth-modal-button {
+    width: 100%;
+    background-color: #D4A857;
+    color: #1D1D1D;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-size: 1.25rem;
+}
+
+.auth-modal-button:hover {
+    opacity: 0.9;
+}
+
+.auth-modal-button-register {
+    width: 100%;
+    background-color: #fff;
+    color: #D4A857;
+    border: 2px solid #D4A857;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-size: 1.25rem;
+}
+
+.auth-modal-button-register:hover {
+    opacity: 0.9;
+}

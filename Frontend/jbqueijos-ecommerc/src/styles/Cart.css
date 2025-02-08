@@ -1,0 +1,253 @@
+.carrinho-vazio {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.carrinho-vazio-title {
+  font-size: 1.5rem;
+  font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+  font-weight: bold;
+  color: #1D1D1D;
+  margin-bottom: 1rem;
+  margin-top: 5rem;
+}
+
+.carrinho-vazio-button {
+  background-color: #D4A857;
+  color: #1D1D1D;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+  font-size: 1.25rem;
+}
+
+.carrinho-vazio-button:hover {
+  opacity: 0.9;
+}
+
+.cart-container {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  .cart-title {
+    font-size: 1.875rem;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-weight: bold;
+    color: #1D1D1D; 
+    margin-bottom: 2rem;
+    margin-top: 5rem;
+  }
+  
+  .cart-content {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+ 
+  .cart-item-image {
+    width: 6rem;
+    height: 6rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+  
+  .cart-item-details {
+    flex: 1;
+    margin-left: 1rem;
+  }
+  
+  .cart-item-name {
+    font-size: 1.125rem;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-weight: 600;
+    color: #1D1D1D;
+    margin: 0;
+  }
+  
+  .cart-item-brand {
+    color: #7A5230;
+    margin: 0;
+  }
+  
+  .cart-item-price {
+    color: #1D1D1D;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .cart-quantity-button {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .cart-quantity-button:hover {
+    background-color: #f3f4f6; 
+    border-radius: 0.25rem;
+  }
+
+  .cart-quantity-icon{
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .cart-quantity-value {
+    width: 2rem;
+    margin-top: -0.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  
+  .cart-remove-button {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+  }
+  
+  .cart-remove-button:hover {
+    color: #dc2626;
+  }
+
+  .cart-remove-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .cart-summary {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .cart-total {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1D1D1D;
+  }
+  
+  .button-checkout-cart {
+    background-color: #D4A857;
+    color: #1D1D1D;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-size: 1.25rem;
+  }
+  
+  .button-checkout-cart:hover {
+    opacity: 0.9;
+  }
+  
+
+  @media (max-width: 768px) {
+    .cart-container {
+      padding: 0.5rem;
+    }
+  
+    .cart-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  
+    .cart-content {
+      padding: 1rem;
+    }
+  
+    .cart-item {
+      padding: 0.5rem 0;
+    }
+  
+    .cart-item-image {
+      width: 4rem;
+      height: 4rem;
+    }
+  
+    .cart-item-details {
+      margin-left: 0.5rem;
+    }
+  
+    .cart-item-name {
+      font-size: 1rem;
+    }
+  
+    .cart-item-brand {
+      font-size: 0.875rem;
+    }
+  
+    .cart-item-price {
+      font-size: 0.875rem;
+    }
+  
+    .cart-item-actions {
+      gap: 0.5rem;
+    }
+  
+    .cart-quantity-button {
+      padding: 0.25rem; 
+    }
+  
+    .cart-quantity-value {
+      width: 1.5rem;
+      margin-top: -0.25rem;
+      font-size: 1rem;
+    }
+  
+    .cart-remove-button {
+      padding: 0.25rem;
+    }
+  
+    .cart-remove-icon {
+      width: 1rem;
+      height: 1rem;
+    }
+  
+    .cart-summary {
+      margin-top: 1rem;
+    }
+  
+    .cart-total {
+      font-size: 1rem;
+    }
+  
+    .button-checkout-cart {
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
