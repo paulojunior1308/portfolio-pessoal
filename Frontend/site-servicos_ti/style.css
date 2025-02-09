@@ -174,7 +174,7 @@ body {
 
 .slides {
   display: flex;
-  width: 300%;
+  width: 400%;
   transition: transform 0.5s ease-in-out;
 }
 
@@ -278,11 +278,15 @@ input[name="radio"] {
 }
 
 #slide2:checked ~ .slides {
-  transform: translateX(-33.33%);
+  transform: translateX(-25%);
 }
 
 #slide3:checked ~ .slides {
-  transform: translateX(-66.66%);
+  transform: translateX(-50%);
+}
+
+#slide4:checked ~ .slides {
+  transform: translateX(-75%);
 }
 
 .contato {

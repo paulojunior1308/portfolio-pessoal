@@ -8,6 +8,7 @@ import ToggleMenu from "./ToggleMenu";
 import Projeto1 from "../image/projeto-bdn.png";
 import Projeto2 from "../image/projeto-jrtech.png";
 import Projeto3 from "../image/projeto-modastyle.png";
+import Projeto4 from "../image/projeto-jb.png";
 import Css from "../image/css.jpg";
 import Java from "../image/java.jpg";
 import ReactJs from "../image/react.jpg";
@@ -151,6 +152,32 @@ const Projetos = () => {
                     </div>
                   </div>
                 </div>
+                <div className="content-card">
+                  <div className="text-project">
+                    <h2>JB Queijos e Laticínios</h2>
+                    <span>Institucional</span>
+                    <p>
+                      E-commerce real com propósito de chamar clientes e fazer o primeiro atendimento, desenvolvido em React, JavaScript, HTML e CSS.
+                    </p>
+                  </div>
+                  <div className="cta-project">
+                    <div className="tag-project">
+                      <img src={Javascript} alt="javascript" />
+                      <img src={Css} alt="css" />
+                      <img src={ReactJs} alt="react" />
+                    </div>
+                    <div className="btn-project">
+                      <a
+                        href="https://jbqueijoslaticinios.netlify.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Acesse o site
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
