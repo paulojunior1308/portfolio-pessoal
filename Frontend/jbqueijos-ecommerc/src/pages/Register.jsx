@@ -38,6 +38,7 @@ function Register() {
         cnpj: formData.cnpj,
         email: formData.email,
         phone: formData.phone,
+        role: 'CLIENT', // Default role for new registrations
         createdAt: new Date().toISOString()
       });
 

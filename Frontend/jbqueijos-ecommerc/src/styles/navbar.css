@@ -92,3 +92,23 @@
   font-size: 14px;
   font-weight: bold;
 }
+
+@media (max-width: 768px) {
+  
+  .brand {
+    font-size: 1rem;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+  }
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .navbar-content {
+    gap: 2rem;
+  }
+}
