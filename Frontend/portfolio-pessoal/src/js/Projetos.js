@@ -53,7 +53,7 @@ const Projetos = () => {
 
                 <div className="content-card">
                   <div className="text-project">
-                    <h2>JB Queijos e Latícinios</h2>
+                    <h2>JB Queijos e Laticínios</h2>
                     <span>Institucional</span>
                     <p>
                       Sistema para controle de estoque e logística da empresa.
@@ -152,6 +152,17 @@ const Projetos = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div
+                className="card-project"
+                data-aos="zoom-in"
+                data-aos-delay="150"
+              >
+                <div className="img-project">
+                  <img src={Projeto4} alt="bnd logistics" />
+                </div>
+                
                 <div className="content-card">
                   <div className="text-project">
                     <h2>JB Queijos e Laticínios</h2>
@@ -177,8 +188,8 @@ const Projetos = () => {
                     </div>
                   </div>
                 </div>
-
               </div>
+
             </div>
           </div>
         </div>
