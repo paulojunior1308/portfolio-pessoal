@@ -4,6 +4,8 @@
 # Ignorar arquivos de configuração sensíveis
 #config.js
 #emailService.js
+
+.env.local
 # dependencies
 /node_modules
 /.pnp

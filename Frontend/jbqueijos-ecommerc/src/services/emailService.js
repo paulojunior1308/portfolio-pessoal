@@ -3,9 +3,9 @@ import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
-const YOUR_SERVICE_ID = 'service_13cbgvj';
-const YOUR_TEMPLATE_ID = 'template_i0u320m';
-const YOUR_PUBLIC_KEY = 'J5v-R1GSnIze2hICS';
+const YOUR_SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+const YOUR_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+const YOUR_PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
 
 export const sendQuoteRequest = async (cartItems) => {
   try {
