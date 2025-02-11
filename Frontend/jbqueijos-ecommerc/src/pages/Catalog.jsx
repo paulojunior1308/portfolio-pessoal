@@ -3,11 +3,13 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useCart } from '../context/CartContext';
 import { addSampleProducts } from '../utils/sampleProducts';
+import { Search } from 'lucide-react';
 import '../styles/Catalog.css';
 
 function Catalog() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   const { addItem } = useCart();
 
   useEffect(() => {
@@ -19,10 +21,8 @@ function Catalog() {
           ...doc.data()
         }));
         
-        // Se não houver produtos, adiciona os produtos de exemplo
         if (productsData.length === 0) {
           await addSampleProducts();
-          // Busca novamente após adicionar os produtos
           const newSnapshot = await getDocs(collection(db, 'products'));
           const newProductsData = newSnapshot.docs.map(doc => ({
             id: doc.id,
@@ -42,6 +42,10 @@ function Catalog() {
     fetchProducts();
   }, []);
 
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -52,9 +56,21 @@ function Catalog() {
 
   return (
     <div>
-      <h2 className="catalog-title">Nossos Produtos</h2>
+      <div className="catalog-header">
+        <h2 className="catalog-title">Nossos Produtos</h2>
+        <div className="search-container">
+          <Search className="search-icon" />
+          <input
+            type="text"
+            placeholder="Buscar produtos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
+        </div>
+      </div>
       <div className="catalog-grid">
-        {products.map(product => (
+        {filteredProducts.map(product => (
           <div key={product.id} className="product-card">
             <img src={product.imageUrl} alt={product.name} className="product-image" />
             <div className="product-info">

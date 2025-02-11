@@ -25,6 +25,42 @@
     grid-template-columns: repeat(1, 1fr);
     gap: 1.5rem;
   }
+
+  .search-container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    display: flex;
+    align-items: center;
+    border: 2px solid #D4A857;
+    border-radius: 0.5rem;
+    background-color: white;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 40px 10px 10px;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #7A5230;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 10px; /* Move o ícone para o final */
+    color: #7A5230;
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+  }
   
   @media (min-width: 768px) {
     .catalog-grid {

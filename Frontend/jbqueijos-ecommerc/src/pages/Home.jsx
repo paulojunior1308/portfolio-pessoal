@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="home-content">
-        <h1 className="home-title">JB Queijos e Laticínios</h1>
+        <h1 className="home-title">JB Frios e Laticínios</h1>
         <p className="home-subtitle">
           Descubra o sabor autêntico dos melhores queijos artesanais
         </p>
