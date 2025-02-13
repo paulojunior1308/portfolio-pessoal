@@ -76,10 +76,15 @@ function App() {
                 <p className="text-lg mb-6">
                   Descubra as últimas novidades e ofertas especiais
                 </p>
-                <button className="btn-secondary flex items-center space-x-2">
+                <a
+                  href="https://www.natura.com.br/consultoria/claudio211015cruzsantos"
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn-secondary flex items-center space-x-2"
+                >
                   <Book className="h-5 w-5" />
                   <span>Acessar Revistas</span>
-                </button>
+                </a>
               </div>
               <div className="w-full md:w-1/3">
                 <div className="relative">
