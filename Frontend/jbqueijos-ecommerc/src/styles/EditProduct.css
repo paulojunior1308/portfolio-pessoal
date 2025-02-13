@@ -1,0 +1,137 @@
+.edit-product-container {
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 5rem;
+    width: 80%;
+  }
+  
+  .edit-product-title {
+    font-size: 2rem;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-weight: bold;
+    color: #1D1D1D;
+    margin-bottom: 2rem;
+  }
+  
+  .edit-form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-label {
+    display: block;
+    color: #7A5230;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #D4A857;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .form-input:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: #7A5230;
+  }
+  
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .cancel-button,
+  .save-button {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-size: 1.25rem;
+  }
+  
+  .cancel-button {
+    background-color: #fff;
+    color: #D4A857;
+    border: 2px solid #D4A857;
+  }
+  
+  .save-button {
+    background-color: #D4A857;
+    color: #1D1D1D;
+    border: none;
+  }
+  
+  .cancel-button:hover,
+  .save-button:hover {
+    opacity: 0.9;
+  }
+  
+  .save-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 16rem;
+  }
+  
+  .loading-text {
+    font-size: 1.25rem;
+    color: #7A5230;
+  }
+  
+  .error-container {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .error-message {
+    color: #DC2626;
+    margin-bottom: 1rem;
+  }
+  
+  .back-button {
+    background-color: #D4A857;
+    color: #1D1D1D;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-size: 1.25rem;
+  }
+  
+  .back-button:hover {
+    opacity: 0.9;
+  }

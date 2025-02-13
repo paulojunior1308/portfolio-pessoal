@@ -1,0 +1,97 @@
+.profile-container-conta {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 5rem;
+  }
+  
+  .profile-title {
+    font-size: 2rem;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-weight: bold;
+    color: #1D1D1D;
+    margin-bottom: 2rem;
+  }
+  
+  .profile-form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    color: #7A5230;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #D4A857;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #7A5230;
+  }
+  
+  .form-group small {
+    display: block;
+    color: #6B7280;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+  }
+  
+  .disabled-input {
+    background-color: #F3F4F6;
+    cursor: not-allowed;
+  }
+  
+  .save-button {
+    width: 100%;
+    background-color: #D4A857;
+    color: #1D1D1D;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-size: 1.25rem;
+  }
+  
+  .save-button:hover {
+    opacity: 0.9;
+  }
+  
+  .save-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .success-message {
+    background-color: #DEF7EC;
+    color: #03543F;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .error-message {
+    background-color: #FDE8E8;
+    color: #9B1C1C;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }

@@ -1,0 +1,165 @@
+.orders-container {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-top: 5rem;
+  }
+  
+  .orders-title {
+    font-size: 2rem;
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-weight: bold;
+    color: #1D1D1D;
+    margin-bottom: 2rem;
+  }
+  
+  .no-orders {
+    text-align: center;
+    padding: 3rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #6B7280;
+  }
+  
+  .orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .order-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .order-header {
+    padding: 1rem;
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .order-number {
+    font-weight: 600;
+    color: #1D1D1D;
+  }
+  
+  .order-date {
+    color: #6B7280;
+    font-size: 0.875rem;
+  }
+  
+  .order-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .order-status.pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+  }
+  
+  .order-status.approved {
+    background-color: #DEF7EC;
+    color: #03543F;
+  }
+  
+  .order-status.completed {
+    background-color: #E1EFFE;
+    color: #1E429F;
+  }
+  
+  .order-status.cancelled {
+    background-color: #FDE8E8;
+    color: #9B1C1C;
+  }
+  
+  .order-items {
+    padding: 1rem;
+  }
+  
+  .order-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  
+  .order-item:last-child {
+    border-bottom: none;
+  }
+  
+  .item-image {
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+    border-radius: 0.25rem;
+  }
+  
+  .item-details {
+    flex: 1;
+  }
+  
+  .item-details h4 {
+    font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+    font-weight: 600;
+    color: #1D1D1D;
+    margin-bottom: 0.25rem;
+  }
+  
+  .item-quantity {
+    color: #6B7280;
+    font-size: 0.875rem;
+  }
+  
+  .item-price {
+    color: #1D1D1D;
+    font-weight: 600;
+    margin-top: 0.25rem;
+  }
+  
+  .order-footer {
+    padding: 1rem;
+    background-color: #F9FAFB;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .order-total {
+    font-weight: 600;
+    color: #1D1D1D;
+    font-size: 1.125rem;
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 16rem;
+  }
+  
+  .loading-text {
+    font-size: 1.25rem;
+    color: #7A5230;
+  }
+  
+  .error-container {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .error-message {
+    color: #DC2626;
+  }

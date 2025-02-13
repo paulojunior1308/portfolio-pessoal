@@ -60,6 +60,54 @@
   color: #D4A857;
 }
 
+.product-management-container {
+  position: relative;
+}
+
+.product-management-button {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  font-size: 1.4rem;
+  font-family: 'Cormorant Garamond', 'Georgia', 'serif';
+  font-weight: bold;
+}
+
+.product-management-button span:hover {
+  color: #D4A857;
+}
+
+.product-management-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  padding: 8px 0;
+}
+
+.product-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  color: #1D1D1D;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  width: 100%;
+  font-size: 0.875rem;
+}
+
 .icon {
   height: 24px;
   width: 24px;

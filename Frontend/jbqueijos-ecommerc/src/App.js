@@ -9,8 +9,11 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Register from './pages/Register';
 import ProductManagement from './pages/ProductManagement';
+import EditProducts from './pages/EditProducts';
+import EditProduct from './pages/EditProduct';
+import Profile from './pages/Profile';
+import Orders from './pages/Orders';
 import Login from './pages/Login';
-import ProtectedRoute from './components/ProtectRoute';
 import './styles/global.css';
 
 function App() {
@@ -25,31 +28,14 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/catalog" element={<Catalog />} />
-                <Route 
-                  path="/cart" 
-                  element={
-                    <ProtectedRoute allowedRoles={['CLIENT']}>
-                      <Cart />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/checkout" 
-                  element={
-                    <ProtectedRoute allowedRoles={['CLIENT']}>
-                      <Checkout />
-                    </ProtectedRoute>
-                  } 
-                />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/product-management" element={<ProductManagement />} />
+                <Route path="/edit-products" element={<EditProducts />} />
+                <Route path="/edit-product/:id" element={<EditProduct />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/orders" element={<Orders />} />
                 <Route path="/login" element={<Login />} />
-                <Route
-                  path="/product-management"
-                  element={
-                    <ProtectedRoute allowedRoles={['ADMIN']}>
-                      <ProductManagement />
-                    </ProtectedRoute>
-                  }
-                />
               </Routes>
             </main>
           </div>

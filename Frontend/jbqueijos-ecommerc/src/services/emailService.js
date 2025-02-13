@@ -38,9 +38,9 @@ export const sendQuoteRequest = async (cartItems) => {
 
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-    // Preparar dados para o template do email
+    
     const templateParams = {
-      to_email: 'pauloesjr2@gmail.com',
+      to_email: 'vivi.bruno.a@gmail.com',
       from_name: companyData.companyName,
       customer_email: companyData.email,
       customer_phone: companyData.phone,
