@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import toast from 'react-hot-toast';
+import { createUser } from '../lib/firebase/auth';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -12,19 +13,37 @@ export default function Register() {
     e.preventDefault();
     setLoading(true);
 
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const phone = formData.get('phone') as string;
+    const address = formData.get('address') as string;
+
     try {
-      // TODO: Implement Firebase authentication
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated delay
+      const userData = {
+        name,
+        email,
+        phone,
+        address,
+      };
+
+      // Cria o usuário no Firebase Authentication e no Firestore
+      const user = await createUser(email, password, userData);
+
+      // Atualiza o estado global do usuário
       setUser({
-        id: '1',
-        name: 'John Doe',
-        email: 'john@example.com',
-        address: 'Rua Exemplo, 123',
-        phone: '(11) 98765-4321'
+        uid: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
       });
+
       toast.success('Cadastro realizado com sucesso!');
-      navigate('/profile');
+      navigate('/profile'); // Redireciona para a página de perfil
     } catch (error) {
+      console.error(error);
       toast.error('Erro ao criar conta. Tente novamente.');
     } finally {
       setLoading(false);
@@ -53,6 +72,7 @@ export default function Register() {
               <input
                 type="text"
                 id="name"
+                name="name"
                 required
                 className="input"
               />
@@ -65,6 +85,7 @@ export default function Register() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 required
                 className="input"
               />
@@ -77,6 +98,7 @@ export default function Register() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 required
                 className="input"
               />
@@ -89,6 +111,7 @@ export default function Register() {
               <input
                 type="tel"
                 id="phone"
+                name="phone"
                 required
                 className="input"
               />
@@ -101,6 +124,7 @@ export default function Register() {
               <input
                 type="text"
                 id="address"
+                name="address"
                 required
                 className="input"
               />

@@ -1,10 +1,28 @@
-import { create } from 'zustand';
-import { User, CartItem } from '../types';
+import { create } from "zustand";
+
+interface User {
+  uid: string;
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+}
+
+interface CartItem {
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+  };
+  quantity: number;
+}
 
 interface Store {
   user: User | null;
   cart: CartItem[];
   setUser: (user: User | null) => void;
+  updateUser: (updatedData: Partial<User>) => void;
   addToCart: (item: CartItem) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -15,6 +33,10 @@ export const useStore = create<Store>((set) => ({
   user: null,
   cart: [],
   setUser: (user) => set({ user }),
+  updateUser: (updatedData) =>
+    set((state) => ({
+      user: state.user ? { ...state.user, ...updatedData } : null,
+    })),
   addToCart: (item) =>
     set((state) => {
       const existingItem = state.cart.find(

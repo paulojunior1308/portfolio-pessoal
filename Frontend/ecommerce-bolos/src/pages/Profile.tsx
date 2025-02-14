@@ -1,21 +1,47 @@
-import { useState } from 'react';
-import { useStore } from '../store/useStore';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import { useStore } from "../store/useStore";
+import toast from "react-hot-toast";
+import { db } from "../lib/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 export default function Profile() {
-  const { user } = useStore();
+  const { user, updateUser } = useStore();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
+    if (!user?.uid) {
+      toast.error("Usuário não autenticado.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      // TODO: Implement profile update in Firebase
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated delay
-      toast.success('Perfil atualizado com sucesso!');
+      const formData = new FormData(e.target as HTMLFormElement);
+      const updatedData: Record<string, any> = {};
+
+      ["name", "phone", "address"].forEach((field) => {
+        const value = formData.get(field)?.toString().trim();
+        if (value) updatedData[field] = value;
+      });
+
+      if (Object.keys(updatedData).length === 0) {
+        toast.error("Nenhuma alteração detectada.");
+        setLoading(false);
+        return;
+      }
+
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, updatedData);
+
+      updateUser({ ...user, ...updatedData });
+
+      toast.success("Perfil atualizado com sucesso!");
     } catch (error) {
-      toast.error('Erro ao atualizar perfil. Tente novamente.');
+      console.error("Erro ao atualizar perfil:", error);
+      toast.error("Erro ao atualizar perfil. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -46,6 +72,7 @@ export default function Profile() {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   defaultValue={user.name}
                   className="input"
                 />
@@ -58,6 +85,7 @@ export default function Profile() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   defaultValue={user.email}
                   disabled
                   className="input bg-gray-50"
@@ -71,6 +99,7 @@ export default function Profile() {
                 <input
                   type="tel"
                   id="phone"
+                  name="phone"
                   defaultValue={user.phone}
                   className="input"
                 />
@@ -83,6 +112,7 @@ export default function Profile() {
                 <input
                   type="text"
                   id="address"
+                  name="address"
                   defaultValue={user.address}
                   className="input"
                 />
@@ -93,7 +123,7 @@ export default function Profile() {
                 disabled={loading}
                 className="btn btn-primary"
               >
-                {loading ? 'Salvando...' : 'Salvar Alterações'}
+                {loading ? "Salvando..." : "Salvar Alterações"}
               </button>
             </form>
           </div>

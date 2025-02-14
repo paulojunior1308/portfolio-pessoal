@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import toast from 'react-hot-toast';
+import { signIn } from '../lib/firebase/auth';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -12,19 +13,27 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
 
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
     try {
-      // TODO: Implement Firebase authentication
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated delay
+      // Faz o login usando o Firebase Authentication
+      const user = await signIn(email, password);
+
+      // Atualiza o estado global do usuário
       setUser({
-        id: '1',
-        name: 'John Doe',
-        email: 'john@example.com',
-        address: 'Rua Exemplo, 123',
-        phone: '(11) 98765-4321'
+        uid: user.id,
+        name: user.name,
+        email: user.email,
+        address: user.address,
+        phone: user.phone,
       });
+
       toast.success('Login realizado com sucesso!');
-      navigate('/profile');
+      navigate('/profile'); // Redireciona para a página de perfil
     } catch (error) {
+      console.error('Erro no login:', error);
       toast.error('Erro ao fazer login. Verifique suas credenciais.');
     } finally {
       setLoading(false);
@@ -53,6 +62,7 @@ export default function Login() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 required
                 className="input"
               />
@@ -65,6 +75,7 @@ export default function Login() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 required
                 className="input"
               />
