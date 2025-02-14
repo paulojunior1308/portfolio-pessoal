@@ -38,7 +38,7 @@ export default function Checkout() {
       };
 
       await createOrder({
-        userId: user.id,
+        userId: user.uid,
         items: cart,
         total,
         address: `${address.street}, ${address.number}${address.complement ? ` - ${address.complement}` : ''}, ${address.neighborhood}, ${address.city} - ${address.state}`,
