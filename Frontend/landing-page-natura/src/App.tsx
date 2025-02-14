@@ -12,7 +12,7 @@ const products = [
     description: "Fragrância floral intensa e marcante"
   },
   {
-    image: "https://images.unsplash.com/photo-1594466785744-1d935d1173bc?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1629732047847-50219e9c5aef?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "Hidratante Tododia",
     price: "R$ 49,90",
     description: "Hidratação profunda para sua pele"
@@ -45,7 +45,15 @@ function App() {
             <p className="text-xl text-gray-600 mb-8">
               Descubra produtos exclusivos e faça parte dessa jornada vibrante.
             </p>
-            <button className="btn-primary text-lg">Ver Produtos</button>
+            <a
+              href="https://www.natura.com.br/consultoria/claudio211015cruzsantos"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center space-x-2"
+            >
+              <Book className="h-5 w-5" />
+              <span>Acessar Revistas</span>
+            </a>
           </motion.div>
         </div>
       </section>
@@ -79,8 +87,8 @@ function App() {
                 <a
                   href="https://www.natura.com.br/consultoria/claudio211015cruzsantos"
                   target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn-secondary flex items-center space-x-2"
+                  rel="noopener noreferrer"
+                  className="btn-secondary inline-flex items-center space-x-2"
                 >
                   <Book className="h-5 w-5" />
                   <span>Acessar Revistas</span>
