@@ -6,22 +6,22 @@ import MessageCircle from './assets/whatsapp.png';
 
 const products = [
   {
-    image: "https://images.unsplash.com/photo-1571875257727-256c39da42af?auto=format&fit=crop&q=80&w=800",
-    name: "Perfume Natura Luna",
-    price: "R$ 159,90",
-    description: "Fragrância floral intensa e marcante"
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwbd43b88d/NATBRA-186458_1.jpg",
+    name: "Kit Tododia Energia Flor de gengibre e Tangerina com Body Splash",
+    price: "R$ 81,80",
+    description: "Pele hidratada, perfumada e com mais energia."
   },
   {
-    image: "https://images.unsplash.com/photo-1629732047847-50219e9c5aef?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    name: "Hidratante Tododia",
-    price: "R$ 49,90",
-    description: "Hidratação profunda para sua pele"
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw5b40dea1/NATBRA-152300_1.jpg",
+    name: "Creme Energizante Corporal 2 em 1 Tododia Energia",
+    price: "R$ 72,90",
+    description: "Hidratação imediata e refrescante que blinda a pele contra agressões externas."
   },
   {
-    image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=800",
-    name: "Óleo Corporal",
-    price: "R$ 89,90",
-    description: "Nutrição e brilho para sua pele"
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dweffa9015/NATBRA-152286_1.jpg",
+    name: "Tododia Flor de Gengibre e Tangerina Body Splash Feminino",
+    price: "R$ 83,90",
+    description: "Perfumação leve e energizante que desperta os sentidos."
   }
 ];
 
