@@ -13,6 +13,9 @@ export default {
           playfair: ['Playfair Display', 'serif'],
           lato: ['Lato', 'sans-serif'],
         },
+        backgroundImage: {
+          'instagram-gradient': 'linear-gradient(to right, #833ab4, #fd1d1d, #fcb045)',
+        },
       },
     },
     plugins: [],

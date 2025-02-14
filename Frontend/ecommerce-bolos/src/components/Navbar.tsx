@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShoppingBag, User, Menu, LogOut } from 'lucide-react';
+import { ShoppingBag, User, Menu, LogOut, CakeSlice } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useState } from 'react';
 
@@ -17,12 +17,13 @@ export default function Navbar() {
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="font-playfair text-2xl text-wine">
-            Sweet Delights
+          <Link to="/" className="font-playfair text-2xl text-wine flex items-center gap-2">
+            <CakeSlice className="w-6 h-6" />
+            Cida Confeitaria
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/products" className="text-soft-black hover:text-wine">
+            <Link to="/products" className="text-soft-black hover:text-wine font-bold">
               Produtos
             </Link>
             <div className="relative">
