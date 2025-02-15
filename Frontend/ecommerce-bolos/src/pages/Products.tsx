@@ -16,9 +16,17 @@ const SAMPLE_PRODUCTS = [
     name: 'Brigadeiros Gourmet',
     description: 'Caixa com 12 brigadeiros artesanais',
     price: 25.00,
-    image: 'https://images.unsplash.com/photo-1581343600721-f4ea1318ec57',
+    image: 'https://down-br.img.susercontent.com/file/br-11134207-7r98o-lwn6b7zkw2vmd2',
     category: 'Doces'
   },
+  {
+    id: '3',
+    name: 'Cupcake de Chocolate',
+    description: 'Cupcake macio com cobertura de chocolate belga',
+    price: 5.00,
+    image: 'https://www.mococa.com.br/wp-content/uploads/2022/03/Cupcake-Mococa.jpeg',
+    category: 'Cupcakes'
+  }
   // Add more sample products as needed
 ];
 
@@ -64,7 +72,7 @@ export default function Products() {
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-48 object-cover"
+                className="w-full h-80 object-cover"
               />
               <div className="p-4">
                 <h3 className="font-playfair text-xl mb-2">{product.name}</h3>
