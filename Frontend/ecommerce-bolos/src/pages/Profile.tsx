@@ -1,19 +1,41 @@
-import { useState } from "react";
-import { useStore } from "../store/useStore";
-import toast from "react-hot-toast";
-import { db } from "../lib/firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { useState, useEffect } from 'react';
+import { useStore } from '../store/useStore';
+import toast from 'react-hot-toast';
+import { db } from '../lib/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
+import { getUserOrders } from '../lib/firebase/orders';
+import { Order } from '../types';
 
 export default function Profile() {
   const { user, updateUser } = useStore();
   const [loading, setLoading] = useState(false);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loadingOrders, setLoadingOrders] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!user?.id) return;
+
+      try {
+        const userOrders = await getUserOrders(user.id);
+        setOrders(userOrders);
+      } catch (error) {
+        console.error('Erro ao carregar pedidos:', error);
+        toast.error('Erro ao carregar histórico de pedidos');
+      } finally {
+        setLoadingOrders(false);
+      }
+    };
+
+    fetchOrders();
+  }, [user?.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!user?.uid) {
-      toast.error("Usuário não autenticado.");
+    if (!user?.id) {
+      toast.error('Usuário não autenticado.');
       setLoading(false);
       return;
     }
@@ -22,26 +44,26 @@ export default function Profile() {
       const formData = new FormData(e.target as HTMLFormElement);
       const updatedData: Record<string, any> = {};
 
-      ["name", "phone", "address"].forEach((field) => {
+      ['name', 'phone', 'address'].forEach((field) => {
         const value = formData.get(field)?.toString().trim();
         if (value) updatedData[field] = value;
       });
 
       if (Object.keys(updatedData).length === 0) {
-        toast.error("Nenhuma alteração detectada.");
+        toast.error('Nenhuma alteração detectada.');
         setLoading(false);
         return;
       }
 
-      const userDocRef = doc(db, "users", user.uid);
+      const userDocRef = doc(db, 'users', user.id);
       await updateDoc(userDocRef, updatedData);
 
       updateUser({ ...user, ...updatedData });
 
-      toast.success("Perfil atualizado com sucesso!");
+      toast.success('Perfil atualizado com sucesso!');
     } catch (error) {
-      console.error("Erro ao atualizar perfil:", error);
-      toast.error("Erro ao atualizar perfil. Tente novamente.");
+      console.error('Erro ao atualizar perfil:', error);
+      toast.error('Erro ao atualizar perfil. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -123,7 +145,7 @@ export default function Profile() {
                 disabled={loading}
                 className="btn btn-primary"
               >
-                {loading ? "Salvando..." : "Salvar Alterações"}
+                {loading ? 'Salvando...' : 'Salvar Alterações'}
               </button>
             </form>
           </div>
@@ -132,7 +154,30 @@ export default function Profile() {
         <div>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="font-playfair text-xl mb-4">Últimos Pedidos</h2>
-            <p className="text-gray-600">Nenhum pedido realizado ainda.</p>
+            {loadingOrders ? (
+              <p className="text-gray-600">Carregando pedidos...</p>
+            ) : orders.length === 0 ? (
+              <p className="text-gray-600">Nenhum pedido realizado ainda.</p>
+            ) : (
+              <div className="space-y-4">
+                {orders.map((order) => (
+                  <div key={order.id} className="border-b pb-4">
+                    <p className="font-medium">Pedido #{order.id.slice(-6)}</p>
+                    <p className="text-sm text-gray-600">{new Date(order.createdAt).toLocaleDateString()}</p>
+                    {order.items?.map((item) => (
+                      <div key={item.product.id} className="flex items-center gap-4 mt-2">
+                        <img src={item.product.image} alt={item.product.name} className="w-16 h-16 rounded" />
+                        <div>
+                          <p className="font-medium">{item.product.name}</p>
+                          <p className="text-sm text-gray-600">Qtd: {item.quantity} x R$ {item.product.price.toFixed(2)}</p>
+                        </div>
+                      </div>
+                    ))}
+                    <p className="text-sm font-bold mt-2">Total: R$ {order.total.toFixed(2)}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

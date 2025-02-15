@@ -1,39 +1,39 @@
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
   signOut as firebaseSignOut,
   onAuthStateChanged,
-  User as FirebaseUser,
+  User as FirebaseUser
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase'; // Ajuste o caminho conforme necessário
-import { User } from '../../types'; // Ajuste o caminho conforme necessário
+import { auth, db } from '../firebase';
+import { User } from '../../types';
 
 export const createUser = async (
   email: string,
   password: string,
-  userData: Omit<User, 'id'>
+  userData: Omit<User, 'id' | 'role'>
 ) => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   const user = userCredential.user;
 
-  // Cria o documento do usuário no Firestore
-  await setDoc(doc(db, 'users', user.uid), {
+  // Criar documento do usuário no Firestore
+  const newUser = {
     ...userData,
     id: user.uid,
-    createdAt: new Date().toISOString(),
-  });
-
-  return {
-    id: user.uid,
-    ...userData,
+    role: 'CLIENT' as const, // Usuários novos sempre são CLIENT por padrão
+    createdAt: new Date().toISOString()
   };
+
+  await setDoc(doc(db, 'users', user.uid), newUser);
+
+  return newUser;
 };
 
 export const signIn = async (email: string, password: string) => {
   const userCredential = await signInWithEmailAndPassword(auth, email, password);
   const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
-
+  
   if (!userDoc.exists()) {
     throw new Error('Usuário não encontrado no banco de dados');
   }

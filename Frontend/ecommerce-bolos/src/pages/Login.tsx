@@ -23,7 +23,7 @@ export default function Login() {
 
       // Atualiza o estado global do usuário
       setUser({
-        uid: user.id,
+        id: user.id,
         name: user.name,
         email: user.email,
         address: user.address,

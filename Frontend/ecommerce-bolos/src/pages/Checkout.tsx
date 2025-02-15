@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { createOrder } from '../lib/firebase/orders';
@@ -13,12 +13,6 @@ export default function Checkout() {
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
-
-  useEffect(() => {
-    if (cart.length === 0) {
-      navigate('/cart');
-    }
-  }, [cart.length, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,11 +31,13 @@ export default function Checkout() {
         state: formData.get('state') as string,
       };
 
+      const fullAddress = `${address.street}, ${address.number}${address.complement ? ` - ${address.complement}` : ''}, ${address.neighborhood}, ${address.city} - ${address.state}`;
+
       await createOrder({
-        userId: user.uid,
+        userId: user.id,
         items: cart,
-        total,
-        address: `${address.street}, ${address.number}${address.complement ? ` - ${address.complement}` : ''}, ${address.neighborhood}, ${address.city} - ${address.state}`,
+        total: Number(total),
+        address: fullAddress,
         status: 'pending'
       });
 
