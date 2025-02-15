@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, User, Menu, LogOut, Plus, Edit, CakeSlice } from 'lucide-react';
+import { User, Menu, LogOut, Plus, Edit, CakeSlice, ShoppingCart, ShoppingBasket } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useState, useRef } from 'react';
 
@@ -121,7 +121,7 @@ export default function Navbar() {
               )}
             </div>
             <Link to="/cart" className="relative text-soft-black hover:text-wine">
-              <ShoppingBag className="w-6 h-6" />
+              <ShoppingCart className="w-6 h-6" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-wine text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {cartItemsCount}
@@ -131,10 +131,16 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu */}
+          
           <div className="md:hidden flex items-center space-x-4">
+            {!isAdmin && (
+              <Link to="/products" className="text-soft-black hover:text-wine">
+                <ShoppingBasket className="w-6 h-6" />
+              </Link>
+            )}
             {/* Carrinho */}
             <Link to="/cart" className="relative text-soft-black hover:text-wine">
-              <ShoppingBag className="w-6 h-6" />
+              <ShoppingCart className="w-6 h-6" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-wine text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {cartItemsCount}
@@ -192,7 +198,6 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Menu de Produtos (apenas para ADMIN) */}
             {isAdmin && (
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
@@ -204,7 +209,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown (apenas para ADMIN) */}
         {isAdmin && showMobileMenu && (
           <div className="md:hidden py-4 border-t">
             <div className="space-y-2">
