@@ -1,13 +1,15 @@
 import { motion } from 'framer-motion';
+import { ShoppingCart } from 'lucide-react';
 
 interface ProductCardProps {
   image: string;
   name: string;
   price: string;
   description: string;
+  url: string;
 }
 
-export default function ProductCard({ image, name, price, description }: ProductCardProps) {
+export default function ProductCard({ image, name, price, description, url }: ProductCardProps) {
   return (
     <motion.div 
       className="bg-white rounded-xl shadow-lg overflow-hidden"
@@ -26,6 +28,15 @@ export default function ProductCard({ image, name, price, description }: Product
         <p className="text-gray-600 text-sm mt-1">{description}</p>
         <div className="mt-4 flex justify-between items-center">
           <span className="text-primary font-semibold text-lg">{price}</span>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary inline-flex items-center space-x-2 px-4 py-2"
+          >
+            <ShoppingCart className="h-4 w-4" />
+            <span>Comprar</span>
+          </a>
         </div>
       </div>
     </motion.div>

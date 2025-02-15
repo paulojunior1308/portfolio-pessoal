@@ -9,19 +9,22 @@ const products = [
     image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwbd43b88d/NATBRA-186458_1.jpg",
     name: "Kit Tododia Energia Flor de gengibre e Tangerina com Body Splash",
     price: "R$ 81,80",
-    description: "Pele hidratada, perfumada e com mais energia."
+    description: "Pele hidratada, perfumada e com mais energia.",
+    url: "https://www.natura.com.br/p/kit-tododia-energia-flor-de-gengibre-e-tangerina-com-body-splash/NATBRA-186458?position=1&listTitle=tab+showcase+-+experimente+uma+exclusiva+rotina+energizante&consultoria=claudio211015cruzsantos"
   },
   {
     image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw5b40dea1/NATBRA-152300_1.jpg",
     name: "Creme Energizante Corporal 2 em 1 Tododia Energia",
     price: "R$ 72,90",
-    description: "Hidratação imediata e refrescante que blinda a pele contra agressões externas."
+    description: "Hidratação imediata e refrescante que blinda a pele contra agressões externas.",
+    url: "https://www.natura.com.br/p/creme-energizante-corporal-2-em-1-tododia-energia-400-ml/NATBRA-152300?position=2&listTitle=tab+showcase+-+experimente+uma+exclusiva+rotina+energizante&consultoria=claudio211015cruzsantos"
   },
   {
     image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dweffa9015/NATBRA-152286_1.jpg",
     name: "Tododia Flor de Gengibre e Tangerina Body Splash Feminino",
     price: "R$ 83,90",
-    description: "Perfumação leve e energizante que desperta os sentidos."
+    description: "Perfumação leve e energizante que desperta os sentidos.",
+    url: "https://www.natura.com.br/p/tododia-flor-de-gengibre-e-tangerina-body-splash-feminino-200-ml/NATBRA-152286?position=3&listTitle=tab+showcase+-+experimente+uma+exclusiva+rotina+energizante&consultoria=claudio211015cruzsantos"
   }
 ];
 
