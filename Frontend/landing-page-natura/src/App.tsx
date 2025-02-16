@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Leaf, Book, Instagram, Facebook, Mail, Phone } from 'lucide-react';
+import {  Book } from 'lucide-react';
 import Header from './components/Header';
 import ProductCarousel from './components/ProductCarousel';
 import MessageCircle from './assets/whatsapp.png';
@@ -218,46 +218,10 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-dark text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <Leaf className="h-6 w-6 text-primary" />
-                <span className="ml-2 text-xl font-poppins font-bold">Natura</span>
-              </div>
-              <p className="text-gray-400">
-                Transformando vidas através da beleza
-              </p>
-            </div>
-            <div>
-              <h3 className="font-poppins font-semibold text-lg mb-4">Contato</h3>
-              <div className="space-y-2">
-                <a href="mailto:contato@natura.com.br" className="flex items-center text-gray-400 hover:text-primary">
-                  <Mail className="h-5 w-5 mr-2" />
-                  contato@natura.com.br
-                </a>
-                <a href="tel:+557798411223" className="flex items-center text-gray-400 hover:text-primary">
-                  <Phone className="h-5 w-5 mr-2" />
-                  (77) 9841-1223
-                </a>
-              </div>
-            </div>
-            <div>
-              <h3 className="font-poppins font-semibold text-lg mb-4">Redes Sociais</h3>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-primary">
-                  <Instagram className="h-6 w-6" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-primary">
-                  <Facebook className="h-6 w-6" />
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Natura. Todos os direitos reservados.</p>
-          </div>
+      <footer id="contact" className="bg-dark text-white py-6">
+        <div className="container mx-auto px-4  text-center text-gray-400">
+          
+            <p>&copy; 2025 Claudio Cruz Santos - Revenda Natura. Todos os direitos reservados.</p>
         </div>
       </footer>
 
