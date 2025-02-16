@@ -35,8 +35,8 @@ export default function Checkout() {
   
     const message = 
       `📢 *NOVO PEDIDO RECEBIDO!* \n\n` +
-      `👤 *Cliente:* ${user?.name} \n` +
-      `📞 *Contato:* ${user?.phone} \n` +
+      `🏢 *Cliente:* ${user?.name} \n` +
+      `📲 *Contato:* ${user?.phone} \n` +
       `📍 *Endereço:* ${orderData.address} \n\n` +
       `💳 *Forma de Pagamento:* ${PAYMENT_METHODS.find(m => m.id === paymentMethod)?.label} \n\n` +
       `🛒 *Itens do Pedido:* %0A${items} \n\n` +
