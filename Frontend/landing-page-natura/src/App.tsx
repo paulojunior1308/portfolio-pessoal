@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Leaf, Book, Instagram, Facebook, Mail, Phone } from 'lucide-react';
 import Header from './components/Header';
-import ProductCard from './components/ProductCard';
+import ProductCarousel from './components/ProductCarousel';
 import MessageCircle from './assets/whatsapp.png';
 
 const products = [
@@ -25,7 +25,114 @@ const products = [
     price: "R$ 83,90",
     description: "Perfumação leve e energizante que desperta os sentidos.",
     url: "https://www.natura.com.br/p/tododia-flor-de-gengibre-e-tangerina-body-splash-feminino-200-ml/NATBRA-152286?position=3&listTitle=tab+showcase+-+experimente+uma+exclusiva+rotina+energizante&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw7b5a8593/NATBRA-106124_1.jpg",
+    name: "Máscara para Cílios Secret Una",
+    price: "R$ 87,90",
+    description: "Máscara para Cílios Secret Una.",
+    url: "https://www.natura.com.br/p/mascara-para-cilios-secret-una-8-ml/NATBRA-106124?position=1&listTitle=search+results+list+showcase+-+M%C3%A1scara+para+C%C3%ADlios+Secret+Una&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw6678233f/Produtos/NATBRA-69725_2.jpg",
+    name: "Protetor Antioleosidade Redutor de Poros FPS 30 FPUVA 10 Chronos",
+    price: "R$ 68,90",
+    description: "Reduz visivelmente o tamanho dos poros e controla a oleosidade da pele por até 12 horas.",
+    url: "https://www.natura.com.br/p/protetor-antioleosidade-redutor-de-poros-fps-30-fpuva-10-chronos-50ml/NATBRA-PAI69725?position=3&listTitle=search+results+list+showcase+-+chronos&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwb165dddc/NATBRA-88103_2.jpg",
+    name: "Creme Desodorante Nutritivo para o Corpo Tododia Amora Vermelha e Jabuticaba",
+    price: "R$ 50,90",
+    description: "Pele mais firme e macia com um toque frutal.",
+    url: "https://www.natura.com.br/p/creme-desodorante-nutritivo-para-o-corpo-tododia-amora-vermelha-e-jabuticaba-400-ml/NATBRA-88103?position=2&listTitle=search+results+list+showcase+-+tododia+amora&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwa9e01279/Produtos/PRODUTO/NATBRA-146478_2.jpg",
+    name: "Caneta Delineadora para Olhos Una",
+    price: "R$ 49,90",
+    description: "Delineado fácil, preciso e ultrapigmentado.",
+    url: "https://www.natura.com.br/p/caneta-delineadora-para-olhos-una/NATBRA-146478?position=6&listTitle=search+results+list+showcase+-+caneta+delineadora+una&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw0ff3cfde/NATBRA-167241_2.jpg",
+    name: "Natura Homem Aromáticos",
+    price: "R$ 128,90",
+    description: "Fragrância feita para renovar seu dia a dia.",
+    url: "https://www.natura.com.br/p/natura-homem-aromaticos-100-ml/NATBRA-167241?position=1&listTitle=search+results+list+showcase+-+homem+arom%C3%A1ticos&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw1f484e81/Produtos/PRODUTO/NATBRA-95560_2.jpg",
+    name: "Essencial Supreme Masculino 100 ml",
+    price: "R$ 182,90",
+    description: "Deo Parfum Natura Essencial Supreme: uma Expressão de intensidade.",
+    url: "https://www.natura.com.br/p/desodorante-perfume-essencial-supreme-masculino-100-ml/NATBRA-95560?position=1&listTitle=search+results+list+showcase+-+essencial+supreme&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw7d5b57a1/Produtos/NATBRA-72468_3.jpg",
+    name: "K Max Masculino 100 ml",
+    price: "R$ 184,90",
+    description: "Natura K Max: A fragrância intensa para homens de espírito livre.",
+    url: "https://www.natura.com.br/p/desodorante-perfume-k-max-masculino-100-ml/NATBRA-72468?position=2&listTitle=search+suggest+showcase+-+produtos+sugeridos%3A&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw5bfa48d4/Produtos/PRODUTO/NATBRA-108406_2.jpg",
+    name: "Kaiak Vital Masculino 100 ml",
+    price: "R$ 119,90",
+    description: "Sinta a força revitalizante.",
+    url: "https://www.natura.com.br/p/desodorante-colonia-kaiak-vital-masculino-100-ml/NATBRA-108406?position=1&listTitle=search+results+list+showcase+-+kaiak+vital&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwcbaed28a/NATBRA-108402_2.jpg",
+    name: "Kaiak Aventura Masculino 100 ml",
+    price: "R$ 119,90",
+    description: "Sinta a agitação das corredeiras com o desodorante Kaiak Aventura.",
+    url: "https://www.natura.com.br/p/desodorante-colonia-kaiak-aventura-masculino-100-ml/NATBRA-108402?position=1&listTitle=search+suggest+showcase+-+produtos+sugeridos%3A&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw9f85b482/NATBRA-71773_1.jpg",
+    name: "Sintonia Impacto Masculino 100 ml",
+    price: "R$ 159,90",
+    description: "Sintonia Impacto: conectado do seu jeito.",
+    url: "https://www.natura.com.br/p/desodorante-colonia-sintonia-impacto-masculino-100-ml/NATBRA-71773?position=1&listTitle=search+results+list+showcase+-+Sintonia+Impacto+Masculino+100+ml&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw894ec160/NATBRA-110411_3.jpg",
+    name: "Biografia Encontros Masculino 100 ml",
+    price: "R$ 149,90",
+    description: "Uma fragrância exclusiva para você fazer a sua história.",
+    url: "https://www.natura.com.br/p/biografia-encontros-masculino-100-ml/NATBRA-110411?position=1&listTitle=search+results+list+showcase+-+Biografia+Encontros+Masculino+100+ml&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dw3294b93d/Produtos/NATBRA-122928_2.jpg",
+    name: "Humor Transforma 75 ml",
+    price: "R$ 99,90",
+    description: "Humor Transforma 75 ml.",
+    url: "https://www.natura.com.br/p/desodorante-colonia-humor-transforma-75-ml/NATBRA-122928?position=1&listTitle=search+suggest+showcase+-+produtos+sugeridos%3A&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwacb9e061/NATBRA-131462_2.jpg",
+    name: "Festival de Humor Feminino 75 ml",
+    price: "R$ 99,90",
+    description: "Uma fragrância que pulsa na frequência da alegria coletiva.",
+    url: "https://www.natura.com.br/p/desodorante-colonia-festival-de-humor-feminino-75-ml/NATBRA-131462?position=1&listTitle=search+suggest+showcase+-+produtos+sugeridos%3A&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwd687149e/Produtos/PRODUTO/NATBRA-95947_2.jpg",
+    name: "Beijo de Humor Feminino 75 ml",
+    price: "R$ 99,90",
+    description: "Beijo de Humor Natura feminino: um convite à uma vida mais ousada e divertida.",
+    url: "https://www.natura.com.br/p/desodorante-colonia-beijo-de-humor-feminino-75-ml/NATBRA-95947?position=1&listTitle=search+suggest+showcase+-+produtos+sugeridos%3A&consultoria=claudio211015cruzsantos"
+  },
+  {
+    image: "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwf63db4cb/Produtos/NATBRA-114583_2.jpg",
+    name: "Essencial Ato Feminino 100 ml",
+    price: "R$ 182,90",
+    description: "Natura Essencial Ato: fragrância única e luminosa.",
+    url: "https://www.natura.com.br/p/desodorante-perfume-essencial-ato-feminino-100-ml/NATBRA-114583?position=1&listTitle=search+results+list+showcase+-+Essencial+Ato+Feminino+100+ml&consultoria=claudio211015cruzsantos"
   }
+
+
 ];
 
 function App() {
@@ -63,15 +170,14 @@ function App() {
 
       {/* Products Section */}
       <section id="products" className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <h2 className="text-3xl md:text-4xl font-poppins font-bold text-dark text-center mb-12">
             Produtos em Promoção
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product, index) => (
-              <ProductCard key={index} {...product} />
-            ))}
-          </div>
+          <p className="text-1x1 md:text-1x1 font-poppins text-dark text-center mb-12">
+            Promoções válidas entre 13/02 à 04/03
+          </p>
+          <ProductCarousel products={products} />
         </div>
       </section>
 

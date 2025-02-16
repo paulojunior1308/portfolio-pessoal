@@ -12,7 +12,7 @@ interface ProductCardProps {
 export default function ProductCard({ image, name, price, description, url }: ProductCardProps) {
   return (
     <motion.div 
-      className="bg-white rounded-xl shadow-lg overflow-hidden"
+      className="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col"
       whileHover={{ y: -5 }}
       transition={{ duration: 0.3 }}
     >
@@ -23,9 +23,9 @@ export default function ProductCard({ image, name, price, description, url }: Pr
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="p-4">
-        <h3 className="font-poppins font-semibold text-lg text-dark">{name}</h3>
-        <p className="text-gray-600 text-sm mt-1">{description}</p>
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-poppins font-semibold text-lg text-dark line-clamp-2 mb-2">{name}</h3>
+        <p className="text-gray-600 text-sm mt-1 line-clamp-2 flex-1">{description}</p>
         <div className="mt-4 flex justify-between items-center">
           <span className="text-primary font-semibold text-lg">{price}</span>
           <a
