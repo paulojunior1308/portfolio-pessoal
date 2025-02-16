@@ -1,22 +1,64 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { createOrder } from '../lib/firebase/orders';
 import toast from 'react-hot-toast';
 
+const PAYMENT_METHODS = [
+  { id: 'money', label: 'Dinheiro' },
+  { id: 'debit', label: 'Débito' },
+  { id: 'credit', label: 'Crédito' },
+  { id: 'pix', label: 'PIX' }
+];
+
 export default function Checkout() {
   const navigate = useNavigate();
   const { cart, clearCart, user } = useStore();
   const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
 
   const total = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
 
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate('/cart');
+    }
+  }, [cart.length, navigate]);
+
+const sendWhatsAppMessage = (orderData: any) => {
+  const items = orderData.items.map((item: any) => 
+    `🔹 *${item.product.name}* — ${item.quantity}x R$ ${(item.product.price * item.quantity).toFixed(2)}`
+  ).join('\n'); // Usa \n para quebra de linha
+
+  const message = 
+    `📢 *NOVO PEDIDO RECEBIDO*\n\n` +
+    `👤 *Cliente:* ${user?.name}\n` +
+    `📞 *Contato:* ${user?.phone}\n` +
+    `📍 *Endereço:* ${orderData.address}\n\n` +
+    `💳 *Forma de Pagamento:* ${PAYMENT_METHODS.find(m => m.id === paymentMethod)?.label}\n\n` +
+    `🛒 *Itens do Pedido:*\n${items}\n\n` +
+    `💰 *Total:* R$ ${orderData.total.toFixed(2)}\n\n` +
+    `✅ *Seu pedido foi confirmado! Em breve entraremos em contato.*`;
+
+  // Codifica corretamente a mensagem para ser aberta no WhatsApp
+  const whatsappUrl = `https://wa.me/5511959243663?text=${encodeURIComponent(message)}`;
+
+  // Abre a URL do WhatsApp
+  window.open(whatsappUrl, '_blank');
+};
+
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
+    if (!paymentMethod) {
+      toast.error('Selecione uma forma de pagamento');
+      return;
+    }
     
     setLoading(true);
 
@@ -33,14 +75,19 @@ export default function Checkout() {
 
       const fullAddress = `${address.street}, ${address.number}${address.complement ? ` - ${address.complement}` : ''}, ${address.neighborhood}, ${address.city} - ${address.state}`;
 
-      await createOrder({
+      const status = 'pending' as 'pending' | 'processing' | 'completed' | 'cancelled';
+
+      const orderData = {
         userId: user.id,
         items: cart,
-        total: Number(total),
+        total,
         address: fullAddress,
-        status: 'pending'
-      });
+        paymentMethod,
+        status
+      };
 
+      await createOrder(orderData);
+      sendWhatsAppMessage(orderData);
       clearCart();
       toast.success('Pedido realizado com sucesso!');
       navigate('/profile');
@@ -148,47 +195,20 @@ export default function Checkout() {
 
           <div>
             <h2 className="font-playfair text-xl mb-4">Forma de Pagamento</h2>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="card" className="block text-sm font-medium text-gray-700">
-                  Número do Cartão
+            <div className="space-y-3">
+              {PAYMENT_METHODS.map((method) => (
+                <label key={method.id} className="flex items-center space-x-3">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value={method.id}
+                    checked={paymentMethod === method.id}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="form-radio h-4 w-4 text-wine"
+                  />
+                  <span className="text-gray-700">{method.label}</span>
                 </label>
-                <input
-                  type="text"
-                  id="card"
-                  name="card"
-                  required
-                  className="input"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="expiry" className="block text-sm font-medium text-gray-700">
-                    Validade
-                  </label>
-                  <input
-                    type="text"
-                    id="expiry"
-                    name="expiry"
-                    placeholder="MM/AA"
-                    required
-                    className="input"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="cvv" className="block text-sm font-medium text-gray-700">
-                    CVV
-                  </label>
-                  <input
-                    type="text"
-                    id="cvv"
-                    name="cvv"
-                    required
-                    className="input"
-                  />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 

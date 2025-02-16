@@ -46,9 +46,16 @@ export const signOut = () => firebaseSignOut(auth);
 export const initializeAuth = (callback: (user: User | null) => void) => {
   return onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
     if (firebaseUser) {
-      const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-      if (userDoc.exists()) {
-        callback(userDoc.data() as User);
+      try {
+        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+        if (userDoc.exists()) {
+          callback(userDoc.data() as User);
+        } else {
+          callback(null);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar dados do usuário:', error);
+        callback(null);
       }
     } else {
       callback(null);

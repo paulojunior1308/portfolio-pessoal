@@ -9,14 +9,25 @@ import Checkout from './pages/Checkout';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ProductList from './pages/admin/ProductList';
+import ProductForm from './pages/admin/ProductForm';
 import Footer from './components/Footer';
 import { useStore } from './store/useStore';
 import { initializeAuth } from './lib/firebase/auth';
 
 // Componente para rotas protegidas
-const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+const PrivateRoute = ({ children, adminOnly = false }: { children: React.ReactNode, adminOnly?: boolean }) => {
   const { user } = useStore();
-  return user ? <>{children}</> : <Navigate to="/login" />;
+  
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  if (adminOnly && user.role !== 'ADMIN') {
+    return <Navigate to="/" />;
+  }
+
+  return <>{children}</>;
 };
 
 function App() {
@@ -50,6 +61,30 @@ function App() {
               element={
                 <PrivateRoute>
                   <Profile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/products"
+              element={
+                <PrivateRoute adminOnly>
+                  <ProductList />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/products/new"
+              element={
+                <PrivateRoute adminOnly>
+                  <ProductForm />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/products/edit/:id"
+              element={
+                <PrivateRoute adminOnly>
+                  <ProductForm />
                 </PrivateRoute>
               }
             />

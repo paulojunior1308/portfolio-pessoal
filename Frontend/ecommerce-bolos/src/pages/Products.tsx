@@ -1,43 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import toast from 'react-hot-toast';
-
-const SAMPLE_PRODUCTS = [
-  {
-    id: '1',
-    name: 'Bolo de Chocolate',
-    description: 'Bolo macio com cobertura de chocolate belga',
-    price: 50.00,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587',
-    category: 'Bolos'
-  },
-  {
-    id: '2',
-    name: 'Brigadeiros Gourmet',
-    description: 'Caixa com 12 brigadeiros artesanais',
-    price: 25.00,
-    image: 'https://down-br.img.susercontent.com/file/br-11134207-7r98o-lwn6b7zkw2vmd2',
-    category: 'Doces'
-  },
-  {
-    id: '3',
-    name: 'Cupcake de Chocolate',
-    description: 'Cupcake macio com cobertura de chocolate belga',
-    price: 5.00,
-    image: 'https://www.mococa.com.br/wp-content/uploads/2022/03/Cupcake-Mococa.jpeg',
-    category: 'Cupcakes'
-  }
-  // Add more sample products as needed
-];
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { Product } from '../types';
 
 export default function Products() {
   const { addToCart } = useStore();
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleAddToCart = (product: typeof SAMPLE_PRODUCTS[0]) => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productsRef = collection(db, 'products');
+        const q = query(productsRef, orderBy('name'));
+        const snapshot = await getDocs(q);
+        const productsData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Product[];
+        setProducts(productsData);
+      } catch (error) {
+        console.error('Erro ao carregar produtos:', error);
+        toast.error('Erro ao carregar produtos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleAddToCart = (product: Product) => {
     addToCart({ product, quantity: 1 });
     toast.success('Produto adicionado ao carrinho!');
   };
+
+  if (loading) {
+    return (
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <p className="text-center">Carregando produtos...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="py-12">
@@ -65,33 +74,39 @@ export default function Products() {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SAMPLE_PRODUCTS.filter(
-            product => selectedCategory === 'all' || product.category === selectedCategory
-          ).map((product) => (
-            <div key={product.id} className="card">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-80 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-playfair text-xl mb-2">{product.name}</h3>
-                <p className="text-gray-600 mb-4">{product.description}</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold">
-                    R$ {product.price.toFixed(2)}
-                  </span>
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="btn btn-primary"
-                  >
-                    Adicionar ao Carrinho
-                  </button>
+          {products
+            .filter(product => selectedCategory === 'all' || product.category === selectedCategory)
+            .map((product) => (
+              <div key={product.id} className="card">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-playfair text-xl mb-2">{product.name}</h3>
+                  <p className="text-gray-600 mb-4">{product.description}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-semibold">
+                      R$ {product.price.toFixed(2)}
+                    </span>
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="btn btn-primary"
+                    >
+                      Adicionar ao Carrinho
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
+
+        {products.length === 0 && (
+          <p className="text-center text-gray-600 mt-8">
+            Nenhum produto encontrado.
+          </p>
+        )}
       </div>
     </div>
   );
