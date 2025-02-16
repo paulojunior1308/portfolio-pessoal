@@ -31,20 +31,20 @@ export default function Checkout() {
   const sendWhatsAppMessage = (orderData: any) => {
     const items = orderData.items.map((item: any) => 
       `🍽️ *${item.product.name}* — ${item.quantity}x R$ ${(item.product.price * item.quantity).toFixed(2)}`
-    ).join('\n');
+    ).join('\n'); // %0A representa quebra de linha corretamente na URL
   
     const message = 
-      `📢 *NOVO PEDIDO RECEBIDO*\n\n` + // 📢
-      `👤 *Cliente:* ${user?.name}\n` + // 👤
-      `📞 *Contato:* ${user?.phone}\n` + // 📞
-      `📍 *Endereço:* ${orderData.address}\n\n` + // 📍
-      `💳 *Forma de Pagamento:* ${PAYMENT_METHODS.find(m => m.id === paymentMethod)?.label}\n\n` + // 💳
-      `🛒 *Itens do Pedido:*\n${items}\n\n` + // 🛒
-      `💰 *Total:* R$ ${orderData.total.toFixed(2)}\n\n` + // 💰
-      `✅ *Seu pedido foi confirmado! Em breve entraremos em contato.*`; // ✅
+      `📢 *NOVO PEDIDO RECEBIDO!* \n\n` +
+      `👤 *Cliente:* ${user?.name} \n` +
+      `📞 *Contato:* ${user?.phone} \n` +
+      `📍 *Endereço:* ${orderData.address} \n\n` +
+      `💳 *Forma de Pagamento:* ${PAYMENT_METHODS.find(m => m.id === paymentMethod)?.label} \n\n` +
+      `🛒 *Itens do Pedido:* %0A${items} \n\n` +
+      `💰 *Total:* R$ ${orderData.total.toFixed(2)} \n\n` +
+      `✅ *Seu pedido foi confirmado! Em breve entraremos em contato.*`;
   
-    // Dupla codificação para evitar perda de emojis e caracteres especiais
-    const whatsappUrl = `https://wa.me/5511959243663?text=${encodeURIComponent(encodeURIComponent(message))}`;
+    // Codifica a mensagem corretamente para WhatsApp
+    const whatsappUrl = `https://wa.me/5511959243663?text=${encodeURIComponent(message)}`;
   
     window.open(whatsappUrl, '_blank');
   };
