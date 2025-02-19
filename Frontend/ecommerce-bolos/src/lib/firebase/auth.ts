@@ -41,7 +41,15 @@ export const signIn = async (email: string, password: string) => {
   return userDoc.data() as User;
 };
 
-export const signOut = () => firebaseSignOut(auth);
+export const signOut = async () => {
+  try {
+    await firebaseSignOut(auth);
+    return true;
+  } catch (error) {
+    console.error('Erro ao fazer logout:', error);
+    throw error;
+  }
+};
 
 export const initializeAuth = (callback: (user: User | null) => void) => {
   return onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
@@ -49,7 +57,12 @@ export const initializeAuth = (callback: (user: User | null) => void) => {
       try {
         const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
         if (userDoc.exists()) {
-          callback(userDoc.data() as User);
+          const userData = userDoc.data() as User;
+          callback({
+            ...userData,
+            id: firebaseUser.uid,
+            role: userData.role || 'CLIENT'
+          });
         } else {
           callback(null);
         }

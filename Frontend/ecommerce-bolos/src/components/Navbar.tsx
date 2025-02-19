@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Menu, LogOut, Plus, Edit, CakeSlice, ShoppingCart, ShoppingBasket } from 'lucide-react';
+import { User, Menu, LogOut, Plus, Edit, CakeSlice, ShoppingCart, ShoppingBasket, ClipboardList } from 'lucide-react';
 import { useStore } from '../store/useStore';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { signOut } from '../lib/firebase/auth';
+import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const { cart, user, setUser, clearCart } = useStore();
@@ -11,16 +13,38 @@ export default function Navbar() {
   const cartItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const navigate = useNavigate();
 
-  const productsMenuRef = useRef(null);
+  const productsMenuRef = useRef<HTMLDivElement>(null);
+  const authMenuRef = useRef<HTMLDivElement>(null);
 
-  const handleLogout = () => {
-    setUser(null);
-    clearCart();
-    setShowAuthDropdown(false);
-    setShowMobileMenu(false);
-    setShowProductsMenu(false);
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setUser(null);
+      clearCart();
+      setShowAuthDropdown(false);
+      setShowMobileMenu(false);
+      setShowProductsMenu(false);
+      toast.success('Logout realizado com sucesso!');
+      navigate('/');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+      toast.error('Erro ao fazer logout. Tente novamente.');
+    }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (productsMenuRef.current && !productsMenuRef.current.contains(event.target as Node)) {
+        setShowProductsMenu(false);
+      }
+      if (authMenuRef.current && !authMenuRef.current.contains(event.target as Node)) {
+        setShowAuthDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const isAdmin = user?.role === 'ADMIN';
 
@@ -46,7 +70,7 @@ export default function Navbar() {
                   onClick={() => setShowProductsMenu(!showProductsMenu)}
                   className="text-soft-black hover:text-wine flex items-center gap-2 bg-white px-3 py-1 rounded-md"
                 >
-                  Gerenciar Produtos
+                  Gerenciamento
                 </button>
 
                 {showProductsMenu && (
@@ -67,12 +91,20 @@ export default function Navbar() {
                       <Edit className="w-4 h-4 mr-2" />
                       Gerenciar Produtos
                     </Link>
+                    <Link
+                      to="/admin/orders"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowProductsMenu(false)}
+                    >
+                      <ClipboardList className="w-4 h-4 mr-2" />
+                      Gerenciar Pedidos
+                    </Link>
                   </div>
                 )}
               </div>
             )}
 
-            <div className="relative">
+            <div className="relative" ref={authMenuRef}>
               <button
                 onClick={() => setShowAuthDropdown(!showAuthDropdown)}
                 className="text-soft-black hover:text-wine"
@@ -131,14 +163,12 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu */}
-          
           <div className="md:hidden flex items-center space-x-4">
             {!isAdmin && (
               <Link to="/products" className="text-soft-black hover:text-wine">
                 <ShoppingBasket className="w-6 h-6" />
               </Link>
             )}
-            {/* Carrinho */}
             <Link to="/cart" className="relative text-soft-black hover:text-wine">
               <ShoppingCart className="w-6 h-6" />
               {cartItemsCount > 0 && (
@@ -148,7 +178,6 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* Perfil */}
             <div className="relative">
               <button
                 onClick={() => setShowAuthDropdown(!showAuthDropdown)}
@@ -220,11 +249,25 @@ export default function Navbar() {
                 Produtos
               </Link>
               <Link
+                to="/admin/products/new"
+                className="block px-4 py-2 text-soft-black hover:bg-gray-100"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Novo Produto
+              </Link>
+              <Link
                 to="/admin/products"
                 className="block px-4 py-2 text-soft-black hover:bg-gray-100"
                 onClick={() => setShowMobileMenu(false)}
               >
                 Gerenciar Produtos
+              </Link>
+              <Link
+                to="/admin/orders"
+                className="block px-4 py-2 text-soft-black hover:bg-gray-100"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Gerenciar Pedidos
               </Link>
             </div>
           </div>

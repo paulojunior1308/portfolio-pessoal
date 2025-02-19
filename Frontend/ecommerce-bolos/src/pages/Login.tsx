@@ -18,20 +18,10 @@ export default function Login() {
     const password = formData.get('password') as string;
 
     try {
-      // Faz o login usando o Firebase Authentication
       const user = await signIn(email, password);
-
-      // Atualiza o estado global do usuário
-      setUser({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        address: user.address,
-        phone: user.phone,
-      });
-
+      setUser(user);
       toast.success('Login realizado com sucesso!');
-      navigate('/profile'); // Redireciona para a página de perfil
+      navigate('/profile');
     } catch (error) {
       console.error('Erro no login:', error);
       toast.error('Erro ao fazer login. Verifique suas credenciais.');

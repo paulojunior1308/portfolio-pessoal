@@ -30,25 +30,22 @@ export default function Checkout() {
 
   const sendWhatsAppMessage = (orderData: any) => {
     const items = orderData.items.map((item: any) => 
-      `🍽️ *${item.product.name}* — ${item.quantity}x R$ ${(item.product.price * item.quantity).toFixed(2)}`
-    ).join('\n'); // %0A representa quebra de linha corretamente na URL
+      `\n🍽️ *${item.product.name}* — ${item.quantity}x R$ ${(item.product.price * item.quantity).toFixed(2)}`
+    ).join('');
   
     const message = 
-      `📢 *NOVO PEDIDO RECEBIDO!* \n\n` +
-      `🏢 *Cliente:* ${user?.name} \n` +
-      `📲 *Contato:* ${user?.phone} \n` +
-      `📍 *Endereço:* ${orderData.address} \n\n` +
-      `💳 *Forma de Pagamento:* ${PAYMENT_METHODS.find(m => m.id === paymentMethod)?.label} \n\n` +
-      `🛒 *Itens do Pedido:* %0A${items} \n\n` +
-      `💰 *Total:* R$ ${orderData.total.toFixed(2)} \n\n` +
+      `*📢 NOVO PEDIDO RECEBIDO!*\n\n` +
+      `👤 *Cliente:* ${user?.name}\n` +
+      `📱 *Contato:* ${user?.phone}\n` +
+      `📍 *Endereço:* ${orderData.address}\n\n` +
+      `💳 *Forma de Pagamento:* ${PAYMENT_METHODS.find(m => m.id === paymentMethod)?.label}\n\n` +
+      `🛒 *Itens do Pedido:*${items}\n\n` +
+      `💰 *Total:* R$ ${orderData.total.toFixed(2)}\n\n` +
       `✅ *Seu pedido foi confirmado! Em breve entraremos em contato.*`;
   
-    // Codifica a mensagem corretamente para WhatsApp
-    const whatsappUrl = `https://wa.me/5511959243663?text=${encodeURIComponent(message)}`;
-  
+    const whatsappUrl = `https://wa.me/5577999928847?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,15 +70,14 @@ export default function Checkout() {
 
       const fullAddress = `${address.street}, ${address.number}${address.complement ? ` - ${address.complement}` : ''}, ${address.neighborhood}, ${address.city} - ${address.state}`;
 
-      const status = 'pending' as 'pending' | 'processing' | 'completed' | 'cancelled';
-
       const orderData = {
         userId: user.id,
         items: cart,
         total,
         address: fullAddress,
-        paymentMethod,
-        status
+        paymentMethod: PAYMENT_METHODS.find(m => m.id === paymentMethod)?.label || paymentMethod,
+        status: 'pending' as const,
+        createdAt: new Date().toISOString()
       };
 
       await createOrder(orderData);

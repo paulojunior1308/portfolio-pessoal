@@ -6,7 +6,7 @@ interface User {
   email: string;
   phone?: string;
   address?: string;
-  role?: string;
+  role?: 'ADMIN' | 'CLIENT';
 }
 
 interface CartItem {
@@ -64,9 +64,11 @@ export const useStore = create<Store>((set) => ({
     })),
   updateQuantity: (productId, quantity) =>
     set((state) => ({
-      cart: state.cart.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
-      ),
+      cart: quantity === 0
+        ? state.cart.filter((item) => item.product.id !== productId)
+        : state.cart.map((item) =>
+            item.product.id === productId ? { ...item, quantity } : item
+          ),
     })),
   clearCart: () => set({ cart: [] }),
 }));
