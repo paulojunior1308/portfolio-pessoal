@@ -44,7 +44,16 @@ export default function Checkout() {
       `✅ *Seu pedido foi confirmado! Em breve entraremos em contato.*`;
   
     const whatsappUrl = `https://wa.me/5577999928847?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+  
+    // Criar um link invisível e simular o clique
+    const link = document.createElement('a');
+    link.href = whatsappUrl;
+    link.target = '_blank'; // Abrir em uma nova aba
+    link.rel = 'noopener noreferrer'; // Boas práticas de segurança
+    link.style.display = 'none'; // Esconder o link
+    document.body.appendChild(link); // Adicionar ao DOM
+    link.click(); // Simular o clique
+    document.body.removeChild(link); // Remover o link do DOM
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
