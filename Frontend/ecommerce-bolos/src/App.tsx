@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductList from './pages/admin/ProductList';
 import ProductForm from './pages/admin/ProductForm';
+import OrderList from './pages/admin/OrderList';
 import Footer from './components/Footer';
 import { useStore } from './store/useStore';
 import { initializeAuth } from './lib/firebase/auth';
@@ -85,6 +86,14 @@ function App() {
               element={
                 <PrivateRoute adminOnly>
                   <ProductForm />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/orders"
+              element={
+                <PrivateRoute adminOnly>
+                  <OrderList />
                 </PrivateRoute>
               }
             />
