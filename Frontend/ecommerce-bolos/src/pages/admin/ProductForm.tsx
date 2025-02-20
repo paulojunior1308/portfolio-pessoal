@@ -139,7 +139,7 @@ export default function ProductForm() {
             onChange={(e) => setProduct({ ...product, image: e.target.value })}
             required
             className="input"
-            placeholder="https://images.unsplash.com/..."
+            placeholder="Endereço da imagem URL"
           />
         </div>
 

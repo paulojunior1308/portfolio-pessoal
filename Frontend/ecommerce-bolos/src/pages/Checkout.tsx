@@ -43,7 +43,12 @@ export default function Checkout() {
       `💰 *Total:* R$ ${orderData.total.toFixed(2)}\n\n` +
       `✅ *Seu pedido foi confirmado! Em breve entraremos em contato.*`;
   
-    const whatsappUrl = `https://wa.me/5577999928847?text=${encodeURIComponent(message)}`;
+    // Substituir espaços por %20 e quebras de linha por %0A manualmente
+    const encodedMessage = message
+      .replace(/ /g, '%20')
+      .replace(/\n/g, '%0A');
+  
+    const whatsappUrl = `https://wa.me/5577999928847?text=${encodedMessage}`;
   
     // Criar um link invisível e simular o clique
     const link = document.createElement('a');
