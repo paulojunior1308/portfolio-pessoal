@@ -1,218 +1,143 @@
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { doc, getDoc, setDoc, collection, addDoc } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
-import toast from 'react-hot-toast';
-import { Product } from '../../types';
+import { useState, useRef } from "react";
 
-export default function ProductForm() {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const [loading, setLoading] = useState(false);
-  const [product, setProduct] = useState<Partial<Product>>({
-    name: '',
-    description: '',
-    price: 0,
-    image: '',
-    category: 'Bolos'
+export default function ProductImagePicker() {
+  const [product, setProduct] = useState<{ image: string | null }>({
+    image: null,
   });
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [cameraActive, setCameraActive] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      if (!id) return;
-      try {
-        const docRef = doc(db, 'products', id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setProduct({
-            id: docSnap.id,
-            ...data,
-            price: Number(data.price)
-          } as Product);
-        }
-      } catch (error) {
-        console.error('Erro ao carregar produto:', error);
-        toast.error('Erro ao carregar produto');
-      }
-    };
-    fetchProduct();
-  }, [id]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const productData = { ...product, price: Number(product.price) || 0 };
-      if (id) {
-        await setDoc(doc(db, 'products', id), productData);
-        toast.success('Produto atualizado com sucesso!');
-      } else {
-        await addDoc(collection(db, 'products'), productData);
-        toast.success('Produto criado com sucesso!');
-      }
-      navigate('/admin/products');
-    } catch (error) {
-      console.error('Erro ao salvar produto:', error);
-      toast.error('Erro ao salvar produto');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const [isFrontCamera, setIsFrontCamera] = useState(true);
-
+  // Inicia a câmera
   const startCamera = async () => {
-    setCameraActive(true);
     try {
-      const constraints = {
-        video: { facingMode: isFrontCamera ? "user" : "environment" }
-      };
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
+      streamRef.current = stream;
+      setCameraActive(true);
     } catch (error) {
       console.error("Erro ao acessar a câmera:", error);
-      toast.error("Erro ao acessar a câmera");
     }
   };
-  
-  const toggleCamera = () => {
-    setIsFrontCamera((prev) => !prev);
-    startCamera(); // Reinicia a câmera com a nova configuração
-  };
-  
 
-  // Capturar a imagem da câmera
+  // Captura a imagem da câmera
   const captureImage = () => {
     if (videoRef.current && canvasRef.current) {
-      const context = canvasRef.current.getContext('2d');
+      const context = canvasRef.current.getContext("2d");
       if (context) {
         canvasRef.current.width = videoRef.current.videoWidth;
         canvasRef.current.height = videoRef.current.videoHeight;
         context.drawImage(videoRef.current, 0, 0);
-        const imageUrl = canvasRef.current.toDataURL('image/png'); // Converte para URL Base64
+        const imageUrl = canvasRef.current.toDataURL("image/png");
         setProduct({ ...product, image: imageUrl });
+        stopCamera();
       }
     }
   };
 
+  // Para a câmera
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
+    setCameraActive(false);
+  };
+
+  // Alternar entre câmera frontal e traseira
+  const toggleCamera = async () => {
+    stopCamera();
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter((device) => device.kind === "videoinput");
+      
+      if (videoDevices.length > 1) {
+        const currentDeviceId = videoRef.current?.srcObject
+          ? (videoRef.current.srcObject as MediaStream).getVideoTracks()[0].getSettings().deviceId
+          : "";
+        const nextDevice = videoDevices.find((device) => device.deviceId !== currentDeviceId);
+        
+        if (nextDevice) {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: nextDevice.deviceId },
+          });
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+          streamRef.current = stream;
+        }
+      }
+    } catch (error) {
+      console.error("Erro ao alternar câmera:", error);
+    }
+  };
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-16">
-      <h1 className="text-3xl font-playfair mb-8">
-        {id ? 'Editar Produto' : 'Novo Produto'}
-      </h1>
+    <div className="p-4">
+      <label className="block text-sm font-medium text-gray-700">
+        Imagem do Produto
+      </label>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            Nome
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={product.name}
-            onChange={(e) => setProduct({ ...product, name: e.target.value })}
-            required
-            className="input"
-          />
-        </div>
+      {product.image ? (
+        <img
+          src={product.image}
+          alt="Produto"
+          className="w-48 h-48 object-cover rounded-md mt-2"
+        />
+      ) : (
+        <p className="text-gray-500 text-sm">Nenhuma imagem selecionada</p>
+      )}
 
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-            Descrição
-          </label>
-          <textarea
-            id="description"
-            value={product.description}
-            onChange={(e) => setProduct({ ...product, description: e.target.value })}
-            required
-            className="input min-h-[100px]"
-          />
-        </div>
+      <div className="mt-4 space-x-2">
+        {/* Botão para abrir a câmera */}
+        <button type="button" onClick={startCamera} className="btn btn-secondary">
+          Tirar Foto
+        </button>
 
-        <div>
-          <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-            Preço
-          </label>
-          <input
-            type="number"
-            id="price"
-            value={product.price}
-            onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })}
-            required
-            min="0"
-            step="0.01"
-            className="input"
-          />
-        </div>
+        {/* Input escondido para escolher do rolo de fotos */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                setProduct({ ...product, image: event.target?.result as string });
+              };
+              reader.readAsDataURL(file);
+            }
+          }}
+          className="hidden"
+          id="fileInput"
+        />
+        <button
+          type="button"
+          onClick={() => document.getElementById("fileInput")?.click()}
+          className="btn btn-secondary"
+        >
+          Escolher do Rolo de Fotos
+        </button>
+      </div>
 
-        {/* Captura de imagem */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Imagem do Produto
-          </label>
-          {product.image ? (
-            <img src={product.image} alt="Produto" className="w-48 h-48 object-cover rounded-md mt-2" />
-          ) : (
-            <p className="text-gray-500 text-sm">Nenhuma imagem selecionada</p>
-          )}
-          <div className="mt-4 space-x-2">
-            <button type="button" onClick={startCamera} className="btn btn-secondary">
-              Tirar Foto
+      {/* Elementos para câmera */}
+      {cameraActive && (
+        <div className="mt-4">
+          <video ref={videoRef} autoPlay className="w-full max-w-sm border rounded-md" />
+          <canvas ref={canvasRef} style={{ display: "none" }} />
+          <div className="mt-2 space-x-2">
+            <button type="button" onClick={captureImage} className="btn btn-primary">
+              Capturar Imagem
             </button>
-            {cameraActive && (
-              <div>
-                <button type="button" onClick={captureImage} className="btn btn-primary">
-                  Capturar Imagem
-                </button>
-                <button type="button" onClick={toggleCamera} className="btn btn-primary">
-                  Alternar Câmera
-                </button>
-              </div>
-            )}
-
+            <button type="button" onClick={toggleCamera} className="btn btn-primary">
+              Alternar Câmera
+            </button>
           </div>
-          {/* Elementos para câmera */}
-          {cameraActive && (
-            <div className="mt-4">
-              <video ref={videoRef} autoPlay className="w-full max-w-sm border rounded-md" />
-              <canvas ref={canvasRef} style={{ display: 'none' }} />
-            </div>
-          )}
         </div>
-
-        <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-            Categoria
-          </label>
-          <select
-            id="category"
-            value={product.category}
-            onChange={(e) => setProduct({ ...product, category: e.target.value })}
-            required
-            className="input"
-          >
-            <option value="Bolos">Bolos</option>
-            <option value="Doces">Doces</option>
-            <option value="Cupcakes">Cupcakes</option>
-          </select>
-        </div>
-
-        <div className="flex gap-4">
-          <button type="button" onClick={() => navigate('/admin/products')} className="btn btn-secondary">
-            Cancelar
-          </button>
-          <button type="submit" disabled={loading} className="btn btn-primary flex-1">
-            {loading ? 'Salvando...' : 'Salvar Produto'}
-          </button>
-        </div>
-      </form>
+      )}
     </div>
   );
 }
