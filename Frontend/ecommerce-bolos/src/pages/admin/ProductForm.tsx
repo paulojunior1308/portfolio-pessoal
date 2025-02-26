@@ -64,19 +64,29 @@ export default function ProductForm() {
     }
   };
 
-  // Ativar a câmera
+  const [isFrontCamera, setIsFrontCamera] = useState(true);
+
   const startCamera = async () => {
     setCameraActive(true);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const constraints = {
+        video: { facingMode: isFrontCamera ? "user" : "environment" }
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
     } catch (error) {
-      console.error('Erro ao acessar a câmera:', error);
-      toast.error('Erro ao acessar a câmera');
+      console.error("Erro ao acessar a câmera:", error);
+      toast.error("Erro ao acessar a câmera");
     }
   };
+  
+  const toggleCamera = () => {
+    setIsFrontCamera((prev) => !prev);
+    startCamera(); // Reinicia a câmera com a nova configuração
+  };
+  
 
   // Capturar a imagem da câmera
   const captureImage = () => {
@@ -161,6 +171,10 @@ export default function ProductForm() {
                 Capturar Imagem
               </button>
             )}
+            <button type="button" onClick={toggleCamera} className="btn btn-secondary">
+  Alternar Câmera
+</button>
+
           </div>
           {/* Elementos para câmera */}
           {cameraActive && (
