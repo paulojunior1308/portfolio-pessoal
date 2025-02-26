@@ -5,20 +5,23 @@ import { useState, useRef, useEffect } from 'react';
 
 export default function Navbar() {
   const { cart, user, setUser, clearCart } = useStore();
-  const [showAuthDropdown, setShowAuthDropdown] = useState(false);
+  const [showAuthDropdownDesktop, setshowAuthDropdownDesktop] = useState(false);
+  const [showAuthDropdownMobile, setshowAuthDropdownMobile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showManagementMenu, setShowManagementMenu] = useState(false);
   const cartItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const navigate = useNavigate();
 
-  // Tipando as refs corretamente
   const managementMenuRef = useRef<HTMLDivElement>(null);
-  const authDropdownRef = useRef<HTMLDivElement>(null);
+  const authDropdownRefDesktop = useRef<HTMLDivElement>(null);
+  const authDropdownRefMobile = useRef<HTMLDivElement>(null);
+
 
   const handleLogout = () => {
     setUser(null);
     clearCart();
-    setShowAuthDropdown(false);
+    setshowAuthDropdownDesktop(false);
+    setshowAuthDropdownMobile(false);
     setShowMobileMenu(false);
     setShowManagementMenu(false);
     navigate('/');
@@ -32,8 +35,11 @@ export default function Navbar() {
       if (managementMenuRef.current && !managementMenuRef.current.contains(event.target as Node)) {
         setShowManagementMenu(false);
       }
-      if (authDropdownRef.current && !authDropdownRef.current.contains(event.target as Node)) {
-        setShowAuthDropdown(false);
+      if (authDropdownRefDesktop.current && !authDropdownRefDesktop.current.contains(event.target as Node)) {
+        setshowAuthDropdownDesktop(false);
+      }
+      if (authDropdownRefMobile.current && !authDropdownRefMobile.current.contains(event.target as Node)) {
+        setshowAuthDropdownMobile(false);
       }
     };
 
@@ -99,22 +105,22 @@ export default function Navbar() {
               </div>
             )}
 
-            <div className="relative" ref={authDropdownRef}>
+            <div className="relative" ref={authDropdownRefDesktop}>
               <button
-                onClick={() => setShowAuthDropdown(!showAuthDropdown)}
+                onClick={() => setshowAuthDropdownDesktop(!showAuthDropdownDesktop)}
                 className="text-soft-black hover:text-wine"
               >
                 <User className="w-6 h-6" />
               </button>
 
-              {showAuthDropdown && (
+              {showAuthDropdownDesktop && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                   {user ? (
                     <>
                       <Link
                         to="/profile"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowAuthDropdown(false)}
+                        onClick={() => setshowAuthDropdownDesktop(false)}
                       >
                         Meu Perfil
                       </Link>
@@ -131,14 +137,14 @@ export default function Navbar() {
                       <Link
                         to="/login"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowAuthDropdown(false)}
+                        onClick={() => setshowAuthDropdownDesktop(false)}
                       >
                         Entrar
                       </Link>
                       <Link
                         to="/register"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowAuthDropdown(false)}
+                        onClick={() => setshowAuthDropdownDesktop(false)}
                       >
                         Cadastrar
                       </Link>
@@ -175,22 +181,22 @@ export default function Navbar() {
             </Link>
 
             {/* Perfil */}
-            <div className="relative">
+            <div className="relative" ref={authDropdownRefMobile}>
               <button
-                onClick={() => setShowAuthDropdown(!showAuthDropdown)}
+                onClick={() => setshowAuthDropdownMobile(!showAuthDropdownMobile)}
                 className="text-soft-black hover:text-wine"
               >
                 <User className="w-6 h-6" />
               </button>
 
-              {showAuthDropdown && (
+              {showAuthDropdownMobile && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                   {user ? (
                     <>
                       <Link
                         to="/profile"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowAuthDropdown(false)}
+                        onClick={() => setshowAuthDropdownMobile(false)}
                       >
                         Meu Perfil
                       </Link>
@@ -207,14 +213,14 @@ export default function Navbar() {
                       <Link
                         to="/login"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowAuthDropdown(false)}
+                        onClick={() => setshowAuthDropdownMobile(false)}
                       >
                         Entrar
                       </Link>
                       <Link
                         to="/register"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowAuthDropdown(false)}
+                        onClick={() => setshowAuthDropdownMobile(false)}
                       >
                         Cadastrar
                       </Link>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { doc, getDoc, setDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
@@ -17,20 +17,22 @@ export default function ProductForm() {
     category: 'Bolos'
   });
 
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [cameraActive, setCameraActive] = useState(false);
+
   useEffect(() => {
     const fetchProduct = async () => {
       if (!id) return;
-
       try {
         const docRef = doc(db, 'products', id);
         const docSnap = await getDoc(docRef);
-
         if (docSnap.exists()) {
           const data = docSnap.data();
-          setProduct({ 
-            id: docSnap.id, 
+          setProduct({
+            id: docSnap.id,
             ...data,
-            price: Number(data.price) // Garantir que o preço seja um número
+            price: Number(data.price)
           } as Product);
         }
       } catch (error) {
@@ -38,26 +40,18 @@ export default function ProductForm() {
         toast.error('Erro ao carregar produto');
       }
     };
-
     fetchProduct();
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const productData = {
-        ...product,
-        price: Number(product.price) || 0
-      };
-
+      const productData = { ...product, price: Number(product.price) || 0 };
       if (id) {
-        // Atualizar produto existente
         await setDoc(doc(db, 'products', id), productData);
         toast.success('Produto atualizado com sucesso!');
       } else {
-        // Criar novo produto
         await addDoc(collection(db, 'products'), productData);
         toast.success('Produto criado com sucesso!');
       }
@@ -70,12 +64,32 @@ export default function ProductForm() {
     }
   };
 
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setProduct({ 
-      ...product, 
-      price: value === '' ? 0 : Number(value)
-    });
+  // Ativar a câmera
+  const startCamera = async () => {
+    setCameraActive(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.error('Erro ao acessar a câmera:', error);
+      toast.error('Erro ao acessar a câmera');
+    }
+  };
+
+  // Capturar a imagem da câmera
+  const captureImage = () => {
+    if (videoRef.current && canvasRef.current) {
+      const context = canvasRef.current.getContext('2d');
+      if (context) {
+        canvasRef.current.width = videoRef.current.videoWidth;
+        canvasRef.current.height = videoRef.current.videoHeight;
+        context.drawImage(videoRef.current, 0, 0);
+        const imageUrl = canvasRef.current.toDataURL('image/png'); // Converte para URL Base64
+        setProduct({ ...product, image: imageUrl });
+      }
+    }
   };
 
   return (
@@ -120,7 +134,7 @@ export default function ProductForm() {
             type="number"
             id="price"
             value={product.price}
-            onChange={handlePriceChange}
+            onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })}
             required
             min="0"
             step="0.01"
@@ -128,19 +142,33 @@ export default function ProductForm() {
           />
         </div>
 
+        {/* Captura de imagem */}
         <div>
-          <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-            URL da Imagem
+          <label className="block text-sm font-medium text-gray-700">
+            Imagem do Produto
           </label>
-          <input
-            type="url"
-            id="image"
-            value={product.image}
-            onChange={(e) => setProduct({ ...product, image: e.target.value })}
-            required
-            className="input"
-            placeholder="Endereço da imagem URL"
-          />
+          {product.image ? (
+            <img src={product.image} alt="Produto" className="w-48 h-48 object-cover rounded-md mt-2" />
+          ) : (
+            <p className="text-gray-500 text-sm">Nenhuma imagem selecionada</p>
+          )}
+          <div className="mt-4 space-x-2">
+            <button type="button" onClick={startCamera} className="btn btn-secondary">
+              Tirar Foto
+            </button>
+            {cameraActive && (
+              <button type="button" onClick={captureImage} className="btn btn-primary">
+                Capturar Imagem
+              </button>
+            )}
+          </div>
+          {/* Elementos para câmera */}
+          {cameraActive && (
+            <div className="mt-4">
+              <video ref={videoRef} autoPlay className="w-full max-w-sm border rounded-md" />
+              <canvas ref={canvasRef} style={{ display: 'none' }} />
+            </div>
+          )}
         </div>
 
         <div>
@@ -161,18 +189,10 @@ export default function ProductForm() {
         </div>
 
         <div className="flex gap-4">
-          <button
-            type="button"
-            onClick={() => navigate('/admin/products')}
-            className="btn btn-secondary"
-          >
+          <button type="button" onClick={() => navigate('/admin/products')} className="btn btn-secondary">
             Cancelar
           </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn btn-primary flex-1"
-          >
+          <button type="submit" disabled={loading} className="btn btn-primary flex-1">
             {loading ? 'Salvando...' : 'Salvar Produto'}
           </button>
         </div>
