@@ -1,5 +1,5 @@
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   margin: 0;
   background-color: #f3f4f6;
   color: #1f2937;
@@ -21,15 +21,24 @@ body {
 
 .navbar-titulo {
   color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.6rem;
+  font-weight: 700;
   text-decoration: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .navbar .container .navbar-menu a {
   color: white;
   text-decoration: none;
   padding-left: 2rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.navbar .container .navbar-menu a:hover {
+  color: #dbeafe;
 }
 
 .home {
@@ -58,25 +67,36 @@ body {
 }
 
 .section-home h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin: 10px 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .section-home p {
   margin: 10px 0;
   margin-bottom: 2rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
 }
 
 .section-home .btn {
   background-color: #2563eb;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 5px;
   text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .section-home .btn:hover {
   background-color: #3b82f6;
+  transform: translateY(-2px);
 }
 
 .about {
@@ -90,9 +110,13 @@ body {
 }
 
 .container-about h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
   text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #2563eb;
 }
 
 .content-about {
@@ -106,11 +130,21 @@ body {
   padding: 10px;
 }
 
+.content-about-left h3,
+.content-about-right h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
+
 .content-about-left p,
 .content-about-right p {
   font-size: 1.25rem;
   line-height: 1.75rem;
   margin-top: 0.5rem;
+  font-weight: 400;
 }
 
 .services {
@@ -119,8 +153,12 @@ body {
 }
 
 .services h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #2563eb;
 }
 
 .content-services {
@@ -133,10 +171,16 @@ body {
 .card-services {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 300px;
   text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-services:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card-services img {
@@ -147,8 +191,16 @@ body {
 }
 
 .card-services h3 {
-  font-size: 1.5rem;
-  margin: 10px 0;
+  font-size: 1.6rem;
+  margin: 15px 0;
+  font-weight: 600;
+  color: #2563eb;
+  letter-spacing: 0.5px;
+}
+
+.card-services p {
+  font-size: 1.1rem;
+  color: #4b5563;
 }
 
 .portfolio {
@@ -158,8 +210,12 @@ body {
 }
 
 .portfolio h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #2563eb;
 }
 
 .carousel-container {
@@ -169,7 +225,7 @@ body {
   overflow: hidden;
   border-radius: 10px;
   background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .slides {
@@ -192,19 +248,24 @@ body {
 }
 
 .slide h1 {
-  font-size: 2rem;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
   text-align: center;
   margin-top: 150px;
+  letter-spacing: 1px;
+  color: #2563eb;
+  text-transform: uppercase;
 }
 
 #typewriter {
   font-size: 2rem;
-  font-family: monospace;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
   white-space: pre-wrap;
   overflow: hidden;
   display: inline-block;
   animation: blink 0.7s infinite;
+  color: #2563eb;
 }
 
 @keyframes blink {
@@ -222,43 +283,55 @@ body {
 
 .slide img {  
   width: 100%;
-height: 200px;
-object-fit: contain;
-border-radius: 10px;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 10px;
 }
 
 .slide h3 {
-font-size: 1.5rem;
-margin: 10px 0;
+  font-size: 1.6rem;
+  margin: 15px 0;
+  font-weight: 600;
+  color: #2563eb;
+  letter-spacing: 0.5px;
+}
+
+.slide p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  margin-bottom: 15px;
 }
 
 .btn-project {
-display: block;
-text-align: center;
-padding: 0.7rem;
-background-color: #2563eb;
-color: white;
-border-radius: 5px;
-text-transform: uppercase;
-font-size: 1rem;
-transition: background-color 0.3s;
-text-decoration: none;
+  display: block;
+  text-align: center;
+  padding: 0.8rem 1.2rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s, transform 0.2s;
+  text-decoration: none;
 }
 
 .btn-project:hover {
-background-color: #3b82f6;
+  background-color: #3b82f6;
+  transform: translateY(-2px);
 }
 
 .navigation {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .navigation label {
   width: 15px;
   height: 15px;
-  background: gray;
+  background: #d1d5db;
   margin: 5px;
   border-radius: 50%;
   cursor: pointer;
@@ -266,7 +339,7 @@ background-color: #3b82f6;
 }
 
 .navigation label:hover {
-  background: black;
+  background: #2563eb;
 }
 
 input[name="radio"] {
@@ -304,8 +377,12 @@ input[name="radio"] {
 }
 
 .contato h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #2563eb;
 }
 
 .form-group {
@@ -315,46 +392,57 @@ input[name="radio"] {
 .form-label {
   display: block;
   margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: 600;
   text-align: left;
+  letter-spacing: 0.5px;
 }
 
 .form-input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
+  padding: 12px;
+  border: 1px solid #d1d5db;
   border-radius: 5px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
 }
 
 .btn-contato {
   background-color: #2563eb;
   color: #fff;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .btn-contato:hover {
   background-color: #3b82f6;
+  transform: translateY(-2px);
 }
 
 footer {
   background-color: #2563eb;
   color: white;
   text-align: center;
-  padding: 10px 0;
+  padding: 15px 0;
 }
 
 footer p {
   margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .icones a {
-  margin: 0 5px;
-  font-size: 1.2rem;
+  margin: 0 8px;
+  font-size: 1.4rem;
   color: #2563eb;
+  transition: color 0.3s;
 }
 
 .icones a:hover {
@@ -379,7 +467,7 @@ footer p {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: transform 0.3s, background-color 0.3s;
 }
@@ -398,9 +486,10 @@ footer p {
   transform: translateY(-50%);
   background-color: #ffffff;
   color: #333;
-  padding: 5px 10px;
+  padding: 8px 12px;
   border-radius: 15px;
   font-size: 14px;
+  font-weight: 600;
   white-space: nowrap;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   opacity: 0;
@@ -465,7 +554,7 @@ footer p {
   margin: 15px;
   background-color: #2563eb;
   border-radius: 50%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-decoration: none;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -510,32 +599,32 @@ footer p {
   }
 
   .section-home h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
   }
 
   .section-home p {
-      font-size: 1rem;
+      font-size: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
   .navbar-titulo {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
   }
 
   .section-home h1 {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
   }
 
   .section-home p {
-      font-size: 0.875rem;
-  }
-
-  .content-about-right p {
       font-size: 1rem;
   }
 
+  .content-about-right p {
+      font-size: 1.1rem;
+  }
+
   .card-services h3, .card-portfolio h3 {
-      font-size: 1.25rem;
+      font-size: 1.4rem;
   }
 }
