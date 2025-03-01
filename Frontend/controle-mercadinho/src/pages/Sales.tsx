@@ -133,7 +133,12 @@ export default function Sales() {
       await new Promise(resolve => setTimeout(resolve, 100));
 
       if (!html5QrCode.current) {
-        html5QrCode.current = new Html5Qrcode("reader");
+        html5QrCode.current = new Html5Qrcode("reader", {
+          verbose: true,
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true
+          }
+        });
       }
 
       const devices = await Html5Qrcode.getCameras();
@@ -152,9 +157,10 @@ export default function Sales() {
         await html5QrCode.current.start(
           cameraId,
           {
-            fps: 10,
-            qrbox: { width: 300, height: 150 },
-            aspectRatio: 1.0,
+            fps: 20, // Aumentei o FPS para melhor detecção
+            qrbox: { width: 250, height: 100 }, // Ajustado para formato de código de barras
+            aspectRatio: 2.0, // Melhor para códigos de barras horizontais
+            disableFlip: false, // Permite flip da imagem se necessário
           },
           async (decodedText) => {
             console.log('Código lido:', decodedText);
@@ -162,7 +168,11 @@ export default function Sales() {
             stopScanner();
           },
           (errorMessage) => {
-            console.warn(errorMessage);
+            // Removido o console.warn para não poluir o console
+            if (errorMessage.includes('NotFoundError')) {
+              toast.error('Câmera não encontrada');
+              stopScanner();
+            }
           }
         );
 
