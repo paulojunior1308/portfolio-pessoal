@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
 import toast from 'react-hot-toast';
 import type { Product, CartItem, Sale } from '../types';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 
 export default function Sales() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,11 +16,34 @@ export default function Sales() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
-  const [scanner, setScanner] = useState<Html5QrcodeScanner | null>(null);
+  const html5QrCode = useRef<Html5Qrcode | null>(null);
   const barcodeBuffer = useRef('');
   const barcodeTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  // Mova processBarcode para fora do useEffect para poder usá-lo como dependência
+  const addToCart = useCallback((product: Product) => {
+    if (product.quantity <= 0) {
+      toast.error('Produto sem estoque');
+      return;
+    }
+
+    setCart((currentCart) => {
+      const existingItem = currentCart.find((item) => item.id === product.id);
+      if (existingItem) {
+        if (existingItem.cartQuantity >= product.quantity) {
+          toast.error('Quantidade máxima atingida');
+          return currentCart;
+        }
+        return currentCart.map((item) =>
+          item.id === product.id
+            ? { ...item, cartQuantity: item.cartQuantity + 1 }
+            : item
+        );
+      }
+      return [...currentCart, { ...product, cartQuantity: 1 }];
+    });
+  }, []);
+
+  // Mova processBarcode para usar useCallback com addToCart como dependência
   const processBarcode = useCallback(async (barcode: string) => {
     const productQuery = query(
       collection(db, 'products'),
@@ -44,7 +67,7 @@ export default function Sales() {
       console.error('Erro ao buscar produto:', error);
       toast.error('Erro ao buscar produto');
     }
-  }, []);
+  }, [addToCart]);
 
   useEffect(() => {
     fetchProducts();
@@ -72,7 +95,7 @@ export default function Sales() {
       // Define um novo timeout para limpar o buffer
       barcodeTimeout.current = setTimeout(() => {
         barcodeBuffer.current = '';
-      }, 100); // Limpa o buffer após 100ms sem entrada
+      }, 100);
     };
 
     window.addEventListener('keypress', handleKeyPress);
@@ -82,11 +105,9 @@ export default function Sales() {
       if (barcodeTimeout.current) {
         clearTimeout(barcodeTimeout.current);
       }
-      if (scanner) {
-        scanner.clear();
-      }
+      stopScanner();
     };
-  }, [processBarcode]); // Adicione processBarcode como dependência
+  }, [processBarcode]);
 
   const fetchProducts = async () => {
     try {
@@ -105,61 +126,51 @@ export default function Sales() {
     }
   };
 
-  const startScanner = () => {
-    setIsScanning(true);
-    const newScanner = new Html5QrcodeScanner(
-      "reader",
-      { 
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        rememberLastUsedCamera: true,
-        showTorchButtonIfSupported: true
-      },
-      false
-    );
+  const startScanner = async () => {
+    try {
+      if (!html5QrCode.current) {
+        html5QrCode.current = new Html5Qrcode("reader");
+      }
 
-    newScanner.render(onScanSuccess, onScanError);
-    setScanner(newScanner);
+      const devices = await Html5Qrcode.getCameras();
+      if (devices && devices.length > 0) {
+        const camera = devices.find(device => device.label.toLowerCase().includes('back')) || devices[0];
+        
+        setIsScanning(true);
+        await html5QrCode.current.start(
+          camera.id,
+          {
+            fps: 10,
+            qrbox: 250,
+            aspectRatio: 1.0,
+          },
+          async (decodedText) => {
+            await processBarcode(decodedText);
+            stopScanner();
+          },
+          (errorMessage) => {
+            console.warn(errorMessage);
+          }
+        );
+      } else {
+        toast.error('Nenhuma câmera encontrada');
+      }
+    } catch (err) {
+      console.error('Error starting scanner:', err);
+      toast.error('Erro ao iniciar câmera');
+      setIsScanning(false);
+    }
   };
 
-  const stopScanner = () => {
-    if (scanner) {
-      scanner.clear();
-      setScanner(null);
+  const stopScanner = async () => {
+    try {
+      if (html5QrCode.current && html5QrCode.current.isScanning) {
+        await html5QrCode.current.stop();
+      }
+    } catch (err) {
+      console.error('Error stopping scanner:', err);
     }
     setIsScanning(false);
-  };
-
-  const onScanSuccess = async (decodedText: string) => {
-    stopScanner();
-    await processBarcode(decodedText);
-  };
-
-  const onScanError = (errorMessage: string) => {
-    console.warn(errorMessage);
-  };
-
-  const addToCart = (product: Product) => {
-    if (product.quantity <= 0) {
-      toast.error('Produto sem estoque');
-      return;
-    }
-
-    setCart((currentCart) => {
-      const existingItem = currentCart.find((item) => item.id === product.id);
-      if (existingItem) {
-        if (existingItem.cartQuantity >= product.quantity) {
-          toast.error('Quantidade máxima atingida');
-          return currentCart;
-        }
-        return currentCart.map((item) =>
-          item.id === product.id
-            ? { ...item, cartQuantity: item.cartQuantity + 1 }
-            : item
-        );
-      }
-      return [...currentCart, { ...product, cartQuantity: 1 }];
-    });
   };
 
   const removeFromCart = (productId: string) => {
@@ -234,6 +245,35 @@ export default function Sales() {
     product.barcode.includes(searchTerm)
   );
 
+  // Função para lidar com a pesquisa e possível adição ao carrinho
+  const handleSearch = async (value: string) => {
+    setSearchTerm(value);
+    
+    // Se o valor tiver apenas números, assume que é um código de barras
+    if (/^\d+$/.test(value)) {
+      const productQuery = query(
+        collection(db, 'products'),
+        where('barcode', '==', value)
+      );
+
+      try {
+        const querySnapshot = await getDocs(productQuery);
+        if (!querySnapshot.empty) {
+          const product = {
+            id: querySnapshot.docs[0].id,
+            ...querySnapshot.docs[0].data()
+          } as Product;
+          
+          addToCart(product);
+          setSearchTerm(''); // Limpa o campo após adicionar
+          toast.success('Produto adicionado ao carrinho!');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar produto:', error);
+      }
+    }
+  };
+
   return (
     <Layout title="Nova Venda">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 font-poppins">
@@ -246,7 +286,7 @@ export default function Sales() {
                   type="text"
                   placeholder="Buscar produtos por nome ou código de barras..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => handleSearch(e.target.value)}
                   className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-acai-primary"
                 />
               </div>
@@ -261,7 +301,7 @@ export default function Sales() {
             
             {isScanning && (
               <div className="mt-4">
-                <div id="reader" className="w-full max-w-sm mx-auto"></div>
+                <div id="reader" className="w-full max-w-sm mx-auto overflow-hidden rounded-lg"></div>
               </div>
             )}
           </div>
