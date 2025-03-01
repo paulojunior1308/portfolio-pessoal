@@ -33,7 +33,7 @@ export default function Login() {
         <div className="text-center">
           <img src={Logo} alt="Logo" className="mx-auto h-24 w-auto" />
           <h1 className="mt-4 text-2xl title-primary">
-            Mercadinho POS
+            Mercadinho Açaí
           </h1>
           <p className="mt-2 text-sm text-gray-600">
             Sistema de Controle de Estoque e Vendas

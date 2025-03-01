@@ -1,22 +1,65 @@
-import { useState, useEffect } from 'react';
-import { Search, ShoppingCart, Plus, Minus, X } from 'lucide-react';
-import { collection, getDocs, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { useState, useEffect, useRef } from 'react';
+import { Search, ShoppingCart, Plus, Minus, X, Camera } from 'lucide-react';
+import { collection, getDocs, addDoc, updateDoc, doc, serverTimestamp, query, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
 import toast from 'react-hot-toast';
 import type { Product, CartItem, Sale } from '../types';
+import { Html5QrcodeScanner } from 'html5-qrcode';
 
 export default function Sales() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isScanning, setIsScanning] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<'credit' | 'debit' | 'pix' | 'cash'>('credit');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
+  const [scanner, setScanner] = useState<Html5QrcodeScanner | null>(null);
+  const barcodeBuffer = useRef('');
+  const barcodeTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     fetchProducts();
+
+    // Adiciona listener para capturar entrada do leitor de código de barras
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Ignora se estiver em um campo de input
+      if (e.target instanceof HTMLInputElement) return;
+
+      // Limpa o timeout anterior
+      if (barcodeTimeout.current) {
+        clearTimeout(barcodeTimeout.current);
+      }
+
+      // Se for Enter, processa o código de barras
+      if (e.key === 'Enter' && barcodeBuffer.current) {
+        processBarcode(barcodeBuffer.current);
+        barcodeBuffer.current = '';
+        return;
+      }
+
+      // Adiciona o caractere ao buffer
+      barcodeBuffer.current += e.key;
+
+      // Define um novo timeout para limpar o buffer
+      barcodeTimeout.current = setTimeout(() => {
+        barcodeBuffer.current = '';
+      }, 100); // Limpa o buffer após 100ms sem entrada
+    };
+
+    window.addEventListener('keypress', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keypress', handleKeyPress);
+      if (barcodeTimeout.current) {
+        clearTimeout(barcodeTimeout.current);
+      }
+      if (scanner) {
+        scanner.clear();
+      }
+    };
   }, []);
 
   const fetchProducts = async () => {
@@ -34,6 +77,39 @@ export default function Sales() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const startScanner = () => {
+    setIsScanning(true);
+    const newScanner = new Html5QrcodeScanner(
+      "reader",
+      { 
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0
+      },
+      false
+    );
+
+    newScanner.render(onScanSuccess, onScanError);
+    setScanner(newScanner);
+  };
+
+  const stopScanner = () => {
+    if (scanner) {
+      scanner.clear();
+      setScanner(null);
+    }
+    setIsScanning(false);
+  };
+
+  const onScanSuccess = async (decodedText: string) => {
+    stopScanner();
+    await processBarcode(decodedText);
+  };
+
+  const onScanError = (errorMessage: string) => {
+    console.warn(errorMessage);
   };
 
   const addToCart = (product: Product) => {
@@ -131,21 +207,62 @@ export default function Sales() {
     product.barcode.includes(searchTerm)
   );
 
+  // Função para processar o código de barras lido
+  const processBarcode = async (barcode: string) => {
+    const productQuery = query(
+      collection(db, 'products'),
+      where('barcode', '==', barcode)
+    );
+
+    try {
+      const querySnapshot = await getDocs(productQuery);
+      if (!querySnapshot.empty) {
+        const product = {
+          id: querySnapshot.docs[0].id,
+          ...querySnapshot.docs[0].data()
+        } as Product;
+        
+        addToCart(product);
+        toast.success('Produto adicionado ao carrinho!');
+      } else {
+        toast.error('Produto não encontrado!');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar produto:', error);
+      toast.error('Erro ao buscar produto');
+    }
+  };
+
   return (
     <Layout title="Nova Venda">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 font-poppins">
         <div className="lg:col-span-2 bg-white rounded-xl shadow-md p-6">
           <div className="mb-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <input
-                type="text"
-                placeholder="Buscar produtos por nome ou código de barras..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-acai-primary"
-              />
+            <div className="relative flex items-center gap-2">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <input
+                  type="text"
+                  placeholder="Buscar produtos por nome ou código de barras..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-acai-primary"
+                />
+              </div>
+              <button
+                onClick={() => isScanning ? stopScanner() : startScanner()}
+                className="lg:hidden p-2 rounded-lg bg-acai-primary text-white hover:bg-acai-secondary transition-colors"
+                aria-label={isScanning ? "Parar leitor" : "Ler código de barras"}
+              >
+                {isScanning ? <X className="h-5 w-5" /> : <Camera className="h-5 w-5" />}
+              </button>
             </div>
+            
+            {isScanning && (
+              <div className="mt-4">
+                <div id="reader" className="w-full max-w-sm mx-auto"></div>
+              </div>
+            )}
           </div>
 
           {loading ? (

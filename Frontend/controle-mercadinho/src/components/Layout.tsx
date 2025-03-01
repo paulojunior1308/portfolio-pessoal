@@ -25,10 +25,12 @@ export default function Layout({ children, title }: LayoutProps) {
 
   return (
     <div className="flex min-h-screen bg-acai-cream relative font-quicksand">
-      {/* Botão do menu hamburguer - Visível apenas em telas menores */}
+      {/* Botão do menu hamburguer - Visível apenas em telas menores e quando o sidebar estiver fechado */}
       <button
         onClick={() => setSidebarOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-acai-primary text-white hover:bg-acai-secondary transition-colors duration-200"
+        className={`lg:hidden absolute top-4 right-4 z-50 p-2 rounded-md bg-acai-primary text-white hover:bg-acai-secondary transition-colors duration-200 ${
+          sidebarOpen ? 'hidden' : 'block'
+        }`}
         aria-label="Abrir menu"
       >
         <Menu className="h-6 w-6" />
@@ -53,7 +55,7 @@ export default function Layout({ children, title }: LayoutProps) {
       </div>
 
       {/* Conteúdo principal */}
-      <main className="flex-1 p-4 pt-16 lg:pt-8 lg:p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
         <div className="max-w-[1440px] mx-auto">
           <h1 className="text-2xl sm:text-3xl title-primary mb-4 sm:mb-8">
             {title}
