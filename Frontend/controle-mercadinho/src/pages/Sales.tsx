@@ -128,9 +128,8 @@ export default function Sales() {
 
   const startScanner = async () => {
     try {
-      setIsScanning(true); // Primeiro ativamos o estado para renderizar o elemento
+      setIsScanning(true);
       
-      // Pequeno delay para garantir que o elemento foi renderizado
       await new Promise(resolve => setTimeout(resolve, 100));
 
       if (!html5QrCode.current) {
@@ -139,15 +138,26 @@ export default function Sales() {
 
       const devices = await Html5Qrcode.getCameras();
       if (devices && devices.length > 0) {
-        const camera = devices.find(device => device.label.toLowerCase().includes('back')) || devices[0];
+        // Procura especificamente por câmera traseira
+        const rearCamera = devices.find(
+          device => 
+            device.label.toLowerCase().includes('back') || 
+            device.label.toLowerCase().includes('traseira') || 
+            device.label.toLowerCase().includes('environment')
+        );
+        
+        // Se não encontrar a câmera traseira, pega a última câmera da lista (geralmente é a traseira)
+        const cameraId = rearCamera ? rearCamera.id : devices[devices.length - 1].id;
         
         await html5QrCode.current.start(
-          camera.id,
+          cameraId,
           {
             fps: 10,
-            qrbox: { width: 250, height: 250 },
+            qrbox: { width: 300, height: 150 },
+            aspectRatio: 1.0,
           },
           async (decodedText) => {
+            console.log('Código lido:', decodedText);
             await processBarcode(decodedText);
             stopScanner();
           },
@@ -155,6 +165,7 @@ export default function Sales() {
             console.warn(errorMessage);
           }
         );
+
       } else {
         toast.error('Nenhuma câmera encontrada');
         setIsScanning(false);
