@@ -165,7 +165,6 @@ export default function Sales() {
           async (decodedText) => {
             console.log('Código lido:', decodedText);
             await processBarcode(decodedText);
-            stopScanner();
           },
           (errorMessage) => {
             // Removido o console.warn para não poluir o console
