@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Search, Edit, Trash2, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, Search, Edit, Trash2, X, Camera } from 'lucide-react';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import Layout from '../components/Layout';
 import toast from 'react-hot-toast';
 import type { Product } from '../types';
+import { Html5Qrcode } from 'html5-qrcode';
 
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +20,8 @@ export default function Products() {
     quantity: ''
   });
   const [loading, setLoading] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const html5QrCode = useRef<Html5Qrcode | null>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -107,6 +110,78 @@ export default function Products() {
       console.error('Error deleting product:', error);
       toast.error('Erro ao excluir produto');
     }
+  };
+
+  const startScanner = async () => {
+    try {
+      setIsScanning(true);
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      if (!html5QrCode.current) {
+        html5QrCode.current = new Html5Qrcode("reader", {
+          verbose: true,
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true
+          }
+        });
+      }
+
+      const devices = await Html5Qrcode.getCameras();
+      if (devices && devices.length > 0) {
+        // Procura especificamente por câmera traseira
+        const rearCamera = devices.find(
+          device => 
+            device.label.toLowerCase().includes('back') || 
+            device.label.toLowerCase().includes('traseira') || 
+            device.label.toLowerCase().includes('environment')
+        );
+        
+        // Se não encontrar a câmera traseira, pega a última câmera da lista (geralmente é a traseira)
+        const cameraId = rearCamera ? rearCamera.id : devices[devices.length - 1].id;
+        
+        await html5QrCode.current.start(
+          cameraId,
+          {
+            fps: 20,
+            qrbox: { width: 250, height: 100 },
+            aspectRatio: 2.0,
+            disableFlip: false,
+          },
+          async (decodedText) => {
+            console.log('Código lido:', decodedText);
+            setNewProduct(prev => ({ ...prev, barcode: decodedText }));
+            stopScanner();
+            toast.success('Código de barras lido com sucesso!');
+          },
+          (errorMessage) => {
+            if (errorMessage.includes('NotFoundError')) {
+              toast.error('Câmera não encontrada');
+              stopScanner();
+            }
+          }
+        );
+
+      } else {
+        toast.error('Nenhuma câmera encontrada');
+        setIsScanning(false);
+      }
+    } catch (err) {
+      console.error('Error starting scanner:', err);
+      toast.error('Erro ao iniciar câmera');
+      setIsScanning(false);
+    }
+  };
+
+  const stopScanner = async () => {
+    try {
+      if (html5QrCode.current && html5QrCode.current.isScanning) {
+        await html5QrCode.current.stop();
+      }
+    } catch (err) {
+      console.error('Error stopping scanner:', err);
+    }
+    setIsScanning(false);
   };
 
   const filteredProducts = products.filter(product =>
@@ -218,7 +293,10 @@ export default function Products() {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-acai-primary font-pacifico">Novo Produto</h2>
               <button 
-                onClick={() => setShowAddModal(false)}
+                onClick={() => {
+                  setShowAddModal(false);
+                  stopScanner();
+                }}
                 className="text-gray-500 hover:text-gray-700"
                 disabled={loading}
               >
@@ -243,14 +321,29 @@ export default function Products() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Código de Barras
                 </label>
-                <input
-                  type="text"
-                  required
-                  value={newProduct.barcode}
-                  onChange={(e) => setNewProduct({ ...newProduct, barcode: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-acai-primary"
-                  disabled={loading}
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    required
+                    value={newProduct.barcode}
+                    onChange={(e) => setNewProduct({ ...newProduct, barcode: e.target.value })}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-acai-primary"
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => isScanning ? stopScanner() : startScanner()}
+                    className="p-2 rounded-lg bg-acai-primary text-white hover:bg-acai-secondary transition-colors"
+                    disabled={loading}
+                  >
+                    {isScanning ? <X className="h-5 w-5" /> : <Camera className="h-5 w-5" />}
+                  </button>
+                </div>
+                {isScanning && (
+                  <div className="mt-4">
+                    <div id="reader" className="w-full max-w-sm mx-auto overflow-hidden rounded-lg bg-white"></div>
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
