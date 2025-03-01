@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Search, ShoppingCart, Plus, Minus, X, Camera } from 'lucide-react';
 import { collection, getDocs, addDoc, updateDoc, doc, serverTimestamp, query, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
@@ -19,6 +19,32 @@ export default function Sales() {
   const [scanner, setScanner] = useState<Html5QrcodeScanner | null>(null);
   const barcodeBuffer = useRef('');
   const barcodeTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
+
+  // Mova processBarcode para fora do useEffect para poder usá-lo como dependência
+  const processBarcode = useCallback(async (barcode: string) => {
+    const productQuery = query(
+      collection(db, 'products'),
+      where('barcode', '==', barcode)
+    );
+
+    try {
+      const querySnapshot = await getDocs(productQuery);
+      if (!querySnapshot.empty) {
+        const product = {
+          id: querySnapshot.docs[0].id,
+          ...querySnapshot.docs[0].data()
+        } as Product;
+        
+        addToCart(product);
+        toast.success('Produto adicionado ao carrinho!');
+      } else {
+        toast.error('Produto não encontrado!');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar produto:', error);
+      toast.error('Erro ao buscar produto');
+    }
+  }, []);
 
   useEffect(() => {
     fetchProducts();
@@ -60,7 +86,7 @@ export default function Sales() {
         scanner.clear();
       }
     };
-  }, []);
+  }, [processBarcode]); // Adicione processBarcode como dependência
 
   const fetchProducts = async () => {
     try {
@@ -86,7 +112,8 @@ export default function Sales() {
       { 
         fps: 10,
         qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0
+        rememberLastUsedCamera: true,
+        showTorchButtonIfSupported: true
       },
       false
     );
@@ -206,32 +233,6 @@ export default function Sales() {
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.barcode.includes(searchTerm)
   );
-
-  // Função para processar o código de barras lido
-  const processBarcode = async (barcode: string) => {
-    const productQuery = query(
-      collection(db, 'products'),
-      where('barcode', '==', barcode)
-    );
-
-    try {
-      const querySnapshot = await getDocs(productQuery);
-      if (!querySnapshot.empty) {
-        const product = {
-          id: querySnapshot.docs[0].id,
-          ...querySnapshot.docs[0].data()
-        } as Product;
-        
-        addToCart(product);
-        toast.success('Produto adicionado ao carrinho!');
-      } else {
-        toast.error('Produto não encontrado!');
-      }
-    } catch (error) {
-      console.error('Erro ao buscar produto:', error);
-      toast.error('Erro ao buscar produto');
-    }
-  };
 
   return (
     <Layout title="Nova Venda">
