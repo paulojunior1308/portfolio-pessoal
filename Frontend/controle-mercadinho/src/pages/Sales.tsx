@@ -128,6 +128,11 @@ export default function Sales() {
 
   const startScanner = async () => {
     try {
+      setIsScanning(true); // Primeiro ativamos o estado para renderizar o elemento
+      
+      // Pequeno delay para garantir que o elemento foi renderizado
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       if (!html5QrCode.current) {
         html5QrCode.current = new Html5Qrcode("reader");
       }
@@ -136,13 +141,11 @@ export default function Sales() {
       if (devices && devices.length > 0) {
         const camera = devices.find(device => device.label.toLowerCase().includes('back')) || devices[0];
         
-        setIsScanning(true);
         await html5QrCode.current.start(
           camera.id,
           {
             fps: 10,
-            qrbox: 250,
-            aspectRatio: 1.0,
+            qrbox: { width: 250, height: 250 },
           },
           async (decodedText) => {
             await processBarcode(decodedText);
@@ -154,6 +157,7 @@ export default function Sales() {
         );
       } else {
         toast.error('Nenhuma câmera encontrada');
+        setIsScanning(false);
       }
     } catch (err) {
       console.error('Error starting scanner:', err);
@@ -301,7 +305,7 @@ export default function Sales() {
             
             {isScanning && (
               <div className="mt-4">
-                <div id="reader" className="w-full max-w-sm mx-auto overflow-hidden rounded-lg"></div>
+                <div id="reader" className="w-full max-w-sm mx-auto overflow-hidden rounded-lg bg-white"></div>
               </div>
             )}
           </div>
