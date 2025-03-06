@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Store, Package, ShoppingCart, PieChart, LogOut, X } from 'lucide-react';
+import { Store, Package, ShoppingCart, PieChart, LogOut, X, Lock } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface SidebarProps {
@@ -15,6 +15,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
     { name: 'Produtos', href: '/products', icon: Package },
     { name: 'Vendas', href: '/sales', icon: ShoppingCart },
     { name: 'Relatórios', href: '/reports', icon: PieChart },
+    { name: 'Alterar Senha', href: '/change-password', icon: Lock },
   ];
 
   const isActive = (path: string) => location.pathname === path;

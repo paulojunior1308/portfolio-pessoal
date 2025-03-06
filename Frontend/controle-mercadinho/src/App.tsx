@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import Sales from './pages/Sales';
 import Reports from './pages/Reports';
+import ChangePassword from './pages/ChangePassword';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/products" element={<PrivateRoute><Products /></PrivateRoute>} />
             <Route path="/sales" element={<PrivateRoute><Sales /></PrivateRoute>} />
             <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
+            <Route path="/change-password" element={<PrivateRoute><ChangePassword /></PrivateRoute>} />
           </Routes>
           <Toaster position="top-right" />
         </div>
