@@ -204,16 +204,16 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                   <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Valor
                   </th>
-                  <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Categoria
                   </th>
-                  <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Data
                   </th>
-                  <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Tipo
                   </th>
-                  <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Parcelas
                   </th>
                   {showPaymentStatus && (
@@ -222,9 +222,9 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                     </th>
                   )}
                   {!showPaymentStatus && (
-                    <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
-                      Ações
-                    </th>
+                            <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
+                    Ações
+                  </th>
                   )}
                 </tr>
               </thead>
@@ -238,11 +238,11 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                 <td className="px-4 py-3">
                                   <div className="flex flex-col space-y-1">
                                     <div className="flex items-center justify-between md:justify-start">
-                                      <span className="font-medium text-sm text-gray-900">{expense.description}</span>
+                                    <span className="font-medium text-sm text-gray-900">{expense.description}</span>
                                       <span className="md:hidden text-sm font-medium text-gray-900 ml-2">
                                         {formatCurrency(valorExibido)}
-                                      </span>
-                                    </div>
+                                        </span>
+                                      </div>
                                     <div className="md:hidden flex flex-col space-y-1">
                                       {Number(expense.installments) > 1 && (
                                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
@@ -251,12 +251,12 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                       )}
                                     </div>
                                   </div>
-                                </td>
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3">
                                   <span className="text-sm font-medium text-gray-900">
                                     {formatCurrency(valorExibido)}
                                   </span>
-                                </td>
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3">
                                   <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium" style={{ 
                                     backgroundColor: `${CATEGORY_COLORS[expense.category]}15`,
@@ -264,10 +264,10 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                   }}>
                             {CATEGORIES[expense.category]}
                           </span>
-                                </td>
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3 text-sm text-gray-900">
-                                  {formatDate(expense.date)}
-                                </td>
+                          {formatDate(expense.date)}
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3">
                                   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
                             expense.isFixed 
@@ -276,33 +276,33 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                           }`}>
                             {expense.isFixed ? 'Fixa' : 'Variável'}
                           </span>
-                                </td>
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3">
                                   {Number(expense.installments) > 1 && (
                                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
-                                      {currentInstallment}/{expense.installments}
-                                    </span>
+                              {currentInstallment}/{expense.installments}
+                            </span>
                                   )}
-                                </td>
-                                <td className="px-4 py-3">
+                        </td>
+                                  <td className="px-4 py-3">
                                   <div className="flex items-center justify-end gap-2">
                                     {showPaymentStatus && onTogglePayment && (
-                                      <button
-                                        onClick={() => onTogglePayment(expense.id, !expense.isPaid)}
-                                        className={`p-1.5 rounded-full transition-all duration-150 ${
-                                          expense.isPaid
-                                            ? 'text-green-600 hover:bg-green-100'
-                                            : 'text-red-600 hover:bg-red-100'
-                                        }`}
-                                        disabled={disabled}
-                                      >
+                                        <button
+                                          onClick={() => onTogglePayment(expense.id, !expense.isPaid)}
+                                          className={`p-1.5 rounded-full transition-all duration-150 ${
+                                            expense.isPaid 
+                                              ? 'text-green-600 hover:bg-green-100' 
+                                              : 'text-red-600 hover:bg-red-100'
+                                          }`}
+                                          disabled={disabled}
+                                        >
                                         {expense.isPaid ? (
                                           <CheckCircle className="h-4 w-4" />
                                         ) : (
                                           <XCircle className="h-4 w-4" />
                                         )}
-                                      </button>
-                                    )}
+                                        </button>
+                                      )}
                                     {onEdit && (
                                       <button
                                         onClick={() => onEdit(expense)}
@@ -390,9 +390,9 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                             </th>
                           )}
                           {!showPaymentStatus && (
-                            <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
-                              Ações
-                            </th>
+                          <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
+                            Ações
+                          </th>
                           )}
                         </tr>
                       </thead>
@@ -417,11 +417,11 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                 <td className="px-4 py-3">
                                   <div className="flex flex-col space-y-1">
                                     <div className="flex items-center justify-between md:justify-start">
-                                      <span className="font-medium text-sm text-gray-900">{expense.description}</span>
+                                    <span className="font-medium text-sm text-gray-900">{expense.description}</span>
                                       <span className="md:hidden text-sm font-medium text-gray-900 ml-2">
                                         {formatCurrency(valorExibido)}
-                                      </span>
-                                    </div>
+                                        </span>
+                                      </div>
                                     <div className="md:hidden flex flex-col space-y-1">
                                       {Number(expense.installments) > 1 && (
                                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
@@ -462,49 +462,49 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                       {currentInstallment}/{expense.installments}
                                     </span>
                                   )}
-                                </td>
-                                <td className="px-4 py-3">
+                        </td>
+                                  <td className="px-4 py-3">
                                   <div className="flex items-center justify-end gap-2">
                                     {showPaymentStatus && onTogglePayment && (
-                                      <button
-                                        onClick={() => onTogglePayment(expense.id, !expense.isPaid)}
-                                        className={`p-1.5 rounded-full transition-all duration-150 ${
-                                          expense.isPaid
-                                            ? 'text-green-600 hover:bg-green-100'
-                                            : 'text-red-600 hover:bg-red-100'
-                                        }`}
-                                        disabled={disabled}
-                                      >
+                              <button
+                                onClick={() => onTogglePayment(expense.id, !expense.isPaid)}
+                                          className={`p-1.5 rounded-full transition-all duration-150 ${
+                                  expense.isPaid 
+                                    ? 'text-green-600 hover:bg-green-100' 
+                                    : 'text-red-600 hover:bg-red-100'
+                                }`}
+                                disabled={disabled}
+                              >
                                         {expense.isPaid ? (
                                           <CheckCircle className="h-4 w-4" />
                                         ) : (
                                           <XCircle className="h-4 w-4" />
                                         )}
-                                      </button>
-                                    )}
-                                    {onEdit && (
-                                      <button
-                                        onClick={() => onEdit(expense)}
+                              </button>
+                            )}
+                            {onEdit && (
+                              <button
+                                onClick={() => onEdit(expense)}
                                         className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-full transition-all duration-150"
-                                        disabled={disabled}
-                                      >
-                                        <Edit className="h-4 w-4" />
-                                      </button>
-                                    )}
-                                    {onDelete && (
-                                      <button
-                                        onClick={() => onDelete(expense.id)}
+                                disabled={disabled}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </button>
+                            )}
+                            {onDelete && (
+                              <button
+                                onClick={() => onDelete(expense.id)}
                                         className="p-1.5 text-red-600 hover:bg-red-100 rounded-full transition-all duration-150"
-                                        disabled={disabled}
-                                      >
-                                        <Trash2 className="h-4 w-4" />
-                                      </button>
-                                    )}
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
+                                disabled={disabled}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -576,16 +576,16 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                   <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Valor
                   </th>
-                  <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Categoria
                   </th>
-                  <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Data
                   </th>
-                  <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Tipo
                   </th>
-                  <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="hidden md:table-cell px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Parcelas
                   </th>
                   {showPaymentStatus && (
@@ -594,9 +594,9 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                     </th>
                   )}
                   {!showPaymentStatus && (
-                    <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
-                      Ações
-                    </th>
+                            <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
+                    Ações
+                  </th>
                   )}
                 </tr>
               </thead>
@@ -610,11 +610,11 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                 <td className="px-4 py-3">
                                   <div className="flex flex-col space-y-1">
                                     <div className="flex items-center justify-between md:justify-start">
-                                      <span className="font-medium text-sm text-gray-900">{expense.description}</span>
+                                    <span className="font-medium text-sm text-gray-900">{expense.description}</span>
                                       <span className="md:hidden text-sm font-medium text-gray-900 ml-2">
                                         {formatCurrency(valorExibido)}
-                                      </span>
-                                    </div>
+                                        </span>
+                                      </div>
                                     <div className="md:hidden flex flex-col space-y-1">
                                       {Number(expense.installments) > 1 && (
                                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
@@ -623,58 +623,58 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                       )}
                                     </div>
                                   </div>
-                                </td>
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3">
                                   <span className="text-sm font-medium text-gray-900">
                                     {formatCurrency(valorExibido)}
                                   </span>
-                                </td>
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3">
                                   <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium" style={{ 
                                     backgroundColor: `${CATEGORY_COLORS[expense.category]}15`,
-                                    color: CATEGORY_COLORS[expense.category]
+                              color: CATEGORY_COLORS[expense.category]
                                   }}>
-                                    {CATEGORIES[expense.category]}
-                                  </span>
-                                </td>
+                            {CATEGORIES[expense.category]}
+                          </span>
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3 text-sm text-gray-900">
-                                  {formatDate(expense.date)}
-                                </td>
+                          {formatDate(expense.date)}
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3">
                                   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                                    expense.isFixed 
+                            expense.isFixed 
                                       ? 'bg-blue-100 text-blue-800'
                                       : 'bg-purple-100 text-purple-800'
-                                  }`}>
-                                    {expense.isFixed ? 'Fixa' : 'Variável'}
-                                  </span>
-                                </td>
+                          }`}>
+                            {expense.isFixed ? 'Fixa' : 'Variável'}
+                          </span>
+                        </td>
                                 <td className="hidden md:table-cell px-4 py-3">
                                   {Number(expense.installments) > 1 && (
                                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
-                                      {currentInstallment}/{expense.installments}
-                                    </span>
+                              {currentInstallment}/{expense.installments}
+                            </span>
                                   )}
-                                </td>
-                                <td className="px-4 py-3">
+                        </td>
+                                  <td className="px-4 py-3">
                                   <div className="flex items-center justify-end gap-2">
                                     {showPaymentStatus && onTogglePayment && (
-                                      <button
-                                        onClick={() => onTogglePayment(expense.id, !expense.isPaid)}
-                                        className={`p-1.5 rounded-full transition-all duration-150 ${
-                                          expense.isPaid
-                                            ? 'text-green-600 hover:bg-green-100'
-                                            : 'text-red-600 hover:bg-red-100'
-                                        }`}
-                                        disabled={disabled}
-                                      >
+                                        <button
+                                          onClick={() => onTogglePayment(expense.id, !expense.isPaid)}
+                                          className={`p-1.5 rounded-full transition-all duration-150 ${
+                                            expense.isPaid 
+                                              ? 'text-green-600 hover:bg-green-100' 
+                                              : 'text-red-600 hover:bg-red-100'
+                                          }`}
+                                          disabled={disabled}
+                                        >
                                         {expense.isPaid ? (
                                           <CheckCircle className="h-4 w-4" />
                                         ) : (
                                           <XCircle className="h-4 w-4" />
                                         )}
-                                      </button>
-                                    )}
+                                        </button>
+                                      )}
                                     {onEdit && (
                                       <button
                                         onClick={() => onEdit(expense)}
@@ -762,9 +762,9 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                             </th>
                           )}
                           {!showPaymentStatus && (
-                            <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
-                              Ações
-                            </th>
+                          <th scope="col" className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
+                            Ações
+                          </th>
                           )}
                         </tr>
                       </thead>
@@ -789,11 +789,11 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                 <td className="px-4 py-3">
                                   <div className="flex flex-col space-y-1">
                                     <div className="flex items-center justify-between md:justify-start">
-                                      <span className="font-medium text-sm text-gray-900">{expense.description}</span>
+                                    <span className="font-medium text-sm text-gray-900">{expense.description}</span>
                                       <span className="md:hidden text-sm font-medium text-gray-900 ml-2">
                                         {formatCurrency(valorExibido)}
-                                      </span>
-                                    </div>
+                                        </span>
+                                      </div>
                                     <div className="md:hidden flex flex-col space-y-1">
                                       {Number(expense.installments) > 1 && (
                                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
@@ -834,49 +834,49 @@ const ExpenseList: React.FC<ExpenseListProps> = ({
                                       {currentInstallment}/{expense.installments}
                                     </span>
                                   )}
-                                </td>
-                                <td className="px-4 py-3">
+                        </td>
+                                  <td className="px-4 py-3">
                                   <div className="flex items-center justify-end gap-2">
                                     {showPaymentStatus && onTogglePayment && (
-                                      <button
-                                        onClick={() => onTogglePayment(expense.id, !expense.isPaid)}
-                                        className={`p-1.5 rounded-full transition-all duration-150 ${
-                                          expense.isPaid
-                                            ? 'text-green-600 hover:bg-green-100'
-                                            : 'text-red-600 hover:bg-red-100'
-                                        }`}
-                                        disabled={disabled}
-                                      >
+                              <button
+                                onClick={() => onTogglePayment(expense.id, !expense.isPaid)}
+                                          className={`p-1.5 rounded-full transition-all duration-150 ${
+                                  expense.isPaid 
+                                    ? 'text-green-600 hover:bg-green-100' 
+                                    : 'text-red-600 hover:bg-red-100'
+                                }`}
+                                disabled={disabled}
+                              >
                                         {expense.isPaid ? (
                                           <CheckCircle className="h-4 w-4" />
                                         ) : (
                                           <XCircle className="h-4 w-4" />
                                         )}
-                                      </button>
-                                    )}
-                                    {onEdit && (
-                                      <button
-                                        onClick={() => onEdit(expense)}
+                              </button>
+                            )}
+                            {onEdit && (
+                              <button
+                                onClick={() => onEdit(expense)}
                                         className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-full transition-all duration-150"
-                                        disabled={disabled}
-                                      >
-                                        <Edit className="h-4 w-4" />
-                                      </button>
-                                    )}
-                                    {onDelete && (
-                                      <button
-                                        onClick={() => onDelete(expense.id)}
+                                disabled={disabled}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </button>
+                            )}
+                            {onDelete && (
+                              <button
+                                onClick={() => onDelete(expense.id)}
                                         className="p-1.5 text-red-600 hover:bg-red-100 rounded-full transition-all duration-150"
-                                        disabled={disabled}
-                                      >
-                                        <Trash2 className="h-4 w-4" />
-                                      </button>
-                                    )}
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
+                                disabled={disabled}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
