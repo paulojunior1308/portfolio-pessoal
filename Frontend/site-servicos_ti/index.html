@@ -15,7 +15,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
         <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16888158092">
     </script>
@@ -159,77 +158,102 @@
             </a>
         </div>
     </div>
-    
+                
+    <script src="video.js"></script>
     <section class="portfolio" id="portfolio">
       <div class="container-portfolio">
         <h2>Portfólio</h2>
-        <div class="carousel-container">
-          <!-- Inputs para controle do carrossel -->
-          <input type="radio" name="radio" id="slide1" checked>
-          <input type="radio" name="radio" id="slide2">
-          <input type="radio" name="radio" id="slide3">
-          <input type="radio" name="radio" id="slide4">
-          <input type="radio" name="radio" id="slide5">
-          <input type="radio" name="radio" id="slide6">
-          
-          <!-- Container de slides -->
-          <div class="slides">
-            <div class="slide" id="primeiro-slide">
-              <h1>Desenvolvimento de Sites</h1>
+        <div class="carousels-wrapper">
+          <div class="carousel-container">
+            <!-- Inputs para controle do carrossel -->
+            <input type="radio" name="radio" id="slide1" checked>
+            <input type="radio" name="radio" id="slide2">
+            <input type="radio" name="radio" id="slide3">
+            <input type="radio" name="radio" id="slide4">
+            <input type="radio" name="radio" id="slide5">
+            <input type="radio" name="radio" id="slide6">
+            
+            <!-- Container de slides -->
+            <div class="slides">
+              <div class="slide" id="primeiro-slide">
+                <h1>Desenvolvimento de Sites</h1>
+              </div>
+              <div class="slide" id="segundo-slide">
+                <img alt="Imagem de um site de um cliente" src="projeto1.png">
+                <h3>Moda Style</h3>
+                <p>
+                  E-commerce fictício chamado Moda Style, desenvolvido em React, JavaScript, HTML e CSS.
+                </p>
+                <a class="btn-project" href="https://modastyle.netlify.app/" target="_blank">
+                  Acesse o site
+                </a>
+              </div>
+              <div class="slide" id="terceiro-slide">
+                <img alt="Imagem de um site de um cliente" src="projeto2.png">
+                <h3>JB Queijos e Laticínios</h3>
+                <p>
+                  E-commerce real com propósito de chamar clientes e fazer o primeiro atendimento, desenvolvido em React, JavaScript, HTML e CSS.
+                </p>
+                <a class="btn-project" href="https://jbqueijoslaticinios.netlify.app/" target="_blank">
+                  Acesse o site
+                </a>
+              </div>
+              <div class="slide" id="quarto-slide">
+                <img alt="Imagem de um site de um cliente" src="projeto3.png">
+                <h3>Cida Confeiteira</h3>
+                <p>
+                  E-commerce real com propósito de chamar clientes e fazer o primeiro atendimento, desenvolvido em React, JavaScript, HTML e CSS.
+                </p>
+                <a class="btn-project" href="https://cidabolos.netlify.app/" target="_blank">
+                  Acesse o site
+                </a>
+              </div>
+              <div class="slide" id="quinto-slide">
+                <img alt="Imagem de um site de um cliente" src="projeto4.png">
+                <h3>Claudio Revendedor Natura</h3>
+                <p>
+                  Landing page para divulgar produtos da marca Natura, desenvolvido em React, JavaScript, HTML e CSS.
+                </p>
+                <a class="btn-project" href="https://claudiorevendedornatura.netlify.app/" target="_blank">
+                  Acesse o site
+                </a>
+              </div>            
+              <div class="slide" id="quarto-slide">
+                <h1 id="typewriter"></h1>
+                <script src="escrevendo.js"></script>
+              </div>
+            </div> 
+      
+            <div class="navigation">
+              <label for="slide1"></label>
+              <label for="slide2"></label>
+              <label for="slide3"></label>
+              <label for="slide4"></label>
+              <label for="slide5"></label>
+              <label for="slide6"></label>
             </div>
-            <div class="slide" id="segundo-slide">
-              <img alt="Imagem de um site de um cliente" src="projeto1.png">
-              <h3>Moda Style</h3>
-              <p>
-                E-commerce fictício chamado Moda Style, desenvolvido em React, JavaScript, HTML e CSS.
-              </p>
-              <a class="btn-project" href="https://modastyle.netlify.app/" target="_blank">
-                Acesse o site
-              </a>
+          </div>
+          <div class="carousel-container">
+            <input type="radio" name="radio" id="maint1" checked>
+            <input type="radio" name="radio" id="maint2">
+            
+            <div class="slides-config">
+              <div class="slide">
+                <h1>Configuração e Manutenção</h1>
+              </div>
+              <div class="slide" id="manutencao">
+                <video controls width="100%">
+                  <source src="manutencao.mp4" type="video/mp4">
+                </video>
+                <h3>Manutenção de notebooks</h3>
+                <p>Troca da carcaça da tela de um notebook.</p>
+              </div>
             </div>
-            <div class="slide" id="terceiro-slide">
-              <img alt="Imagem de um site de um cliente" src="projeto2.png">
-              <h3>JB Queijos e Laticínios</h3>
-              <p>
-                E-commerce real com propósito de chamar clientes e fazer o primeiro atendimento, desenvolvido em React, JavaScript, HTML e CSS.
-              </p>
-              <a class="btn-project" href="https://jbqueijoslaticinios.netlify.app/" target="_blank">
-                Acesse o site
-              </a>
+
+            <div class="navigation-config">
+              <label for="maint1"></label>
+              <label for="maint2"></label>
             </div>
-            <div class="slide" id="quarto-slide">
-              <img alt="Imagem de um site de um cliente" src="projeto3.png">
-              <h3>Cida Confeiteira</h3>
-              <p>
-                E-commerce real com propósito de chamar clientes e fazer o primeiro atendimento, desenvolvido em React, JavaScript, HTML e CSS.
-              </p>
-              <a class="btn-project" href="https://cidabolos.netlify.app/" target="_blank">
-                Acesse o site
-              </a>
-            </div>
-            <div class="slide" id="quinto-slide">
-              <img alt="Imagem de um site de um cliente" src="projeto4.png">
-              <h3>Claudio Revendedor Natura</h3>
-              <p>
-                Landing page para divulgar produtos da marca Natura, desenvolvido em React, JavaScript, HTML e CSS.
-              </p>
-              <a class="btn-project" href="https://claudiorevendedornatura.netlify.app/" target="_blank">
-                Acesse o site
-              </a>
-            </div>            
-            <div class="slide" id="quarto-slide">
-              <h1 id="typewriter"></h1>
-              <script src="escrevendo.js"></script>
-            </div>
-          </div> 
-    
-          <div class="navigation">
-            <label for="slide1"></label>
-            <label for="slide2"></label>
-            <label for="slide3"></label>
-            <label for="slide4"></label>
-            <label for="slide5"></label>
-            <label for="slide6"></label>
           </div>
         </div>
       </div>

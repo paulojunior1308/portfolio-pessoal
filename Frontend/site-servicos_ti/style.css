@@ -218,10 +218,17 @@ body {
   color: #2563eb;
 }
 
+.carousels-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
 .carousel-container {
   position: relative;
   max-width: 350px;
-  margin: auto;
+  margin: 0;
   overflow: hidden;
   border-radius: 10px;
   background: #fff;
@@ -234,17 +241,16 @@ body {
   transition: transform 0.5s ease-in-out;
 }
 
-.slide {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  width: 100%;
-  text-align: center;
+.slides-config {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  width: 200%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
 }
 
 .slide h1 {
@@ -255,6 +261,27 @@ body {
   letter-spacing: 1px;
   color: #2563eb;
   text-transform: uppercase;
+}
+
+.slide img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.slide h3 {
+  font-size: 1.6rem;
+  margin: 15px 0;
+  font-weight: 600;
+  color: #2563eb;
+  letter-spacing: 0.5px;
+}
+
+.slide p {
+  font-size: 1.1rem;
+  color: #4b5563;
+  margin-bottom: 15px;
 }
 
 #typewriter {
@@ -342,8 +369,40 @@ body {
   background: #2563eb;
 }
 
+.navigation-config {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 8px; /* Garante espaçamento uniforme */
+  position: absolute;
+  bottom: 2px; /* Ajuste conforme necessário */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navigation-config label {
+  width: 15px;
+  height: 15px;
+  background: #d1d5db;
+  margin: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.navigation-config label:hover {
+  background: #2563eb;
+}
+
 input[name="radio"] {
   display: none;
+}
+
+.slide video {
+  width: 50%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #slide1:checked ~ .slides {
@@ -368,6 +427,14 @@ input[name="radio"] {
 
 #slide6:checked ~ .slides {
   transform: translateX(-83.30%);
+}
+
+#maint1:checked ~ .slides-config {
+  transform: translateX(0);
+}
+
+#maint2:checked ~ .slides-config {
+  transform: translateX(-50%);
 }
 
 .contato {
