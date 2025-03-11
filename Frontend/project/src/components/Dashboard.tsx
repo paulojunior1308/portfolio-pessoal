@@ -60,42 +60,6 @@ const Dashboard: React.FC<DashboardProps> = ({ expenses, salary }) => {
   const fixedExpenses = expenses.filter(expense => expense.isFixed);
   const totalFixedExpenses = fixedExpenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
 
-  // Cálculos para despesas por dia de vencimento
-  const expensesByDueDay = {
-    '1': expenses.filter(expense => 
-      // Se não for Nubank e tiver vencimento dia 1 ou não tiver dia definido
-      expense.creditCard !== 'nubank' && (expense.dueDay === 1 || !expense.dueDay)
-    ),
-    '15': expenses.filter(expense => 
-      // Se for Nubank ou tiver vencimento dia 15
-      expense.creditCard === 'nubank' || expense.dueDay === 15
-    )
-  };
-
-  // Agrupar despesas por cartão dentro de cada dia
-  const expensesByDueDayAndCard = {
-    '1': expensesByDueDay['1'].reduce((acc, expense) => {
-      if (!expense.creditCard) {
-        if (!acc['other']) acc['other'] = [];
-        acc['other'].push(expense);
-      } else {
-        if (!acc[expense.creditCard]) acc[expense.creditCard] = [];
-        acc[expense.creditCard].push(expense);
-      }
-      return acc;
-    }, {} as Record<string, Expense[]>),
-    '15': expensesByDueDay['15'].reduce((acc, expense) => {
-      if (!expense.creditCard) {
-        if (!acc['other']) acc['other'] = [];
-        acc['other'].push(expense);
-      } else {
-        if (!acc[expense.creditCard]) acc[expense.creditCard] = [];
-        acc[expense.creditCard].push(expense);
-      }
-      return acc;
-    }, {} as Record<string, Expense[]>)
-  };
-
   // Cálculos para despesas diversas (não fixas)
   const diverseExpenses = expenses.filter(expense => {
     const expenseDate = parseISO(expense.date);
@@ -145,29 +109,44 @@ const Dashboard: React.FC<DashboardProps> = ({ expenses, salary }) => {
   // Função para calcular os gastos por categoria
   const calculateExpensesByCategory = () => {
     const categoryTotals: Record<string, number> = {};
+    const targetDate = parseISO(`${selectedMonth}-01`);
     
     expenses.forEach(expense => {
+      const expenseDate = parseISO(expense.date);
+      const isCurrentMonth = format(expenseDate, 'yyyy-MM') === selectedMonth;
       const category = expense.category;
       const amount = Number(expense.amount);
       
+      // Para despesas parceladas
       if (Number(expense.installments) > 1) {
-        // Para despesas parceladas, adiciona apenas a parcela do mês
         const currentInstallment = calculateCurrentInstallment(expense);
+        // Só inclui se tiver parcela ativa no mês selecionado
         if (currentInstallment > 0 && currentInstallment <= Number(expense.installments)) {
-          categoryTotals[category] = (categoryTotals[category] || 0) + (amount / Number(expense.installments));
+          categoryTotals[category] = (categoryTotals[category] || 0) + amount;
         }
-      } else {
-        // Para despesas não parceladas, adiciona o valor total
+      }
+      // Para despesas fixas
+      else if (expense.isFixed) {
+        // Inclui despesas fixas apenas se já existiam no mês selecionado
+        if (expenseDate <= targetDate) {
+          categoryTotals[category] = (categoryTotals[category] || 0) + amount;
+        }
+      }
+      // Para despesas normais (não parceladas e não fixas)
+      else if (isCurrentMonth) {
         categoryTotals[category] = (categoryTotals[category] || 0) + amount;
       }
     });
 
-    // Converter para o formato do gráfico
-    return Object.entries(categoryTotals).map(([category, value]) => ({
-      name: CATEGORIES[category as keyof typeof CATEGORIES],
-      value: value,
-      color: CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS]
-    }));
+    // Converter para o formato do gráfico e remover categorias com valor zero
+    return Object.entries(categoryTotals)
+      .filter(([, value]) => value > 0)
+      .map(([category, value]) => ({
+        name: CATEGORIES[category as keyof typeof CATEGORIES],
+        value: value,
+        color: CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS]
+      }))
+      .sort((a, b) => b.value - a.value); // Ordena por valor decrescente
   };
 
   const categoryData = calculateExpensesByCategory();
@@ -194,7 +173,7 @@ const Dashboard: React.FC<DashboardProps> = ({ expenses, salary }) => {
       </div>
 
       {/* Menus do Dashboard */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg border border-green-500">
           <h3 className="text-sm font-medium text-gray-700 mb-2">Salário</h3>
           <p className="text-xl md:text-2xl font-bold text-green-600">{formatCurrency(salary)}</p>
@@ -220,40 +199,6 @@ const Dashboard: React.FC<DashboardProps> = ({ expenses, salary }) => {
         <div className="bg-white p-4 rounded-lg border border-purple-500">
           <h3 className="text-sm font-medium text-gray-700 mb-2">Despesas Diversas</h3>
           <p className="text-xl md:text-2xl font-bold text-purple-600">{formatCurrency(totalDiverseExpenses)}</p>
-        </div>
-
-        <div className="bg-white p-4 rounded-lg border border-indigo-500">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Vencimento Dia 1º</h3>
-          <p className="text-xl md:text-2xl font-bold text-indigo-600">
-            {formatCurrency(
-              Object.entries(expensesByDueDayAndCard['1'] || {}).reduce((total, entry) => {
-                const expenses = entry[1];
-                return total + expenses.reduce((sum, expense) => {
-                  if (expense.isFixed) return sum + Number(expense.amount);
-                  const currentInstallment = calculateCurrentInstallment(expense);
-                  if (currentInstallment === 0) return sum;
-                  return sum + Number(expense.amount);
-                }, 0);
-              }, 0)
-            )}
-          </p>
-        </div>
-
-        <div className="bg-white p-4 rounded-lg border border-teal-500">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Vencimento Dia 15</h3>
-          <p className="text-xl md:text-2xl font-bold text-teal-600">
-            {formatCurrency(
-              Object.entries(expensesByDueDayAndCard['15'] || {}).reduce((total, entry) => {
-                const expenses = entry[1];
-                return total + expenses.reduce((sum, expense) => {
-                  if (expense.isFixed) return sum + Number(expense.amount);
-                  const currentInstallment = calculateCurrentInstallment(expense);
-                  if (currentInstallment === 0) return sum;
-                  return sum + Number(expense.amount);
-                }, 0);
-              }, 0)
-            )}
-          </p>
         </div>
       </div>
 
