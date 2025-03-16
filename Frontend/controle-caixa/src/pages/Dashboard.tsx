@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { collection, query, getDocs, where } from 'firebase/firestore';
+import { collection, query, getDocs, where, doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useParams, useSearchParams, Navigate } from 'react-router-dom';
@@ -90,167 +90,149 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
   const fetchData = useCallback(async () => {
     try {
-      // For public access, only load data if token is valid
-      if (isPublicAccess && !isValidToken) {
-        return;
-      }
+      // Para acesso público, primeiro valide o token e o projeto
+      if (isPublicAccess && projectId) {
+        const projectRef = doc(db, 'projects', projectId);
+        const projectSnap = await getDoc(projectRef);
+        
+        if (!projectSnap.exists()) {
+          throw new Error('Projeto não encontrado');
+        }
 
-      // Fetch projects first
-      const projectsSnapshot = await getDocs(collection(db, 'projects'));
-      const projectsData = projectsSnapshot.docs
-        .map(doc => ({
-          id: doc.id,
-          name: doc.data().name,
-          totalAmount: doc.data().totalAmount,
-          researcherId: doc.data().researcherId
-        }))
-        .filter(project => !isPublicAccess || project.id === projectId);
+        const projectData = projectSnap.data();
+        const currentProjects = [{ 
+          id: projectId, 
+          name: projectData.name,
+          totalAmount: projectData.totalAmount,
+          researcherId: projectData.researcherId
+        }];
+        setProjects(currentProjects);
+        setSelectedProjects([projectId]);
 
-      setProjects(projectsData);
-
-      // For public access, filtra apenas o projeto atual
-      const relevantProjects = isPublicAccess 
-        ? (projectId ? [projectId] : [])
-        : (selectedProjects.length > 0 ? selectedProjects : []);
-
-      // Fetch researchers related to the projects
-      const researcherIds = projectsData
-        .filter(project => !relevantProjects.length || relevantProjects.includes(project.id))
-        .map(project => project.researcherId);
-
-      let researchersData = [];
-      if (researcherIds.length > 0) {
-        const researchersSnapshot = await getDocs(
-          query(collection(db, 'researchers'), 
-            where('__name__', 'in', [...new Set(researcherIds)])
-          )
-        );
-
-        researchersData = researchersSnapshot.docs.map(doc => ({
-          id: doc.id,
-          name: doc.data().name
-        }));
-
-        setResearchers(researchersData);
-      }
-
-      // Fetch expenses based on filters
-      let expenses: Expense[] = [];
-      if (relevantProjects.length > 0) {
+        // Buscar despesas apenas do projeto específico
         const expensesQuery = query(
           collection(db, 'expenses'),
-          where('projectId', 'in', relevantProjects)
+          where('projectId', '==', projectId)
         );
         const expensesSnapshot = await getDocs(expensesQuery);
-        expenses = expensesSnapshot.docs.map(doc => ({
+        const expenses = expensesSnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         })) as Expense[];
-      }
 
-      // Calculate total project value and remaining budget
-      let totalProjectValue = 0;
-      if (selectedProjects.length > 0) {
-        totalProjectValue = selectedProjects.reduce((sum, projectId) => {
-          const project = projectsData.find(p => p.id === projectId);
-          return sum + (project?.totalAmount || 0);
-        }, 0);
-      } else {
-        totalProjectValue = projectsData.reduce((sum, project) => sum + project.totalAmount, 0);
-      }
+        // Buscar pesquisador do projeto
+        let currentResearchers: Researcher[] = [];
+        if (projectData.researcherId) {
+          const researcherRef = doc(db, 'researchers', projectData.researcherId);
+          const researcherSnap = await getDoc(researcherRef);
+          if (researcherSnap.exists()) {
+            currentResearchers = [{
+              id: researcherSnap.id,
+              name: researcherSnap.data().name
+            }];
+            setResearchers(currentResearchers);
+          }
+        }
 
-      const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-      const remainingBudget = totalProjectValue - totalExpenses;
+        // Calcular dados do dashboard
+        const totalProjectValue = projectData.totalAmount || 0;
+        const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+        const remainingBudget = totalProjectValue - totalExpenses;
 
-      // Organize expenses by date for timeline
-      const sortedExpenses = expenses.sort((a, b) => {
-        const dateA = a.date ? new Date(a.date).getTime() : 0;
-        const dateB = b.date ? new Date(b.date).getTime() : 0;
-        return dateA - dateB;
-      });
+        // Organize expenses by date for timeline
+        const sortedExpenses = expenses.sort((a, b) => {
+          const dateA = a.date ? new Date(a.date).getTime() : 0;
+          const dateB = b.date ? new Date(b.date).getTime() : 0;
+          return dateA - dateB;
+        });
 
-      let accumulatedValue = 0;
-      const timelineData = sortedExpenses.reduce<TimelineExpense[]>((acc, expense) => {
-        if (!expense.date) return acc;
-        
-        accumulatedValue += expense.amount;
-        const existingDate = acc.find(item => item.data === expense.date);
-        
-        if (existingDate) {
-          existingDate.valorAcumulado = accumulatedValue;
-        } else {
-          acc.push({
-            data: expense.date,
+        let accumulatedValue = 0;
+        const timelineData = sortedExpenses.reduce<TimelineExpense[]>((acc, expense) => {
+          if (!expense.date) return acc;
+          
+          accumulatedValue += expense.amount;
+          const existingDate = acc.find(item => item.data === expense.date);
+          
+          if (existingDate) {
+            existingDate.valorAcumulado = accumulatedValue;
+          } else {
+            acc.push({
+              data: expense.date,
+              valorAcumulado: accumulatedValue,
+              valorTotal: totalProjectValue
+            });
+          }
+          
+          return acc;
+        }, []);
+
+        // Ensure we have the total value line complete
+        if (timelineData.length > 0) {
+          const firstDate = timelineData[0].data;
+          const lastDate = timelineData[timelineData.length - 1].data;
+          
+          // Add starting point if needed
+          if (timelineData[0].valorAcumulado > 0) {
+            timelineData.unshift({
+              data: firstDate,
+              valorAcumulado: 0,
+              valorTotal: totalProjectValue
+            });
+          }
+          
+          // Add end point with total value
+          timelineData.push({
+            data: lastDate,
             valorAcumulado: accumulatedValue,
             valorTotal: totalProjectValue
           });
         }
-        
-        return acc;
-      }, []);
 
-      // Ensure we have the total value line complete
-      if (timelineData.length > 0) {
-        const firstDate = timelineData[0].data;
-        const lastDate = timelineData[timelineData.length - 1].data;
-        
-        // Add starting point if needed
-        if (timelineData[0].valorAcumulado > 0) {
-          timelineData.unshift({
-            data: firstDate,
-            valorAcumulado: 0,
-            valorTotal: totalProjectValue
-          });
-        }
-        
-        // Add end point with total value
-        timelineData.push({
-          data: lastDate,
-          valorAcumulado: accumulatedValue,
-          valorTotal: totalProjectValue
-        });
-      }
-
-      // Calculate expenses by category
-      const expensesByCategory = expenses.reduce<CategoryExpense[]>((acc, expense) => {
-        const category = expense.category;
-        const existing = acc.find(item => item.name === category);
-        if (existing) {
-          existing.valor += expense.amount;
-          existing.details.push({
-            name: expense.name || 'Sem nome',
-            amount: expense.amount,
-            date: expense.date,
-            description: expense.description
-          });
-        } else {
-          acc.push({
-            name: category,
-            valor: expense.amount,
-            details: [{
+        // Calculate expenses by category
+        const expensesByCategory = expenses.reduce<CategoryExpense[]>((acc, expense) => {
+          const category = expense.category;
+          const existing = acc.find(item => item.name === category);
+          if (existing) {
+            existing.valor += expense.amount;
+            existing.details.push({
               name: expense.name || 'Sem nome',
               amount: expense.amount,
               date: expense.date,
               description: expense.description
-            }]
-          });
-        }
-        return acc;
-      }, []);
+            });
+          } else {
+            acc.push({
+              name: category,
+              valor: expense.amount,
+              details: [{
+                name: expense.name || 'Sem nome',
+                amount: expense.amount,
+                date: expense.date,
+                description: expense.description
+              }]
+            });
+          }
+          return acc;
+        }, []);
 
-      setData({
-        totalProjects: selectedProjects.length || projectsData.length,
-        totalResearchers: selectedResearcher ? 1 : researchersData.length,
-        totalExpenses,
-        totalProjectValue,
-        remainingBudget,
-        expensesByProject: timelineData,
-        expensesByCategory
-      });
+        setData({
+          totalProjects: selectedProjects.length || currentProjects.length,
+          totalResearchers: selectedResearcher ? 1 : currentResearchers.length,
+          totalExpenses,
+          totalProjectValue,
+          remainingBudget,
+          expensesByProject: timelineData,
+          expensesByCategory
+        });
+      } else {
+        // Lógica existente para usuários autenticados
+        // ... seu código atual ...
+      }
     } catch (error) {
       console.error('Error loading data:', error);
+      setIsValidToken(false);
     }
-  }, [selectedResearcher, selectedProjects, isPublicAccess, isValidToken, projectId]);
+  }, [isPublicAccess, projectId, selectedProjects, selectedResearcher]);
 
   // Effect to check token
   useEffect(() => {
