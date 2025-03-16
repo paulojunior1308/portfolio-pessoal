@@ -230,19 +230,18 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
           setIsValidToken(isValid);
           if (isValid) {
             setSelectedProjects([projectId]);
+            await fetchData();
           }
         } catch (error) {
           console.error('Erro ao validar token:', error);
           setIsValidToken(false);
         }
-      } else {
-        setIsValidToken(null);
       }
       setIsLoading(false);
     };
 
     checkAccess();
-  }, [projectId, token]);
+  }, [projectId, token, fetchData]);
 
   useEffect(() => {
     fetchData();
