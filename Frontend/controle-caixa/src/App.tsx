@@ -8,6 +8,7 @@ import Expenses from './pages/Expenses';
 import Contracts from './pages/Contracts';
 import PrivateRoute from './components/PrivateRoute';
 import Layout from './components/Layout';
+import PublicLayout from './components/PublicLayout';
 
 function App() {
   return (
@@ -15,6 +16,10 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
+          {/* Rota pública para acesso via token */}
+          <Route path="/dashboard/:projectId" element={<PublicLayout />}>
+            <Route index element={<Dashboard isPublicAccess />} />
+          </Route>
           <Route element={<PrivateRoute />}>
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
