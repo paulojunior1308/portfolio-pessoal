@@ -1,6 +1,6 @@
 import { initializeApp, FirebaseOptions } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 if (
@@ -28,14 +28,3 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-
-// Função auxiliar para adicionar o token à URL
-export const addTokenToURL = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token');
-  if (token) {
-    connectFirestoreEmulator(db, 'localhost', 8080, {
-      mockUserToken: token
-    });
-  }
-};
