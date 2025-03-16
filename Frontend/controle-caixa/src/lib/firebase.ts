@@ -1,9 +1,20 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, FirebaseOptions } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-const firebaseConfig = {
+if (
+  !import.meta.env.VITE_FIREBASE_API_KEY ||
+  !import.meta.env.VITE_FIREBASE_AUTH_DOMAIN ||
+  !import.meta.env.VITE_FIREBASE_PROJECT_ID ||
+  !import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
+  !import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID ||
+  !import.meta.env.VITE_FIREBASE_APP_ID
+) {
+  throw new Error('Missing Firebase configuration environment variables');
+}
+
+const firebaseConfig: FirebaseOptions = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
@@ -12,26 +23,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Initialize Firebase only if all required config values are present
-const validateConfig = () => {
-  const requiredFields = [
-    'apiKey',
-    'authDomain',
-    'projectId',
-    'storageBucket',
-    'messagingSenderId',
-    'appId'
-  ];
-
-  const missingFields = requiredFields.filter(field => !firebaseConfig[field]);
-  
-  if (missingFields.length > 0) {
-    throw new Error(`Missing required Firebase configuration: ${missingFields.join(', ')}`);
-  }
-};
-
-validateConfig();
-
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
