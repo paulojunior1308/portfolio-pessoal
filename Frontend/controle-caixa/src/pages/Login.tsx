@@ -17,10 +17,16 @@ export default function Login() {
       setLoading(true);
       await login(username, password);
       navigate('/');
-    } catch (err: any) {
-      setError(err.message === 'Invalid username or password' ? 'Usuário ou senha inválidos' :
-              err.message === 'Invalid password' ? 'Senha incorreta' :
-              'Falha ao fazer login. Tente novamente.');
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(
+          err.message === 'Invalid username or password' ? 'Usuário ou senha inválidos' :
+          err.message === 'Invalid password' ? 'Senha incorreta' :
+          'Falha ao fazer login. Tente novamente.'
+        );
+      } else {
+        setError('Falha ao fazer login. Tente novamente.');
+      }
     } finally {
       setLoading(false);
     }

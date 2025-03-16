@@ -3,8 +3,8 @@ import { collection, query, getDocs, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useParams, useSearchParams, Navigate } from 'react-router-dom';
-import { validateShareToken } from '../lib/tokenUtils';
-import { ShareProjectLink } from '../components/ShareProjectLink';
+import { validateShareToken } from '../utils/shareToken';
+import ShareProjectLink from '../components/ShareProjectLink';
 import { auth } from '../lib/firebase';
 import React from 'react';
 
@@ -299,10 +299,6 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
     });
   };
 
-  const handleCategoryClick = (categoryName: string) => {
-    setExpandedCategory(expandedCategory === categoryName ? null : categoryName);
-  };
-
   if (isLoading) {
     return <div className="flex justify-center items-center h-screen">Carregando...</div>;
   }
@@ -585,7 +581,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {data.expensesByCategory.map((category, index) => {
+                        {data.expensesByCategory.map((category) => {
                           const percentage = (category.valor / data.totalExpenses * 100).toFixed(2);
                           const isExpanded = expandedCategory === category.name;
                           

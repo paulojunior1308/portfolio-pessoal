@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { Trash2, Edit, Plus } from 'lucide-react';
 
@@ -28,7 +28,7 @@ export default function Contracts() {
   const [isEditing, setIsEditing] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const [formData, setFormData] = useState<Omit<Contract, 'id'>>({
+  const [formData, setFormData] = useState<Omit<Contract, 'id'> & { id?: string }>({
     contractNumber: '',
     objective: '',
     companyName: '',
@@ -86,13 +86,19 @@ export default function Contracts() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (isEditing) {
-        // Lógica de edição será implementada depois
+      if (isEditing && formData.id) {
+        const contractRef = doc(db, 'contracts', formData.id);
+        const { ...updateData } = formData;
+        delete updateData.id;
+        await updateDoc(contractRef, updateData);
       } else {
-        await addDoc(collection(db, 'contracts'), formData);
+        const { ...newData } = formData;
+        delete newData.id;
+        await addDoc(collection(db, 'contracts'), newData);
       }
       
       setShowForm(false);
+      setIsEditing(false);
       setFormData({
         contractNumber: '',
         objective: '',
@@ -119,6 +125,12 @@ export default function Contracts() {
         console.error('Erro ao excluir contrato:', error);
       }
     }
+  };
+
+  const handleEdit = (contract: Contract) => {
+    setFormData(contract);
+    setIsEditing(true);
+    setShowForm(true);
   };
 
   if (loading) {
@@ -372,11 +384,7 @@ export default function Contracts() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
-                      onClick={() => {
-                        setFormData(contract);
-                        setIsEditing(true);
-                        setShowForm(true);
-                      }}
+                      onClick={() => handleEdit(contract)}
                       className="text-[#4A90E2] hover:text-[#357ABD] mr-3"
                     >
                       <Edit className="w-5 h-5" />
