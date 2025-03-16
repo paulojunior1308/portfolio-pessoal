@@ -1,31 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { 
-  signInWithEmailAndPassword, 
-  signOut as firebaseSignOut,
-  onAuthStateChanged,
-  User
-} from 'firebase/auth';
+import React, { createContext, useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { AuthContextType, login as authLogin, signOut as authSignOut } from './authUtils';
 
-interface AuthContextType {
-  currentUser: User | null;
-  login: (username: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
-  loading: boolean;
-}
+export const AuthContext = createContext<AuthContextType | null>(null);
 
-const AuthContext = createContext<AuthContextType | null>(null);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [currentUser, setCurrentUser] = useState<AuthContextType['currentUser']>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,28 +18,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return unsubscribe;
   }, []);
 
-  const login = async (username: string, password: string) => {
-    try {
-      const email = username.includes('@') ? username : `${username}@scholarship.app`;
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error: any) {
-      console.error('Login error:', error);
-      if (error.code === 'auth/invalid-email' || error.code === 'auth/user-not-found') {
-        throw new Error('Invalid username or password');
-      } else if (error.code === 'auth/wrong-password') {
-        throw new Error('Invalid password');
-      } else {
-        throw new Error('Failed to sign in. Please try again.');
-      }
-    }
-  };
-
-  const signOut = () => firebaseSignOut(auth);
-
-  const value = {
+  const value: AuthContextType = {
     currentUser,
-    login,
-    signOut,
+    login: authLogin,
+    signOut: authSignOut,
     loading
   };
 

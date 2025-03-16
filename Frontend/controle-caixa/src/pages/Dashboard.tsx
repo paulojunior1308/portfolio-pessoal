@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { collection, query, getDocs, where, CollectionReference, Query } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
@@ -83,7 +83,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const token = searchParams.get('token');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       // Fetch researchers and projects first
       const [researchersSnapshot, projectsSnapshot] = await Promise.all([
@@ -219,10 +219,8 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
       });
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [selectedResearcher, selectedProjects]);
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -248,7 +246,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
   useEffect(() => {
     fetchData();
-  }, [selectedResearcher, selectedProjects]);
+  }, [selectedResearcher, selectedProjects, fetchData]);
 
   const handleResearcherChange = (researcherId: string) => {
     setSelectedResearcher(researcherId);
