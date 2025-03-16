@@ -2,12 +2,12 @@ import { nanoid } from 'nanoid';
 import { db } from './firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
-// Gera um token único para compartilhamento
+// Generate a unique token for sharing
 export const generateShareToken = () => {
-  return nanoid(16); // Gera um token de 16 caracteres
+  return nanoid(16); // Generates a 16-character token
 };
 
-// Salva o token no documento do projeto
+// Save the token to the project document
 export const saveShareToken = async (projectId: string, token: string) => {
   try {
     const projectRef = doc(db, 'projects', projectId);
@@ -17,12 +17,12 @@ export const saveShareToken = async (projectId: string, token: string) => {
     });
     return true;
   } catch (error) {
-    console.error('Erro ao salvar token:', error);
+    console.error('Error saving token:', error);
     return false;
   }
 };
 
-// Valida se o token é válido para o projeto
+// Validate if the token is valid for the project
 export const validateShareToken = async (projectId: string, token: string) => {
   try {
     const projectRef = doc(db, 'projects', projectId);
@@ -35,7 +35,7 @@ export const validateShareToken = async (projectId: string, token: string) => {
     const data = projectDoc.data();
     return data.shareToken === token;
   } catch (error) {
-    console.error('Erro ao validar token:', error);
+    console.error('Error validating token:', error);
     return false;
   }
 };

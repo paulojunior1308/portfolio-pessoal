@@ -85,7 +85,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
   const fetchData = useCallback(async () => {
     try {
-      // Se for acesso público, só carrega dados se o token for válido
+      // For public access, only load data if token is valid
       if (isPublicAccess && !isValidToken) {
         return;
       }
@@ -103,7 +103,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
       setProjects(projectsData);
 
-      // Se for acesso público, filtra apenas o projeto atual
+      // For public access, filter only the current project
       const relevantProjects = isPublicAccess ? [projectId] : selectedProjects;
 
       // Fetch researchers related to the projects
@@ -239,11 +239,11 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
         expensesByCategory
       });
     } catch (error) {
-      console.error('Erro ao carregar dados:', error);
+      console.error('Error loading data:', error);
     }
   }, [selectedResearcher, selectedProjects, isPublicAccess, isValidToken, projectId]);
 
-  // Efeito para verificar o token
+  // Effect to check token
   useEffect(() => {
     const checkAccess = async () => {
       if (isPublicAccess && token && projectId) {
@@ -255,7 +255,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
             setSelectedProjects([projectId]);
           }
         } catch (error) {
-          console.error('Erro ao validar token:', error);
+          console.error('Error validating token:', error);
           setIsValidToken(false);
         } finally {
           setIsLoading(false);
@@ -269,7 +269,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
     checkAccess();
   }, [isPublicAccess, token, projectId]);
 
-  // Efeito para carregar dados
+  // Effect to load data
   useEffect(() => {
     if (!isLoading && (isValidToken || !isPublicAccess)) {
       fetchData();
@@ -298,7 +298,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
     return <div className="flex justify-center items-center h-screen">Carregando...</div>;
   }
 
-  // Verifica acesso
+  // Check access
   if (isPublicAccess) {
     if (!isValidToken) {
       return (
@@ -316,7 +316,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
   return (
     <div className="space-y-6">
-      {/* Cabeçalho */}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b pb-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
@@ -329,7 +329,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
         )}
       </div>
 
-      {/* Filtros - Mostrar apenas se não for acesso público */}
+      {/* Filters - Show only if not public access */}
       {!isPublicAccess && (
         <div className="bg-white rounded-lg shadow p-4 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -374,7 +374,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
         </div>
       )}
 
-      {/* Conteúdo do Dashboard */}
+      {/* Dashboard Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 transition-all hover:shadow-md">
           <div className="flex items-center justify-between">

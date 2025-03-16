@@ -3,17 +3,12 @@ import { Outlet } from 'react-router-dom';
 export default function PublicLayout() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header Simplificado */}
+      {/* Simplified Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <img
-                src="/logo.png"
-                alt="Logo"
-                className="h-8 w-auto"
-              />
-              <h1 className="ml-3 text-xl font-semibold text-gray-900">
+              <h1 className="text-xl font-semibold text-gray-900">
                 Sistema de Controle de Caixa
               </h1>
             </div>
@@ -29,4 +24,4 @@ export default function PublicLayout() {
       </main>
     </div>
   );
-} 
+}

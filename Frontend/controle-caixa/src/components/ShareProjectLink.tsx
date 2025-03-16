@@ -47,7 +47,7 @@ export const ShareProjectLink: React.FC<ShareProjectLinkProps> = ({ projectId })
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
-      console.error('Erro ao copiar link:', err);
+      console.error('Error copying link:', err);
     }
   };
 
@@ -73,7 +73,7 @@ export const ShareProjectLink: React.FC<ShareProjectLinkProps> = ({ projectId })
         <p className="mt-2 text-sm text-red-600 text-center sm:text-left">{error}</p>
       )}
 
-      {/* Modal de compartilhamento */}
+      {/* Share Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 m-4">
