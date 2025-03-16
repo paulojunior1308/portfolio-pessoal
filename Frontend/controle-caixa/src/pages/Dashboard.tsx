@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { collection, query, getDocs, where, CollectionReference, Query } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { useParams, useSearchParams, Navigate } from 'react-router-dom';
+import { validateShareToken } from '../lib/tokenUtils';
+import { ShareProjectLink } from '../components/ShareProjectLink';
+import { auth } from '../lib/firebase';
 
 interface Project {
   id: string;
@@ -55,6 +59,10 @@ interface Researcher {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
 
 export default function Dashboard() {
+  const { projectId } = useParams();
+  const [searchParams] = useSearchParams();
+  const [isValidToken, setIsValidToken] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<DashboardData>({
     totalProjects: 0,
     totalResearchers: 0,
@@ -64,7 +72,6 @@ export default function Dashboard() {
     expensesByProject: [],
     expensesByCategory: []
   });
-  const [loading, setLoading] = useState(true);
   const [researchers, setResearchers] = useState<Researcher[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedResearcher, setSelectedResearcher] = useState('');
@@ -208,9 +215,25 @@ export default function Dashboard() {
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const checkAccess = async () => {
+      const token = searchParams.get('token');
+      
+      if (token && projectId) {
+        const isValid = await validateShareToken(projectId, token);
+        setIsValidToken(isValid);
+      } else {
+        setIsValidToken(null); // Sem token = acesso normal via autenticação
+      }
+      setIsLoading(false);
+    };
+
+    checkAccess();
+  }, [projectId, searchParams]);
 
   useEffect(() => {
     fetchData();
@@ -234,14 +257,27 @@ export default function Dashboard() {
     setExpandedCategory(expandedCategory === categoryName ? null : categoryName);
   };
 
-  if (loading) {
-    return <div className="text-center">Carregando...</div>;
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-screen">Carregando...</div>;
+  }
+
+  // Se não há token ou o token é inválido, use a verificação de autenticação normal
+  if (!isValidToken && !auth.currentUser) {
+    return <Navigate to="/login" />;
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8 border-b pb-4">Dashboard</h1>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b pb-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p className="text-sm text-gray-500 mt-1">Visualização geral do projeto</p>
+          </div>
+          <div className="w-full sm:w-auto">
+            <ShareProjectLink projectId={selectedProjects[0] || ''} />
+          </div>
+        </div>
         
         <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-100">
           <div className="p-6">

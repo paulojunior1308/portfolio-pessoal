@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, query, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { Trash2, Edit, Plus } from 'lucide-react';
 
@@ -26,7 +26,6 @@ export default function Contracts() {
   const [researchers, setResearchers] = useState<Researcher[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
 
   const [formData, setFormData] = useState<Omit<Contract, 'id'>>({
@@ -132,7 +131,7 @@ export default function Contracts() {
         <h1 className="text-2xl font-bold text-gray-900">Contratos</h1>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-[#4A90E2] text-white px-4 py-2 rounded-lg flex items-center hover:bg-[#357ABD] transition-colors"
+          className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/20 transition-colors"
         >
           <Plus className="w-5 h-5 mr-2" />
           Novo Contrato
@@ -155,7 +154,7 @@ export default function Contracts() {
                     type="text"
                     value={formData.contractNumber}
                     onChange={(e) => setFormData({ ...formData, contractNumber: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#4A90E2] focus:border-transparent"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
@@ -168,7 +167,7 @@ export default function Contracts() {
                     type="text"
                     value={formData.companyName}
                     onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#4A90E2] focus:border-transparent"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
@@ -181,7 +180,7 @@ export default function Contracts() {
                     type="text"
                     value={formData.companyCnpj}
                     onChange={(e) => setFormData({ ...formData, companyCnpj: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#4A90E2] focus:border-transparent"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
@@ -193,7 +192,7 @@ export default function Contracts() {
                   <select
                     value={formData.researcherId}
                     onChange={(e) => setFormData({ ...formData, researcherId: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#4A90E2] focus:border-transparent"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   >
                     <option value="">Selecione um pesquisador</option>
@@ -213,7 +212,7 @@ export default function Contracts() {
                     type="date"
                     value={formData.startDate}
                     onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#4A90E2] focus:border-transparent"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
@@ -226,7 +225,7 @@ export default function Contracts() {
                     type="date"
                     value={formData.endDate}
                     onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#4A90E2] focus:border-transparent"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
@@ -239,7 +238,7 @@ export default function Contracts() {
                     type="number"
                     value={formData.value}
                     onChange={(e) => setFormData({ ...formData, value: Number(e.target.value) })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#4A90E2] focus:border-transparent"
+                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                     min="0"
                     step="0.01"
@@ -274,17 +273,17 @@ export default function Contracts() {
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-3 mt-6">
+              <div className="flex justify-end gap-4 mt-6">
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/20 transition-colors"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm font-medium text-white bg-[#4A90E2] rounded-lg hover:bg-[#357ABD] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4A90E2]"
+                  className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/20 transition-colors"
                 >
                   {isEditing ? 'Salvar Alterações' : 'Criar Contrato'}
                 </button>

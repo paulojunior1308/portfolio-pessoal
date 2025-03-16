@@ -6,6 +6,13 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Função para validar acesso via token
+    function hasValidToken(projectId) {
+      let requestToken = request.query.token;
+      return exists(/databases/$(database)/documents/projects/$(projectId)) &&
+             get(/databases/$(database)/documents/projects/$(projectId)).data.shareToken == requestToken;
+    }
+
     // Regras para a coleção de pesquisadores
     match /researchers/{document=**} {
       allow read: if isAuthenticated();
@@ -13,8 +20,8 @@ service cloud.firestore {
     }
 
     // Regras para a coleção de projetos
-    match /projects/{document=**} {
-      allow read: if isAuthenticated();
+    match /projects/{projectId} {
+      allow read: if isAuthenticated() || hasValidToken(projectId);
       allow write: if isAuthenticated();
     }
 
