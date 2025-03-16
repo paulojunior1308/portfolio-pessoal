@@ -6,6 +6,7 @@ import { useParams, useSearchParams, Navigate } from 'react-router-dom';
 import { validateShareToken } from '../lib/tokenUtils';
 import { ShareProjectLink } from '../components/ShareProjectLink';
 import { auth } from '../lib/firebase';
+import React from 'react';
 
 interface Project {
   id: string;
@@ -47,7 +48,11 @@ interface DashboardData {
   totalExpenses: number;
   totalProjectValue: number;
   remainingBudget: number;
-  expensesByProject: TimelineExpense[];
+  expensesByProject: Array<{
+    data: string;
+    valorAcumulado: number;
+    valorTotal: number;
+  }>;
   expensesByCategory: CategoryExpense[];
 }
 
@@ -103,8 +108,10 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
       setProjects(projectsData);
 
-      // For public access, filter only the current project
-      const relevantProjects = isPublicAccess ? [projectId] : selectedProjects;
+      // For public access, filtra apenas o projeto atual
+      const relevantProjects = isPublicAccess 
+        ? (projectId ? [projectId] : [])
+        : (selectedProjects.length > 0 ? selectedProjects : []);
 
       // Fetch researchers related to the projects
       const researcherIds = projectsData
@@ -128,16 +135,18 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
       }
 
       // Fetch expenses based on filters
-      const expensesQuery = query(
-        collection(db, 'expenses'),
-        where('projectId', 'in', relevantProjects.length ? relevantProjects : [projectId])
-      );
-
-      const expensesSnapshot = await getDocs(expensesQuery);
-      const expenses = expensesSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as Expense[];
+      let expenses: Expense[] = [];
+      if (relevantProjects.length > 0) {
+        const expensesQuery = query(
+          collection(db, 'expenses'),
+          where('projectId', 'in', relevantProjects)
+        );
+        const expensesSnapshot = await getDocs(expensesQuery);
+        expenses = expensesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Expense[];
+      }
 
       // Calculate total project value and remaining budget
       let totalProjectValue = 0;
@@ -579,45 +588,62 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
                         {data.expensesByCategory.map((category, index) => {
                           const percentage = (category.valor / data.totalExpenses * 100).toFixed(2);
                           const isExpanded = expandedCategory === category.name;
+                          
                           return (
-                            <>
-                              <tr 
-                                key={index}
-                                onClick={() => handleCategoryClick(category.name)}
-                                className="cursor-pointer transition-colors hover:bg-gray-50"
-                              >
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex items-center">
-                                  <span className={`transform transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''} inline-block mr-2`}>
-                                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
-                                  </span>
-                                  {category.name}
+                            <React.Fragment key={category.name}>
+                              <tr>
+                                <td className="px-6 py-3">
+                                  <button 
+                                    onClick={() => setExpandedCategory(isExpanded ? null : category.name)}
+                                    className="flex items-center justify-between w-full text-left"
+                                    type="button"
+                                  >
+                                    <div className="flex items-center">
+                                      <span className={`transform transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''} inline-block mr-2`}>
+                                        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                        </svg>
+                                      </span>
+                                      {category.name}
+                                    </div>
+                                  </button>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">
+                                <td className="px-6 py-3 text-sm text-gray-900 text-right font-medium">
                                   R$ {category.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                                <td className="px-6 py-3 text-sm text-gray-900 text-right">
                                   {percentage}%
                                 </td>
                               </tr>
-                              {isExpanded && category.details.map((detail, detailIndex) => (
-                                <tr key={`${index}-${detailIndex}`} className="bg-gray-50/50">
-                                  <td className="px-6 py-3 text-sm text-gray-600 pl-12">
-                                    <div className="font-medium">{detail.name}</div>
-                                    {detail.description && (
-                                      <p className="text-xs text-gray-500 mt-1">{detail.description}</p>
-                                    )}
-                                  </td>
-                                  <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600 text-right">
-                                    R$ {detail.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                  </td>
-                                  <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600 text-right">
-                                    {detail.date && new Date(detail.date).toLocaleDateString('pt-BR')}
+                              {isExpanded && (
+                                <tr>
+                                  <td colSpan={3} className="p-0">
+                                    <div className="bg-gray-50">
+                                      <table className="min-w-full">
+                                        <tbody>
+                                          {category.details.map((detail, detailIndex) => (
+                                            <tr key={`${category.name}-${detailIndex}`}>
+                                              <td className="px-6 py-3 text-sm text-gray-600 pl-12">
+                                                <div className="font-medium">{detail.name}</div>
+                                                {detail.description && (
+                                                  <p className="text-xs text-gray-500 mt-1">{detail.description}</p>
+                                                )}
+                                              </td>
+                                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600 text-right">
+                                                R$ {detail.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                              </td>
+                                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600 text-right">
+                                                {detail.date && new Date(detail.date).toLocaleDateString('pt-BR')}
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </tbody>
+                                      </table>
+                                    </div>
                                   </td>
                                 </tr>
-                              ))}
-                            </>
+                              )}
+                            </React.Fragment>
                           );
                         })}
                       </tbody>
