@@ -38,4 +38,4 @@ export const validateShareToken = async (projectId: string, token: string) => {
     console.error('Erro ao validar token:', error);
     return false;
   }
-}; 
+};
