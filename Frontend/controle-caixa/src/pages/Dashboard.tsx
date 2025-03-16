@@ -85,6 +85,11 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
   const fetchData = useCallback(async () => {
     try {
+      // Se for acesso público, só carrega dados se o token for válido
+      if (isPublicAccess && !isValidToken) {
+        return;
+      }
+
       // Fetch researchers and projects first
       const [researchersSnapshot, projectsSnapshot] = await Promise.all([
         getDocs(collection(db, 'researchers')),
@@ -220,32 +225,45 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     }
-  }, [selectedResearcher, selectedProjects]);
+  }, [selectedResearcher, selectedProjects, isPublicAccess, isValidToken]);
 
+  // Efeito para verificar o token
   useEffect(() => {
     const checkAccess = async () => {
-      if (token && projectId) {
-        try {
-          const isValid = await validateShareToken(projectId, token);
-          setIsValidToken(isValid);
-          if (isValid) {
-            setSelectedProjects([projectId]);
-            await fetchData();
+      setIsLoading(true);
+      
+      if (isPublicAccess) {
+        if (token && projectId) {
+          try {
+            const isValid = await validateShareToken(projectId, token);
+            setIsValidToken(isValid);
+            if (isValid) {
+              setSelectedProjects([projectId]);
+            }
+          } catch (error) {
+            console.error('Erro ao validar token:', error);
+            setIsValidToken(false);
           }
-        } catch (error) {
-          console.error('Erro ao validar token:', error);
+        } else {
           setIsValidToken(false);
         }
+      } else {
+        // Se não for acesso público, considera válido
+        setIsValidToken(true);
       }
+      
       setIsLoading(false);
     };
 
     checkAccess();
-  }, [projectId, token, fetchData]);
+  }, [projectId, token, isPublicAccess]);
 
+  // Efeito para carregar dados
   useEffect(() => {
-    fetchData();
-  }, [selectedResearcher, selectedProjects, fetchData]);
+    if (!isLoading && (isValidToken || !isPublicAccess)) {
+      fetchData();
+    }
+  }, [fetchData, isLoading, isValidToken, isPublicAccess]);
 
   const handleResearcherChange = (researcherId: string) => {
     setSelectedResearcher(researcherId);
@@ -270,11 +288,18 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
   }
 
   // Verifica acesso
-  if (!isPublicAccess && !auth.currentUser) {
-    return <Navigate to="/login" />;
-  }
-
-  if (isPublicAccess && !isValidToken) {
+  if (isPublicAccess) {
+    if (!isValidToken) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold text-red-600">Acesso negado</h2>
+            <p className="mt-2">Token inválido ou expirado</p>
+          </div>
+        </div>
+      );
+    }
+  } else if (!auth.currentUser) {
     return <Navigate to="/login" />;
   }
 
