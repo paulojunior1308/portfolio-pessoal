@@ -224,8 +224,16 @@ export default function Dashboard() {
       const token = searchParams.get('token');
       
       if (token && projectId) {
-        const isValid = await validateShareToken(projectId, token);
-        setIsValidToken(isValid);
+        try {
+          const isValid = await validateShareToken(projectId, token);
+          setIsValidToken(isValid);
+          if (isValid) {
+            setSelectedProjects([projectId]); // Seleciona automaticamente o projeto quando acessado via token
+          }
+        } catch (error) {
+          console.error('Erro ao validar token:', error);
+          setIsValidToken(false);
+        }
       } else {
         setIsValidToken(null); // Sem token = acesso normal via autenticação
       }
@@ -274,9 +282,11 @@ export default function Dashboard() {
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
             <p className="text-sm text-gray-500 mt-1">Visualização geral do projeto</p>
           </div>
-          <div className="w-full sm:w-auto">
-            <ShareProjectLink projectId={selectedProjects[0] || ''} />
-          </div>
+          {auth.currentUser && (
+            <div className="w-full sm:w-auto">
+              <ShareProjectLink projectId={projectId || selectedProjects[0] || ''} />
+            </div>
+          )}
         </div>
         
         <div className="mb-8 bg-white rounded-xl shadow-sm border border-gray-100">

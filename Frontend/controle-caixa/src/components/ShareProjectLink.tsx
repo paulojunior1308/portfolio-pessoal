@@ -12,7 +12,7 @@ export const ShareProjectLink: React.FC<ShareProjectLinkProps> = ({ projectId })
   const [showModal, setShowModal] = useState(false);
 
   const generateLink = async () => {
-    if (!projectId) {
+    if (!projectId?.trim()) {
       setError('Selecione um projeto primeiro');
       return;
     }
