@@ -3,10 +3,21 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { AuthContextType, login as authLogin, signOut as authSignOut } from './authUtils';
 
+interface AuthUser {
+  uid: string;
+  email: string | null;
+}
+
+export interface AuthContextType {
+  user: AuthUser | null;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<AuthContextType['currentUser']>(null);
+  const [currentUser, setCurrentUser] = useState<AuthContextType['user']>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,8 +30,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const value: AuthContextType = {
-    currentUser,
-    login: authLogin,
+    user: currentUser,
+    signIn: authLogin,
     signOut: authSignOut,
     loading
   };
