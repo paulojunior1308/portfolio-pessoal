@@ -225,8 +225,134 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
           expensesByCategory
         });
       } else {
-        // Lógica existente para usuários autenticados
-        // ... seu código atual ...
+        // Lógica para usuários autenticados
+        let currentProjects: Project[] = [];
+        let currentResearchers: Researcher[] = [];
+
+        // Buscar todos os pesquisadores
+        const researchersRef = collection(db, 'researchers');
+        const researchersSnapshot = await getDocs(researchersRef);
+        currentResearchers = researchersSnapshot.docs.map(doc => ({
+          id: doc.id,
+          name: doc.data().name
+        }));
+        setResearchers(currentResearchers);
+
+        // Buscar projetos
+        const projectsRef = collection(db, 'projects');
+        const projectsQuery = selectedResearcher 
+          ? query(projectsRef, where('researcherId', '==', selectedResearcher))
+          : projectsRef;
+        const projectsSnapshot = await getDocs(projectsQuery);
+        currentProjects = projectsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Project[];
+        setProjects(currentProjects);
+
+        // Buscar despesas
+        const expensesRef = collection(db, 'expenses');
+        const expensesQuery = selectedProjects.length > 0
+          ? query(expensesRef, where('projectId', 'in', selectedProjects))
+          : expensesRef;
+        const expensesSnapshot = await getDocs(expensesQuery);
+        const expenses = expensesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as Expense[];
+
+        // Calcular totais
+        const filteredProjects = selectedProjects.length > 0
+          ? currentProjects.filter(p => selectedProjects.includes(p.id))
+          : currentProjects;
+
+        const totalProjectValue = filteredProjects.reduce((sum, project) => sum + (project.totalAmount || 0), 0);
+        const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+        const remainingBudget = totalProjectValue - totalExpenses;
+
+        // Organizar despesas por data
+        const sortedExpenses = expenses.sort((a, b) => {
+          const dateA = a.date ? new Date(a.date).getTime() : 0;
+          const dateB = b.date ? new Date(b.date).getTime() : 0;
+          return dateA - dateB;
+        });
+
+        let accumulatedValue = 0;
+        const timelineData = sortedExpenses.reduce<TimelineExpense[]>((acc, expense) => {
+          if (!expense.date) return acc;
+          
+          accumulatedValue += expense.amount;
+          const existingDate = acc.find(item => item.data === expense.date);
+          
+          if (existingDate) {
+            existingDate.valorAcumulado = accumulatedValue;
+          } else {
+            acc.push({
+              data: expense.date,
+              valorAcumulado: accumulatedValue,
+              valorTotal: totalProjectValue
+            });
+          }
+          
+          return acc;
+        }, []);
+
+        // Ensure we have the total value line complete
+        if (timelineData.length > 0) {
+          const firstDate = timelineData[0].data;
+          const lastDate = timelineData[timelineData.length - 1].data;
+          
+          if (timelineData[0].valorAcumulado > 0) {
+            timelineData.unshift({
+              data: firstDate,
+              valorAcumulado: 0,
+              valorTotal: totalProjectValue
+            });
+          }
+          
+          timelineData.push({
+            data: lastDate,
+            valorAcumulado: accumulatedValue,
+            valorTotal: totalProjectValue
+          });
+        }
+
+        // Calcular despesas por categoria
+        const expensesByCategory = expenses.reduce<CategoryExpense[]>((acc, expense) => {
+          const category = expense.category;
+          const existing = acc.find(item => item.name === category);
+          if (existing) {
+            existing.valor += expense.amount;
+            existing.details.push({
+              name: expense.name || 'Sem nome',
+              amount: expense.amount,
+              date: expense.date,
+              description: expense.description
+            });
+          } else {
+            acc.push({
+              name: category,
+              valor: expense.amount,
+              details: [{
+                name: expense.name || 'Sem nome',
+                amount: expense.amount,
+                date: expense.date,
+                description: expense.description
+              }]
+            });
+          }
+          return acc;
+        }, []);
+
+        setData({
+          totalProjects: selectedProjects.length || currentProjects.length,
+          totalResearchers: selectedResearcher ? 1 : currentResearchers.length,
+          totalExpenses,
+          totalProjectValue,
+          remainingBudget,
+          expensesByProject: timelineData,
+          expensesByCategory
+        });
       }
     } catch (error) {
       console.error('Error loading data:', error);
