@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { collection, query, getDocs, where, CollectionReference, Query } from 'firebase/firestore';
+import { collection, query, getDocs, where, Query } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useParams, useSearchParams, Navigate } from 'react-router-dom';
@@ -90,10 +90,13 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
         return;
       }
 
+      // Adiciona o token como parâmetro de query se for acesso público
+      const queryOptions = isPublicAccess ? { token } : {};
+
       // Fetch researchers and projects first
       const [researchersSnapshot, projectsSnapshot] = await Promise.all([
-        getDocs(collection(db, 'researchers')),
-        getDocs(collection(db, 'projects'))
+        getDocs(query(collection(db, 'researchers'), ...Object.entries(queryOptions).map(([key, value]) => where(key, '==', value)))),
+        getDocs(query(collection(db, 'projects'), ...Object.entries(queryOptions).map(([key, value]) => where(key, '==', value))))
       ]);
 
       const researchersData = researchersSnapshot.docs.map(doc => ({
@@ -112,9 +115,15 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
       setProjects(projectsData);
 
       // Fetch expenses based on filters
-      let expensesQuery: CollectionReference | Query = collection(db, 'expenses');
+      let expensesQuery: Query = collection(db, 'expenses');
+      
       if (selectedProjects.length > 0) {
         expensesQuery = query(expensesQuery, where('projectId', 'in', selectedProjects));
+      }
+
+      // Adiciona o token na query de despesas se for acesso público
+      if (isPublicAccess && token) {
+        expensesQuery = query(expensesQuery, ...Object.entries(queryOptions).map(([key, value]) => where(key, '==', value)));
       }
 
       const expensesSnapshot = await getDocs(expensesQuery);
@@ -225,7 +234,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     }
-  }, [selectedResearcher, selectedProjects, isPublicAccess, isValidToken]);
+  }, [selectedResearcher, selectedProjects, isPublicAccess, isValidToken, token]);
 
   // Efeito para verificar o token
   useEffect(() => {
