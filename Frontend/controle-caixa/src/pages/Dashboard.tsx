@@ -1,12 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
-import { collection, query, getDocs, where, doc, getDoc } from 'firebase/firestore';
+import { collection, query, getDocs, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useParams, useSearchParams, Navigate } from 'react-router-dom';
-import { validateShareToken } from '../utils/shareToken';
-import ShareProjectLink from '../components/ShareProjectLink';
+import { validateShareToken } from '../lib/tokenUtils';
+import { ShareProjectLink } from '../components/ShareProjectLink';
 import { auth } from '../lib/firebase';
-import React from 'react';
 
 interface Project {
   id: string;
@@ -48,11 +47,7 @@ interface DashboardData {
   totalExpenses: number;
   totalProjectValue: number;
   remainingBudget: number;
-  expensesByProject: Array<{
-    data: string;
-    valorAcumulado: number;
-    valorTotal: number;
-  }>;
+  expensesByProject: TimelineExpense[];
   expensesByCategory: CategoryExpense[];
 }
 
@@ -90,56 +85,81 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
   const fetchData = useCallback(async () => {
     try {
-      // Para acesso público, primeiro valide o token e o projeto
-      if (isPublicAccess && projectId) {
-        const projectRef = doc(db, 'projects', projectId);
-        const projectSnap = await getDoc(projectRef);
-        
-        if (!projectSnap.exists()) {
-          throw new Error('Projeto não encontrado');
+      // For public access, only load data if token is valid
+      if (isPublicAccess && !isValidToken) {
+        return;
+      }
+
+      // Fetch projects first
+      const projectsSnapshot = await getDocs(collection(db, 'projects'));
+      const projectsData = projectsSnapshot.docs
+        .map(doc => ({
+          id: doc.id,
+          name: doc.data().name,
+          totalAmount: doc.data().totalAmount,
+          researcherId: doc.data().researcherId
+        }))
+        .filter(project => !isPublicAccess || project.id === projectId);
+
+      setProjects(projectsData);
+
+      // For public access, filter only the current project
+      const relevantProjects = isPublicAccess ? [projectId] : selectedProjects;
+
+      // Only proceed with researcher query if we have valid project data
+      if (projectsData.length > 0) {
+        // Get unique researcher IDs from filtered projects
+        const researcherIds = [...new Set(
+          projectsData
+            .filter(project => !relevantProjects.length || relevantProjects.includes(project.id))
+            .map(project => project.researcherId)
+        )].filter(Boolean); // Remove any undefined/null values
+
+        // Only query researchers if we have valid IDs
+        if (researcherIds.length > 0) {
+          const researchersSnapshot = await getDocs(
+            query(collection(db, 'researchers'), 
+              where('__name__', 'in', researcherIds)
+            )
+          );
+
+          const researchersData = researchersSnapshot.docs.map(doc => ({
+            id: doc.id,
+            name: doc.data().name
+          }));
+
+          setResearchers(researchersData);
         }
+      }
 
-        const projectData = projectSnap.data();
-        const currentProjects = [{ 
-          id: projectId, 
-          name: projectData.name,
-          totalAmount: projectData.totalAmount,
-          researcherId: projectData.researcherId
-        }];
-        setProjects(currentProjects);
-        setSelectedProjects([projectId]);
-
-        // Buscar despesas apenas do projeto específico
+      // Only query expenses if we have projects to query for
+      if (relevantProjects.length > 0) {
         const expensesQuery = query(
           collection(db, 'expenses'),
-          where('projectId', '==', projectId)
+          where('projectId', 'in', relevantProjects)
         );
+
         const expensesSnapshot = await getDocs(expensesQuery);
         const expenses = expensesSnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         })) as Expense[];
 
-        // Buscar pesquisador do projeto
-        let currentResearchers: Researcher[] = [];
-        if (projectData.researcherId) {
-          const researcherRef = doc(db, 'researchers', projectData.researcherId);
-          const researcherSnap = await getDoc(researcherRef);
-          if (researcherSnap.exists()) {
-            currentResearchers = [{
-              id: researcherSnap.id,
-              name: researcherSnap.data().name
-            }];
-            setResearchers(currentResearchers);
-          }
+        // Calculate total project value and remaining budget
+        let totalProjectValue = 0;
+        if (selectedProjects.length > 0) {
+          totalProjectValue = selectedProjects.reduce((sum, projectId) => {
+            const project = projectsData.find(p => p.id === projectId);
+            return sum + (project?.totalAmount || 0);
+          }, 0);
+        } else {
+          totalProjectValue = projectsData.reduce((sum, project) => sum + project.totalAmount, 0);
         }
 
-        // Calcular dados do dashboard
-        const totalProjectValue = projectData.totalAmount || 0;
         const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
         const remainingBudget = totalProjectValue - totalExpenses;
 
-        // Organize expenses by date for timeline
+        // Process expenses for timeline
         const sortedExpenses = expenses.sort((a, b) => {
           const dateA = a.date ? new Date(a.date).getTime() : 0;
           const dateB = b.date ? new Date(b.date).getTime() : 0;
@@ -166,12 +186,11 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
           return acc;
         }, []);
 
-        // Ensure we have the total value line complete
+        // Ensure timeline data is complete
         if (timelineData.length > 0) {
           const firstDate = timelineData[0].data;
           const lastDate = timelineData[timelineData.length - 1].data;
           
-          // Add starting point if needed
           if (timelineData[0].valorAcumulado > 0) {
             timelineData.unshift({
               data: firstDate,
@@ -180,7 +199,6 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
             });
           }
           
-          // Add end point with total value
           timelineData.push({
             data: lastDate,
             valorAcumulado: accumulatedValue,
@@ -216,137 +234,8 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
         }, []);
 
         setData({
-          totalProjects: selectedProjects.length || currentProjects.length,
-          totalResearchers: selectedResearcher ? 1 : currentResearchers.length,
-          totalExpenses,
-          totalProjectValue,
-          remainingBudget,
-          expensesByProject: timelineData,
-          expensesByCategory
-        });
-      } else {
-        // Lógica para usuários autenticados
-        let currentProjects: Project[] = [];
-        let currentResearchers: Researcher[] = [];
-
-        // Buscar todos os pesquisadores
-        const researchersRef = collection(db, 'researchers');
-        const researchersSnapshot = await getDocs(researchersRef);
-        currentResearchers = researchersSnapshot.docs.map(doc => ({
-          id: doc.id,
-          name: doc.data().name
-        }));
-        setResearchers(currentResearchers);
-
-        // Buscar projetos
-        const projectsRef = collection(db, 'projects');
-        const projectsQuery = selectedResearcher 
-          ? query(projectsRef, where('researcherId', '==', selectedResearcher))
-          : projectsRef;
-        const projectsSnapshot = await getDocs(projectsQuery);
-        currentProjects = projectsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Project[];
-        setProjects(currentProjects);
-
-        // Buscar despesas
-        const expensesRef = collection(db, 'expenses');
-        const expensesQuery = selectedProjects.length > 0
-          ? query(expensesRef, where('projectId', 'in', selectedProjects))
-          : expensesRef;
-        const expensesSnapshot = await getDocs(expensesQuery);
-        const expenses = expensesSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Expense[];
-
-        // Calcular totais
-        const filteredProjects = selectedProjects.length > 0
-          ? currentProjects.filter(p => selectedProjects.includes(p.id))
-          : currentProjects;
-
-        const totalProjectValue = filteredProjects.reduce((sum, project) => sum + (project.totalAmount || 0), 0);
-        const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-        const remainingBudget = totalProjectValue - totalExpenses;
-
-        // Organizar despesas por data
-        const sortedExpenses = expenses.sort((a, b) => {
-          const dateA = a.date ? new Date(a.date).getTime() : 0;
-          const dateB = b.date ? new Date(b.date).getTime() : 0;
-          return dateA - dateB;
-        });
-
-        let accumulatedValue = 0;
-        const timelineData = sortedExpenses.reduce<TimelineExpense[]>((acc, expense) => {
-          if (!expense.date) return acc;
-          
-          accumulatedValue += expense.amount;
-          const existingDate = acc.find(item => item.data === expense.date);
-          
-          if (existingDate) {
-            existingDate.valorAcumulado = accumulatedValue;
-          } else {
-            acc.push({
-              data: expense.date,
-              valorAcumulado: accumulatedValue,
-              valorTotal: totalProjectValue
-            });
-          }
-          
-          return acc;
-        }, []);
-
-        // Ensure we have the total value line complete
-        if (timelineData.length > 0) {
-          const firstDate = timelineData[0].data;
-          const lastDate = timelineData[timelineData.length - 1].data;
-          
-          if (timelineData[0].valorAcumulado > 0) {
-            timelineData.unshift({
-              data: firstDate,
-              valorAcumulado: 0,
-              valorTotal: totalProjectValue
-            });
-          }
-          
-          timelineData.push({
-            data: lastDate,
-            valorAcumulado: accumulatedValue,
-            valorTotal: totalProjectValue
-          });
-        }
-
-        // Calcular despesas por categoria
-        const expensesByCategory = expenses.reduce<CategoryExpense[]>((acc, expense) => {
-          const category = expense.category;
-          const existing = acc.find(item => item.name === category);
-          if (existing) {
-            existing.valor += expense.amount;
-            existing.details.push({
-              name: expense.name || 'Sem nome',
-              amount: expense.amount,
-              date: expense.date,
-              description: expense.description
-            });
-          } else {
-            acc.push({
-              name: category,
-              valor: expense.amount,
-              details: [{
-                name: expense.name || 'Sem nome',
-                amount: expense.amount,
-                date: expense.date,
-                description: expense.description
-              }]
-            });
-          }
-          return acc;
-        }, []);
-
-        setData({
-          totalProjects: selectedProjects.length || currentProjects.length,
-          totalResearchers: selectedResearcher ? 1 : currentResearchers.length,
+          totalProjects: selectedProjects.length || projectsData.length,
+          totalResearchers: selectedResearcher ? 1 : researchers.length,
           totalExpenses,
           totalProjectValue,
           remainingBudget,
@@ -356,9 +245,8 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
       }
     } catch (error) {
       console.error('Error loading data:', error);
-      setIsValidToken(false);
     }
-  }, [isPublicAccess, projectId, selectedProjects, selectedResearcher]);
+  }, [selectedResearcher, selectedProjects, isPublicAccess, isValidToken, projectId]);
 
   // Effect to check token
   useEffect(() => {
@@ -407,6 +295,10 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
     });
   };
 
+  const handleCategoryClick = (categoryName: string) => {
+    setExpandedCategory(expandedCategory === categoryName ? null : categoryName);
+  };
+
   if (isLoading) {
     return <div className="flex justify-center items-center h-screen">Carregando...</div>;
   }
@@ -435,9 +327,9 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-sm text-gray-500 mt-1">Visualização geral do projeto</p>
         </div>
-        {!isPublicAccess && auth.currentUser && (
+        {!isPublicAccess && auth.currentUser && selectedProjects.length === 1 && (
           <div className="w-full sm:w-auto">
-            <ShareProjectLink projectId={projectId || selectedProjects[0] || ''} />
+            <ShareProjectLink projectId={selectedProjects[0]} />
           </div>
         )}
       </div>
@@ -542,7 +434,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
         </div>
       </div>
 
-      {selectedResearcher && selectedProjects.length > 0 ? (
+      {selectedProjects.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6">
@@ -689,65 +581,48 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {data.expensesByCategory.map((category) => {
+                        {data.expensesByCategory.map((category, index) => {
                           const percentage = (category.valor / data.totalExpenses * 100).toFixed(2);
                           const isExpanded = expandedCategory === category.name;
-                          
                           return (
-                            <React.Fragment key={category.name}>
-                              <tr>
-                                <td className="px-6 py-3">
-                                  <button 
-                                    onClick={() => setExpandedCategory(isExpanded ? null : category.name)}
-                                    className="flex items-center justify-between w-full text-left"
-                                    type="button"
-                                  >
-                                    <div className="flex items-center">
-                                      <span className={`transform transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''} inline-block mr-2`}>
-                                        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                        </svg>
-                                      </span>
-                                      {category.name}
-                                    </div>
-                                  </button>
+                            <>
+                              <tr 
+                                key={index}
+                                onClick={() => handleCategoryClick(category.name)}
+                                className="cursor-pointer transition-colors hover:bg-gray-50"
+                              >
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex items-center">
+                                  <span className={`transform transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''} inline-block mr-2`}>
+                                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                  </span>
+                                  {category.name}
                                 </td>
-                                <td className="px-6 py-3 text-sm text-gray-900 text-right font-medium">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">
                                   R$ {category.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                 </td>
-                                <td className="px-6 py-3 text-sm text-gray-900 text-right">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
                                   {percentage}%
                                 </td>
                               </tr>
-                              {isExpanded && (
-                                <tr>
-                                  <td colSpan={3} className="p-0">
-                                    <div className="bg-gray-50">
-                                      <table className="min-w-full">
-                                        <tbody>
-                                          {category.details.map((detail, detailIndex) => (
-                                            <tr key={`${category.name}-${detailIndex}`}>
-                                              <td className="px-6 py-3 text-sm text-gray-600 pl-12">
-                                                <div className="font-medium">{detail.name}</div>
-                                                {detail.description && (
-                                                  <p className="text-xs text-gray-500 mt-1">{detail.description}</p>
-                                                )}
-                                              </td>
-                                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600 text-right">
-                                                R$ {detail.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                                              </td>
-                                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600 text-right">
-                                                {detail.date && new Date(detail.date).toLocaleDateString('pt-BR')}
-                                              </td>
-                                            </tr>
-                                          ))}
-                                        </tbody>
-                                      </table>
-                                    </div>
+                              {isExpanded && category.details.map((detail, detailIndex) => (
+                                <tr key={`${index}-${detailIndex}`} className="bg-gray-50/50">
+                                  <td className="px-6 py-3 text-sm text-gray-600 pl-12">
+                                    <div className="font-medium">{detail.name}</div>
+                                    {detail.description && (
+                                      <p className="text-xs text-gray-500 mt-1">{detail.description}</p>
+                                    )}
+                                  </td>
+                                  <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600 text-right">
+                                    R$ {detail.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                  </td>
+                                  <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-600 text-right">
+                                    {detail.date && new Date(detail.date).toLocaleDateString('pt-BR')}
                                   </td>
                                 </tr>
-                              )}
-                            </React.Fragment>
+                              ))}
+                            </>
                           );
                         })}
                       </tbody>

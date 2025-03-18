@@ -13,7 +13,8 @@ export const saveShareToken = async (projectId: string, token: string) => {
     const projectRef = doc(db, 'projects', projectId);
     await updateDoc(projectRef, {
       shareToken: token,
-      shareTokenCreatedAt: new Date().toISOString()
+      shareTokenCreatedAt: new Date().toISOString(),
+      shareTokenExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days from now
     });
     return true;
   } catch (error) {
@@ -33,7 +34,18 @@ export const validateShareToken = async (projectId: string, token: string) => {
     }
 
     const data = projectDoc.data();
-    return data.shareToken === token;
+    
+    // Check if token matches and hasn't expired
+    if (data.shareToken !== token) {
+      return false;
+    }
+
+    const expiresAt = new Date(data.shareTokenExpiresAt);
+    if (expiresAt < new Date()) {
+      return false;
+    }
+
+    return true;
   } catch (error) {
     console.error('Error validating token:', error);
     return false;
