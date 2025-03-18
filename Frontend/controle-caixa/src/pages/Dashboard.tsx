@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { collection, query, getDocs, where } from 'firebase/firestore';
+import { collection, query, getDocs, where, CollectionReference, Query } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useParams, useSearchParams, Navigate } from 'react-router-dom';
@@ -85,201 +85,168 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
 
   const fetchData = useCallback(async () => {
     try {
-      // For public access, only load data if token is valid
-      if (isPublicAccess && !isValidToken) {
-        return;
-      }
+      // Fetch researchers and projects first
+      const [researchersSnapshot, projectsSnapshot] = await Promise.all([
+        getDocs(collection(db, 'researchers')),
+        getDocs(collection(db, 'projects'))
+      ]);
 
-      // Fetch projects first
-      const projectsSnapshot = await getDocs(collection(db, 'projects'));
-      const projectsData = projectsSnapshot.docs
-        .map(doc => ({
-          id: doc.id,
-          name: doc.data().name,
-          totalAmount: doc.data().totalAmount,
-          researcherId: doc.data().researcherId
-        }))
-        .filter(project => !isPublicAccess || project.id === projectId);
+      const researchersData = researchersSnapshot.docs.map(doc => ({
+        id: doc.id,
+        name: doc.data().name
+      }));
 
+      const projectsData = projectsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        name: doc.data().name,
+        totalAmount: doc.data().totalAmount,
+        researcherId: doc.data().researcherId
+      }));
+
+      setResearchers(researchersData);
       setProjects(projectsData);
 
-      // For public access, filter only the current project
-      const relevantProjects = isPublicAccess ? [projectId] : selectedProjects;
-
-      // Only proceed with researcher query if we have valid project data
-      if (projectsData.length > 0) {
-        // Get unique researcher IDs from filtered projects
-        const researcherIds = [...new Set(
-          projectsData
-            .filter(project => !relevantProjects.length || relevantProjects.includes(project.id))
-            .map(project => project.researcherId)
-        )].filter(Boolean); // Remove any undefined/null values
-
-        // Only query researchers if we have valid IDs
-        if (researcherIds.length > 0) {
-          const researchersSnapshot = await getDocs(
-            query(collection(db, 'researchers'), 
-              where('__name__', 'in', researcherIds)
-            )
-          );
-
-          const researchersData = researchersSnapshot.docs.map(doc => ({
-            id: doc.id,
-            name: doc.data().name
-          }));
-
-          setResearchers(researchersData);
-        }
+      // Fetch expenses based on filters
+      let expensesQuery: CollectionReference | Query = collection(db, 'expenses');
+      if (selectedProjects.length > 0) {
+        expensesQuery = query(expensesQuery, where('projectId', 'in', selectedProjects));
       }
 
-      // Only query expenses if we have projects to query for
-      if (relevantProjects.length > 0) {
-        const expensesQuery = query(
-          collection(db, 'expenses'),
-          where('projectId', 'in', relevantProjects)
-        );
+      const expensesSnapshot = await getDocs(expensesQuery);
+      const expenses = expensesSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Expense[];
 
-        const expensesSnapshot = await getDocs(expensesQuery);
-        const expenses = expensesSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Expense[];
+      // Calculate total project value and remaining budget
+      let totalProjectValue = 0;
+      if (selectedProjects.length > 0) {
+        totalProjectValue = selectedProjects.reduce((sum, projectId) => {
+          const project = projectsData.find(p => p.id === projectId);
+          return sum + (project?.totalAmount || 0);
+        }, 0);
+      } else {
+        totalProjectValue = projectsData.reduce((sum, project) => sum + project.totalAmount, 0);
+      }
 
-        // Calculate total project value and remaining budget
-        let totalProjectValue = 0;
-        if (selectedProjects.length > 0) {
-          totalProjectValue = selectedProjects.reduce((sum, projectId) => {
-            const project = projectsData.find(p => p.id === projectId);
-            return sum + (project?.totalAmount || 0);
-          }, 0);
+      const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+      const remainingBudget = totalProjectValue - totalExpenses;
+
+      // Organize expenses by date for timeline
+      const sortedExpenses = expenses.sort((a, b) => {
+        const dateA = a.date ? new Date(a.date).getTime() : 0;
+        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        return dateA - dateB;
+      });
+
+      let accumulatedValue = 0;
+      const timelineData = sortedExpenses.reduce<TimelineExpense[]>((acc, expense) => {
+        if (!expense.date) return acc;
+        
+        accumulatedValue += expense.amount;
+        const existingDate = acc.find(item => item.data === expense.date);
+        
+        if (existingDate) {
+          existingDate.valorAcumulado = accumulatedValue;
         } else {
-          totalProjectValue = projectsData.reduce((sum, project) => sum + project.totalAmount, 0);
-        }
-
-        const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-        const remainingBudget = totalProjectValue - totalExpenses;
-
-        // Process expenses for timeline
-        const sortedExpenses = expenses.sort((a, b) => {
-          const dateA = a.date ? new Date(a.date).getTime() : 0;
-          const dateB = b.date ? new Date(b.date).getTime() : 0;
-          return dateA - dateB;
-        });
-
-        let accumulatedValue = 0;
-        const timelineData = sortedExpenses.reduce<TimelineExpense[]>((acc, expense) => {
-          if (!expense.date) return acc;
-          
-          accumulatedValue += expense.amount;
-          const existingDate = acc.find(item => item.data === expense.date);
-          
-          if (existingDate) {
-            existingDate.valorAcumulado = accumulatedValue;
-          } else {
-            acc.push({
-              data: expense.date,
-              valorAcumulado: accumulatedValue,
-              valorTotal: totalProjectValue
-            });
-          }
-          
-          return acc;
-        }, []);
-
-        // Ensure timeline data is complete
-        if (timelineData.length > 0) {
-          const firstDate = timelineData[0].data;
-          const lastDate = timelineData[timelineData.length - 1].data;
-          
-          if (timelineData[0].valorAcumulado > 0) {
-            timelineData.unshift({
-              data: firstDate,
-              valorAcumulado: 0,
-              valorTotal: totalProjectValue
-            });
-          }
-          
-          timelineData.push({
-            data: lastDate,
+          acc.push({
+            data: expense.date,
             valorAcumulado: accumulatedValue,
             valorTotal: totalProjectValue
           });
         }
+        
+        return acc;
+      }, []);
 
-        // Calculate expenses by category
-        const expensesByCategory = expenses.reduce<CategoryExpense[]>((acc, expense) => {
-          const category = expense.category;
-          const existing = acc.find(item => item.name === category);
-          if (existing) {
-            existing.valor += expense.amount;
-            existing.details.push({
+      // Ensure we have the total value line complete
+      if (timelineData.length > 0) {
+        const firstDate = timelineData[0].data;
+        const lastDate = timelineData[timelineData.length - 1].data;
+        
+        // Add starting point if needed
+        if (timelineData[0].valorAcumulado > 0) {
+          timelineData.unshift({
+            data: firstDate,
+            valorAcumulado: 0,
+            valorTotal: totalProjectValue
+          });
+        }
+        
+        // Add end point with total value
+        timelineData.push({
+          data: lastDate,
+          valorAcumulado: accumulatedValue,
+          valorTotal: totalProjectValue
+        });
+      }
+
+      // Calculate expenses by category
+      const expensesByCategory = expenses.reduce<CategoryExpense[]>((acc, expense) => {
+        const category = expense.category;
+        const existing = acc.find(item => item.name === category);
+        if (existing) {
+          existing.valor += expense.amount;
+          existing.details.push({
+            name: expense.name || 'Sem nome',
+            amount: expense.amount,
+            date: expense.date,
+            description: expense.description
+          });
+        } else {
+          acc.push({
+            name: category,
+            valor: expense.amount,
+            details: [{
               name: expense.name || 'Sem nome',
               amount: expense.amount,
               date: expense.date,
               description: expense.description
-            });
-          } else {
-            acc.push({
-              name: category,
-              valor: expense.amount,
-              details: [{
-                name: expense.name || 'Sem nome',
-                amount: expense.amount,
-                date: expense.date,
-                description: expense.description
-              }]
-            });
-          }
-          return acc;
-        }, []);
+            }]
+          });
+        }
+        return acc;
+      }, []);
 
-        setData({
-          totalProjects: selectedProjects.length || projectsData.length,
-          totalResearchers: selectedResearcher ? 1 : researchers.length,
-          totalExpenses,
-          totalProjectValue,
-          remainingBudget,
-          expensesByProject: timelineData,
-          expensesByCategory
-        });
-      }
+      setData({
+        totalProjects: selectedProjects.length || projectsData.length,
+        totalResearchers: selectedResearcher ? 1 : researchersData.length,
+        totalExpenses,
+        totalProjectValue,
+        remainingBudget,
+        expensesByProject: timelineData,
+        expensesByCategory
+      });
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error('Erro ao carregar dados:', error);
     }
-  }, [selectedResearcher, selectedProjects, isPublicAccess, isValidToken, projectId]);
+  }, [selectedResearcher, selectedProjects]);
 
-  // Effect to check token
   useEffect(() => {
     const checkAccess = async () => {
-      if (isPublicAccess && token && projectId) {
+      if (token && projectId) {
         try {
-          setIsLoading(true);
           const isValid = await validateShareToken(projectId, token);
           setIsValidToken(isValid);
           if (isValid) {
             setSelectedProjects([projectId]);
           }
         } catch (error) {
-          console.error('Error validating token:', error);
+          console.error('Erro ao validar token:', error);
           setIsValidToken(false);
-        } finally {
-          setIsLoading(false);
         }
-      } else if (!isPublicAccess) {
-        setIsValidToken(true);
-        setIsLoading(false);
+      } else {
+        setIsValidToken(null);
       }
+      setIsLoading(false);
     };
 
     checkAccess();
-  }, [isPublicAccess, token, projectId]);
+  }, [projectId, token]);
 
-  // Effect to load data
   useEffect(() => {
-    if (!isLoading && (isValidToken || !isPublicAccess)) {
-      fetchData();
-    }
-  }, [fetchData, isLoading, isValidToken, isPublicAccess]);
+    fetchData();
+  }, [selectedResearcher, selectedProjects, fetchData]);
 
   const handleResearcherChange = (researcherId: string) => {
     setSelectedResearcher(researcherId);
@@ -303,38 +270,31 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
     return <div className="flex justify-center items-center h-screen">Carregando...</div>;
   }
 
-  // Check access
-  if (isPublicAccess) {
-    if (!isValidToken) {
-      return (
-        <div className="flex justify-center items-center h-screen">
-          <div className="text-center">
-            <h2 className="text-xl font-semibold text-red-600">Acesso negado</h2>
-            <p className="mt-2">Token inválido ou expirado</p>
-          </div>
-        </div>
-      );
-    }
-  } else if (!auth.currentUser) {
+  // Verifica acesso
+  if (!isPublicAccess && !auth.currentUser) {
+    return <Navigate to="/login" />;
+  }
+
+  if (isPublicAccess && !isValidToken) {
     return <Navigate to="/login" />;
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Cabeçalho */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b pb-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-sm text-gray-500 mt-1">Visualização geral do projeto</p>
         </div>
-        {!isPublicAccess && auth.currentUser && selectedProjects.length === 1 && (
+        {!isPublicAccess && auth.currentUser && (
           <div className="w-full sm:w-auto">
-            <ShareProjectLink projectId={selectedProjects[0]} />
+            <ShareProjectLink projectId={projectId || selectedProjects[0] || ''} />
           </div>
         )}
       </div>
 
-      {/* Filters - Show only if not public access */}
+      {/* Filtros - Mostrar apenas se não for acesso público */}
       {!isPublicAccess && (
         <div className="bg-white rounded-lg shadow p-4 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -379,7 +339,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
         </div>
       )}
 
-      {/* Dashboard Content */}
+      {/* Conteúdo do Dashboard */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 transition-all hover:shadow-md">
           <div className="flex items-center justify-between">
@@ -434,7 +394,7 @@ export default function Dashboard({ isPublicAccess = false }: DashboardProps) {
         </div>
       </div>
 
-      {selectedProjects.length > 0 ? (
+      {selectedResearcher && selectedProjects.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6">

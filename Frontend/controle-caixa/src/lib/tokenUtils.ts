@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { db } from './firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 
 // Gera um token único para compartilhamento
 export const generateShareToken = () => {
@@ -25,15 +25,38 @@ export const saveShareToken = async (projectId: string, token: string) => {
 // Valida se o token é válido para o projeto
 export const validateShareToken = async (projectId: string, token: string) => {
   try {
-    const projectRef = doc(db, 'projects', projectId);
-    const projectDoc = await getDoc(projectRef);
+    // Primeiro, busca por projetos com o token específico
+    const projectsRef = collection(db, 'projects');
+    const q = query(projectsRef, 
+      where('shareToken', '==', token),
+      where('id', '==', projectId)
+    );
     
-    if (!projectDoc.exists()) {
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.empty) {
       return false;
     }
 
+    // Verifica se o token corresponde ao projeto
+    const projectDoc = querySnapshot.docs[0];
     const data = projectDoc.data();
-    return data.shareToken === token;
+    
+    // Verifica se o token existe e corresponde
+    if (!data.shareToken || data.shareToken !== token) {
+      return false;
+    }
+
+    // Opcional: Verificar se o token não expirou (exemplo: 7 dias)
+    const tokenCreatedAt = new Date(data.shareTokenCreatedAt).getTime();
+    const now = new Date().getTime();
+    const sevenDays = 7 * 24 * 60 * 60 * 1000;
+    
+    if (now - tokenCreatedAt > sevenDays) {
+      return false;
+    }
+
+    return true;
   } catch (error) {
     console.error('Erro ao validar token:', error);
     return false;
