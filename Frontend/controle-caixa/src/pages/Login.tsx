@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/useAuth';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -17,16 +17,10 @@ export default function Login() {
       setLoading(true);
       await login(username, password);
       navigate('/');
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(
-          err.message === 'Invalid username or password' ? 'Usuário ou senha inválidos' :
-          err.message === 'Invalid password' ? 'Senha incorreta' :
-          'Falha ao fazer login. Tente novamente.'
-        );
-      } else {
-        setError('Falha ao fazer login. Tente novamente.');
-      }
+    } catch (err: any) {
+      setError(err.message === 'Invalid username or password' ? 'Usuário ou senha inválidos' :
+              err.message === 'Invalid password' ? 'Senha incorreta' :
+              'Falha ao fazer login. Tente novamente.');
     } finally {
       setLoading(false);
     }

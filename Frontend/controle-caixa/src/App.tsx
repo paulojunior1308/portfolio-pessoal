@@ -16,7 +16,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          {/* Public route for token access */}
+          {/* Rota pública para acesso via token */}
           <Route path="/dashboard/:projectId" element={<PublicLayout />}>
             <Route index element={<Dashboard isPublicAccess />} />
           </Route>
