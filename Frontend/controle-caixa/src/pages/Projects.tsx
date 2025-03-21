@@ -106,103 +106,95 @@ export default function Projects() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-dark">Projetos</h1>
+    <div className="p-4 max-w-[1366px] mx-auto min-h-screen">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-dark">Projetos</h1>
         <button
           onClick={() => {
             setEditingProject(null);
-            setFormData({ name: '', totalAmount: '', researcherId: '' });
+            setFormData({
+              name: '',
+              totalAmount: '',
+              researcherId: ''
+            });
             setIsModalOpen(true);
           }}
-          className="bg-primary text-white px-4 py-2 rounded-md flex items-center"
+          className="w-full sm:w-auto bg-primary text-white px-3 py-2 rounded-md flex items-center justify-center sm:justify-start text-sm"
         >
-          <Plus className="w-5 h-5 mr-2" />
+          <Plus className="w-4 h-4 mr-2" />
           Novo Projeto
         </button>
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor Total</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pesquisador</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {projects.map((project) => (
-              <tr key={project.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{project.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  R$ {project.totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {researchers.find(r => r.id === project.researcherId)?.name}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <button
-                    onClick={() => handleEdit(project)}
-                    className="text-secondary hover:text-secondary/80 mr-3"
-                  >
-                    <Edit className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(project.id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pesquisador</th>
+                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Valor Total</th>
+                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {projects.map((project) => (
+                <tr key={project.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-2 whitespace-nowrap text-sm">{project.name}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm">
+                    {researchers.find(r => r.id === project.researcherId)?.name || '-'}
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-right">
+                    R$ {project.totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-right">
+                    <button
+                      onClick={() => handleEdit(project)}
+                      className="text-secondary hover:text-secondary/80 mr-2"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(project.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-md">
+            <h2 className="text-lg sm:text-xl font-bold mb-4">
               {editingProject ? 'Editar Projeto' : 'Novo Projeto'}
             </h2>
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Nome do Projeto
+              <div className="mb-3">
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Nome
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Valor Total
-                </label>
-                <input
-                  type="number"
-                  value={formData.totalAmount}
-                  onChange={(e) => setFormData({ ...formData, totalAmount: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
-                  required
-                  min="0"
-                  step="0.01"
-                />
-              </div>
-              <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+              <div className="mb-3">
+                <label className="block text-gray-700 text-sm font-medium mb-1">
                   Pesquisador
                 </label>
                 <select
                   value={formData.researcherId}
                   onChange={(e) => setFormData({ ...formData, researcherId: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                   required
                 >
                   <option value="">Selecione um pesquisador</option>
@@ -213,17 +205,31 @@ export default function Projects() {
                   ))}
                 </select>
               </div>
-              <div className="flex justify-end gap-4">
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Valor Total
+                </label>
+                <input
+                  type="number"
+                  value={formData.totalAmount}
+                  onChange={(e) => setFormData({ ...formData, totalAmount: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                  required
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+              <div className="flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                  className="px-3 py-2 text-sm text-gray-600 hover:text-gray-800"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+                  className="px-3 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary/90"
                 >
                   Salvar
                 </button>

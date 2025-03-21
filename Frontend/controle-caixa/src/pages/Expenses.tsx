@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { Trash2, Edit, Plus } from 'lucide-react';
+import { Plus, Edit, Trash2, X } from 'lucide-react';
 
 interface Expense {
   id: string;
@@ -9,7 +9,7 @@ interface Expense {
   projectId: string;
   amount: number;
   category: string;
-  description: string;
+  description?: string;
   date: string;
 }
 
@@ -18,9 +18,17 @@ interface Project {
   name: string;
 }
 
+interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  color?: string;
+}
+
 export default function Expenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
@@ -33,20 +41,12 @@ export default function Expenses() {
     date: ''
   });
 
-  const categories = [
-    'Material de Consumo',
-    'Equipamentos',
-    'Serviços',
-    'Viagens',
-    'Publicações',
-    'Outros'
-  ];
-
   const fetchData = async () => {
     try {
-      const [expensesSnapshot, projectsSnapshot] = await Promise.all([
+      const [expensesSnapshot, projectsSnapshot, categoriesSnapshot] = await Promise.all([
         getDocs(collection(db, 'expenses')),
-        getDocs(collection(db, 'projects'))
+        getDocs(collection(db, 'projects')),
+        getDocs(collection(db, 'categories'))
       ]);
 
       const expensesData = expensesSnapshot.docs.map(doc => ({
@@ -60,8 +60,14 @@ export default function Expenses() {
         name: doc.data().name
       }));
 
+      const categoriesData = categoriesSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Category[];
+
       setExpenses(expensesData);
       setProjects(projectsData);
+      setCategories(categoriesData);
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
     } finally {
@@ -121,7 +127,7 @@ export default function Expenses() {
       projectId: expense.projectId,
       amount: expense.amount.toString(),
       category: expense.category,
-      description: expense.description,
+      description: expense.description || '',
       date: expense.date
     });
     setIsModalOpen(true);
@@ -132,102 +138,134 @@ export default function Expenses() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-dark">Despesas</h1>
+    <div className="p-4 max-w-[1366px] mx-auto min-h-screen">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-dark">Despesas</h1>
         <button
           onClick={() => {
             setEditingExpense(null);
             setFormData({
               name: '',
-              projectId: '',
               amount: '',
               category: '',
-              description: '',
-              date: ''
+              projectId: '',
+              date: '',
+              description: ''
             });
             setIsModalOpen(true);
           }}
-          className="bg-primary text-white px-4 py-2 rounded-md flex items-center"
+          className="w-full sm:w-auto bg-primary text-white px-3 py-2 rounded-md flex items-center justify-center sm:justify-start text-sm"
         >
-          <Plus className="w-5 h-5 mr-2" />
+          <Plus className="w-4 h-4 mr-2" />
           Nova Despesa
         </button>
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Projeto</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoria</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {expenses.map((expense) => (
-              <tr key={expense.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{expense.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {projects.find(p => p.id === expense.projectId)?.name}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  R$ {expense.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{expense.category}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {new Date(expense.date).toLocaleDateString('pt-BR')}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  <button
-                    onClick={() => handleEdit(expense)}
-                    className="text-secondary hover:text-secondary/80 mr-3"
-                  >
-                    <Edit className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(expense.id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Projeto</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoria</th>
+                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
+                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {expenses.map((expense) => {
+                const category = categories.find(c => c.name === expense.category);
+                return (
+                  <tr key={expense.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-2 whitespace-nowrap text-sm">
+                      <div>
+                        {expense.name}
+                        {expense.description && (
+                          <p className="text-xs text-gray-500 mt-0.5">{expense.description}</p>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm">
+                      {projects.find(p => p.id === expense.projectId)?.name || '-'}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm">
+                      <div className="flex items-center">
+                        {category && (
+                          <span 
+                            className="w-3 h-3 rounded-full mr-2" 
+                            style={{ backgroundColor: category.color || '#4A90E2' }} 
+                          />
+                        )}
+                        {expense.category}
+                      </div>
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-right">
+                      R$ {expense.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-right">
+                      {expense.date ? new Date(expense.date).toLocaleDateString('pt-BR') : '-'}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-right">
+                      <button
+                        onClick={() => handleEdit(expense)}
+                        className="text-secondary hover:text-secondary/80 mr-2"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(expense.id)}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">
-              {editingExpense ? 'Editar Despesa' : 'Nova Despesa'}
-            </h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Nome da Despesa
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+                {editingExpense ? 'Editar Despesa' : 'Nova Despesa'}
+              </h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Nome
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">
                   Projeto
                 </label>
                 <select
                   value={formData.projectId}
                   onChange={(e) => setFormData({ ...formData, projectId: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                   required
                 >
                   <option value="">Selecione um projeto</option>
@@ -238,75 +276,79 @@ export default function Expenses() {
                   ))}
                 </select>
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Categoria
+                </label>
+                <select
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                  required
+                >
+                  <option value="">Selecione uma categoria</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">
                   Valor
                 </label>
                 <input
                   type="number"
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                   required
                   min="0"
                   step="0.01"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Categoria
-                </label>
-                <select
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
-                  required
-                >
-                  <option value="">Selecione uma categoria</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Descrição
-                </label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
-                  rows={4}
-                  required
-                />
-              </div>
-              <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">
                   Data
                 </label>
                 <input
                   type="date"
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                   required
                 />
               </div>
-              <div className="flex justify-end gap-4">
+
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Descrição
+                </label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-none"
+                  rows={3}
+                />
+              </div>
+
+              <div className="flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                  className="px-3 py-2 text-sm text-gray-600 hover:text-gray-800"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+                  className="px-3 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary/90"
                 >
-                  Salvar
+                  {editingExpense ? 'Atualizar' : 'Criar'}
                 </button>
               </div>
             </form>

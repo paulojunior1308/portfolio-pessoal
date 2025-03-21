@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { Trash2, Edit, Plus } from 'lucide-react';
+import { Trash2, Edit, Plus, X } from 'lucide-react';
 
 interface Contract {
   id: string;
@@ -138,73 +138,149 @@ export default function Contracts() {
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Contratos</h1>
+    <div className="p-4 max-w-[1366px] mx-auto min-h-screen">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-dark">Contratos</h1>
         <button
-          onClick={() => setShowForm(true)}
-          className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/20 transition-colors"
+          onClick={() => {
+            setIsEditing(false);
+            setShowForm(true);
+            setFormData({
+              contractNumber: '',
+              objective: '',
+              companyName: '',
+              companyCnpj: '',
+              researcherId: '',
+              startDate: '',
+              endDate: '',
+              value: 0,
+              isInnovation: false,
+            });
+          }}
+          className="w-full sm:w-auto bg-primary text-white px-3 py-2 rounded-md flex items-center justify-center sm:justify-start text-sm"
         >
-          <Plus className="w-5 h-5 mr-2" />
+          <Plus className="w-4 h-4 mr-2" />
           Novo Contrato
         </button>
       </div>
 
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número</th>
+                <th className="hidden sm:table-cell px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empresa</th>
+                <th className="hidden lg:table-cell px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CNPJ</th>
+                <th className="hidden md:table-cell px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pesquisador</th>
+                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
+                <th className="hidden sm:table-cell px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Período</th>
+                <th className="hidden md:table-cell px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {contracts.map((contract) => {
+                const researcher = researchers.find(r => r.id === contract.researcherId);
+                return (
+                  <tr key={contract.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-2 whitespace-nowrap text-sm">
+                      <div>
+                        <span>{contract.contractNumber}</span>
+                        <div className="sm:hidden text-xs text-gray-500 mt-1">
+                          {contract.companyName}
+                        </div>
+                        <div className="md:hidden text-xs text-gray-500 mt-0.5">
+                          {researcher?.name}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="hidden sm:table-cell px-4 py-2 whitespace-nowrap text-sm">
+                      {contract.companyName}
+                    </td>
+                    <td className="hidden lg:table-cell px-4 py-2 whitespace-nowrap text-sm">
+                      {contract.companyCnpj}
+                    </td>
+                    <td className="hidden md:table-cell px-4 py-2 whitespace-nowrap text-sm">
+                      {researcher?.name || 'N/A'}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-right">
+                      R$ {contract.value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                    </td>
+                    <td className="hidden sm:table-cell px-4 py-2 whitespace-nowrap text-sm text-right">
+                      {new Date(contract.startDate).toLocaleDateString('pt-BR')} - {new Date(contract.endDate).toLocaleDateString('pt-BR')}
+                    </td>
+                    <td className="hidden md:table-cell px-4 py-2 whitespace-nowrap text-sm text-center">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        contract.isInnovation
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {contract.isInnovation ? 'Inovação' : 'Regular'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-right">
+                      <button
+                        onClick={() => handleEdit(contract)}
+                        className="text-secondary hover:text-secondary/80 mr-2"
+                        title="Editar"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(contract.id)}
+                        className="text-red-600 hover:text-red-800"
+                        title="Excluir"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-semibold mb-4">
-              {isEditing ? 'Editar Contrato' : 'Novo Contrato'}
-            </h2>
+          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-2xl max-h-[calc(100vh-2rem)] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+                {isEditing ? 'Editar Contrato' : 'Novo Contrato'}
+              </h2>
+              <button
+                onClick={() => setShowForm(false)}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
                     Número do Contrato
                   </label>
                   <input
                     type="text"
                     value={formData.contractNumber}
                     onChange={(e) => setFormData({ ...formData, contractNumber: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nome da Empresa
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.companyName}
-                    onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    CNPJ da Empresa
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.companyCnpj}
-                    onChange={(e) => setFormData({ ...formData, companyCnpj: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Pesquisador Responsável
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Pesquisador
                   </label>
                   <select
                     value={formData.researcherId}
                     onChange={(e) => setFormData({ ...formData, researcherId: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   >
                     <option value="">Selecione um pesquisador</option>
@@ -217,191 +293,117 @@ export default function Contracts() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Data de Início
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Nome da Empresa
                   </label>
                   <input
-                    type="date"
-                    value={formData.startDate}
-                    onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    type="text"
+                    value={formData.companyName}
+                    onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    CNPJ
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.companyCnpj}
+                    onChange={(e) => setFormData({ ...formData, companyCnpj: e.target.value })}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
+                    Data Inicial
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.startDate}
+                    onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
                     Data Final
                   </label>
                   <input
                     type="date"
                     value={formData.endDate}
                     onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-gray-700 text-sm font-medium mb-1">
                     Valor
                   </label>
                   <input
                     type="number"
                     value={formData.value}
                     onChange={(e) => setFormData({ ...formData, value: Number(e.target.value) })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                     min="0"
                     step="0.01"
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Objetivo
-                  </label>
-                  <textarea
-                    value={formData.objective}
-                    onChange={(e) => setFormData({ ...formData, objective: e.target.value })}
-                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#4A90E2] focus:border-transparent"
-                    required
-                    rows={3}
-                  />
-                </div>
-
-                <div className="col-span-2">
-                  <label className="flex items-center space-x-2">
+                <div className="flex items-center">
+                  <label className="flex items-center cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.isInnovation}
                       onChange={(e) => setFormData({ ...formData, isInnovation: e.target.checked })}
-                      className="rounded text-[#4A90E2] focus:ring-[#4A90E2]"
+                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary/20"
                     />
-                    <span className="text-sm font-medium text-gray-700">
-                      Contrato de Inovação
-                    </span>
+                    <span className="ml-2 text-sm text-gray-700">Contrato de Inovação</span>
                   </label>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-4 mt-6">
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-1">
+                  Objetivo
+                </label>
+                <textarea
+                  value={formData.objective}
+                  onChange={(e) => setFormData({ ...formData, objective: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-none"
+                  rows={3}
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4">
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/20 transition-colors"
+                  className="px-3 py-2 text-sm text-gray-600 hover:text-gray-800"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/20 transition-colors"
+                  className="px-3 py-2 text-sm bg-primary text-white rounded-md hover:bg-primary/90"
                 >
-                  {isEditing ? 'Salvar Alterações' : 'Criar Contrato'}
+                  {isEditing ? 'Atualizar' : 'Criar'}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
-
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Número do Contrato
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Objetivo
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Empresa
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                CNPJ
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Pesquisador
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Data Início
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Data Final
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Valor
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Tipo
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Ações
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {contracts.map((contract) => {
-              const researcher = researchers.find(r => r.id === contract.researcherId);
-              return (
-                <tr key={contract.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {contract.contractNumber}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {contract.objective}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {contract.companyName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {contract.companyCnpj}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {researcher?.name || 'N/A'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {new Date(contract.startDate).toLocaleDateString('pt-BR')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {new Date(contract.endDate).toLocaleDateString('pt-BR')}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL'
-                    }).format(contract.value)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      contract.isInnovation
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {contract.isInnovation ? 'Inovação' : 'Regular'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button
-                      onClick={() => handleEdit(contract)}
-                      className="text-[#4A90E2] hover:text-[#357ABD] mr-3"
-                    >
-                      <Edit className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(contract.id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 } 

@@ -6,6 +6,7 @@ import Researchers from './pages/Researchers';
 import Projects from './pages/Projects';
 import Expenses from './pages/Expenses';
 import Contracts from './pages/Contracts';
+import Categories from './components/Categories';
 import PrivateRoute from './components/PrivateRoute';
 import Layout from './components/Layout';
 import PublicLayout from './components/PublicLayout';
@@ -28,6 +29,7 @@ function App() {
               <Route path="/projects" element={<Projects />} />
               <Route path="/contracts" element={<Contracts />} />
               <Route path="/expenses" element={<Expenses />} />
+              <Route path="/categories" element={<Categories />} />
             </Route>
           </Route>
         </Routes>
