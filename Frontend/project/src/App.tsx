@@ -9,6 +9,7 @@ import { addExpense, getExpenses, updateExpense, deleteExpense, togglePaymentSta
 import { AlertTriangle, Loader2 } from 'lucide-react';
 import SalaryForm from './components/SalaryForm';
 import { format, parseISO, differenceInMonths } from 'date-fns';
+import { FinancialAssistant } from './components/FinancialAssistant';
 
 function App() {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
@@ -218,6 +219,8 @@ function App() {
               salary={salary}
             />
           </>
+        ) : activeTab === 'assistant' ? (
+          <FinancialAssistant expenses={expenses} />
         ) : (
           <div className="space-y-6">
             {/* Month selector for expenses tab */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, DollarSign, PlusCircle, Menu } from 'lucide-react';
+import { BarChart3, DollarSign, PlusCircle, Menu, Brain } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
@@ -55,6 +55,20 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
               >
                 <PlusCircle className="h-5 w-5 mr-1" />
                 <span>Despesas</span>
+              </button>
+              <button
+                onClick={() => {
+                  onTabChange('assistant');
+                  setIsMenuOpen(false);
+                }}
+                className={`px-4 py-2 rounded-md flex items-center justify-center md:justify-start ${
+                  activeTab === 'assistant'
+                    ? 'bg-white text-[#0077b6] font-medium'
+                    : 'text-white hover:bg-[#00b4d8] hover:bg-opacity-30'
+                }`}
+              >
+                <Brain className="h-5 w-5 mr-1" />
+                <span>Assistente IA</span>
               </button>
             </div>
           </nav>
