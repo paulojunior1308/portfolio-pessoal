@@ -1,6 +1,11 @@
 import { Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
+interface Project {
+  id: string;
+  name: string;
+}
+
 interface Invoice {
   id: string;
   number: string;
@@ -9,6 +14,8 @@ interface Invoice {
   description: string;
   fileId?: string;
   fileName?: string;
+  projectId?: string;
+  projectName?: string;
 }
 
 interface InvoiceModalProps {
@@ -16,9 +23,10 @@ interface InvoiceModalProps {
   onClose: () => void;
   onSubmit: (invoice: Omit<Invoice, 'id'> & { file?: File }) => void;
   editingInvoice: Invoice | null;
+  projects: Project[];
 }
 
-export default function InvoiceModal({ isOpen, onClose, onSubmit, editingInvoice }: InvoiceModalProps) {
+export default function InvoiceModal({ isOpen, onClose, onSubmit, editingInvoice, projects }: InvoiceModalProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -27,6 +35,7 @@ export default function InvoiceModal({ isOpen, onClose, onSubmit, editingInvoice
       date: formData.get('date') as string,
       value: Number(formData.get('value')),
       description: formData.get('description') as string,
+      projectId: formData.get('projectId') as string,
       file: formData.get('file') as File || undefined,
       fileId: editingInvoice?.fileId,
       fileName: editingInvoice?.fileName
@@ -41,6 +50,7 @@ export default function InvoiceModal({ isOpen, onClose, onSubmit, editingInvoice
         form.date.value = editingInvoice.date;
         form.value.value = editingInvoice.value;
         form.description.value = editingInvoice.description;
+        form.projectId.value = editingInvoice.projectId || '';
       }
     }
   }, [editingInvoice]);
@@ -77,6 +87,24 @@ export default function InvoiceModal({ isOpen, onClose, onSubmit, editingInvoice
                 </Dialog.Title>
                 <form id="invoice-form" onSubmit={handleSubmit} className="mt-4 space-y-4">
                   <div>
+                    <label htmlFor="projectId" className="block text-gray-700 text-sm font-medium mb-1">
+                      Projeto
+                    </label>
+                    <select
+                      name="projectId"
+                      id="projectId"
+                      className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    >
+                      <option value="">Selecione um projeto</option>
+                      {projects.map(project => (
+                        <option key={project.id} value={project.id}>
+                          {project.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
                     <label htmlFor="number" className="block text-gray-700 text-sm font-medium mb-1">
                       Número da Nota
                     </label>
@@ -111,6 +139,7 @@ export default function InvoiceModal({ isOpen, onClose, onSubmit, editingInvoice
                       name="value"
                       id="value"
                       required
+                      step="0.01"
                       className="w-full px-3 py-2 border rounded-md text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     />
                   </div>
